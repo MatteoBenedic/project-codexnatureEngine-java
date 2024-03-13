@@ -1,27 +1,418 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+abstract class Side {
++corners : List<Corner>[][]
+getCorners()
+getCorner(int, int)
+createSquares()
+}
+note right of Side::getCorner
+    The corners are on a
+    matrix or array,
+    the param of getCorner decides
+    which corner we want to check
+end note
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+class GoldFront{
+    +condition : MultiplierCondition
+    +requirement : Requirements
+}
+class GoldBack{
+createSquares()
+}
+class StartFront
+class StartBack{
+createSquares()
+}
+class ResourceFront
+class ResourceBack{
+createSquares()
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+Front <|-- GoldFront
+Front <|-- ResourceFront
+Front <|-- StartFront
+Back <|-- GoldBack
+Back <|-- ResourceBack
+Back <|-- StartBack
+
+class ScoreTrack{
++points : Map<String><Int>
+initializeScore()
+addPoints(p : Player, points : int)
+getScoreTrack()
+getScore(p: Player)
 }
+
+
+class Front{
+createSquares()
+}
+class Back{
++center : Center
+}
+
+abstract class Square{
+getResource()
+}
+
+Square <|-- Center
+Square <|-- Corner
+Side <|-- Front
+Side <|-- Back
+
+
+abstract class GameCard {
++numCarta : int
++front : Side
++back : Side
++validSide : Side
+createSides()
+setSide()
+switchSide()
+}
+
+note left of GameCard::validSide
+Points to the side in use
+end note
+
+class Requirements{
++base : List<ReignElement>[]
+countReq()
+countRes()
+acceptReq()
+}
+
+Requirements --> ReignElement
+
+class Corner{
++element : Element
+}
+abstract class Center{
+}
+class ColCardCenter{
++element: Element
+}
+class StartCenter{
++elements : List<ReignElement>[]
+}
+
+Center <|--ColCardCenter
+Center <|--StartCenter
+
+Center --> Element
+Corner --> Element
+
+abstract class Element
+class GoldCard {
+createSides()
+}
+
+class ResourceCard {
+createSides()
+}
+class StartCard {
+createSides()
+}
+
+class ColouredCard {
++points : int
++colour : String
+}
+
+GameCard <|-- ColouredCard
+ColouredCard <|-- GoldCard
+ColouredCard <|-- ResourceCard
+GameCard <|-- StartCard
+
+Element <|-- ObjectElement
+Element <|-- ReignElement
+
+enum ReignElement {
+ANIMALS
+PLANTS
+FUNGI
+INSECTS
+}
+
+GameCard *- Side
+Side *- Square
+
+enum ObjectElement {
+MANUSCRIPT
+INKWELL
+QUILL
+}
+
+
+class PlayingGrid{
++plcards : List<GameCard>[][]
++numElements : List<int>[7]
++lastPlacedCard : GameCard
+place()
+getPlaceablePositions()
+getPlacedCards()
+getPlacedCard(int, int)
+getElements()
+getElements(String)
+computePoints()
+}
+
+
+
+
+class Player{
++colour : String
++nickname : String
++points : int
++gameCards : List<GameCard>[]
++objCard : ObjectiveCard
+Player(String nickname, String colour)
+getObjectiveCard()
+getCardsInHand()
+getPlayingGrid()
+calculatePoints()
+}
+
+hide Turn
+class Turn{
++round : int
++orderedPlayers : List<String>[]
+
+setOrderedPlayers()
+}
+
+class Match {
+    +matchID: String
+    + numPlayers : int
+    + round : int
+    + playerOrder : List<Player>[]
+    + playerTurn : int
+    +publicObj : ObjectiveCard[2]
+    +startDeck : List<StartCard>[]
+    + objDeck : List<ObjectiveCard>[]
+
+
+    startMatch()
+    setStartingCards()
+    randomizePlayerOrder()
+    createDecks()
+    setPublicObj(ObjDeck)
+    getPublicObj()
+}
+note right of Match::createDecks
+    this method creates the cards and
+    puts them in their decks (JSON/XML
+    to be defined)
+end note
+note left of Match::publicObj
+    Alternative A for public
+    objectives handling,
+    to be reviewed: if chosen,
+    remove the PublicObj class
+end note
+
+Match --> Player
+Match --> ScoreTrack
+Match --> DrawTable
+
+class GameModel{
++ match: Match
+
+    createMatch(nickname : String, numPlayers : int)
+    addPlayersToMatch(nicknames : List<String>)
+    placeInitialCard(nickname : String, selectedSide : boolean)
+    setTurn(matchID : String)
+    setPlayerColor(nickname : String, color : PlayerColor)
+    setupPlayers()
+    chooseSecretObjective(nickname : String, index : int)
+    placeCard(index : int, side : boolean, xpos : int, ypos : int)
+    drawCard(index : int)
+    finishMatch()
+
+    //getDiscoveredCards()
+
+    //getStartCard()
+
+    //getCardsInHand()
+    //getPublicObjCards()
+
+
+    //getNicknamePlaying()
+    //setOrder(List<String>[])
+}
+note left of GameModel::createUser
+ also ensures that there aren't
+ any duplicate names
+end note
+note right of GameModel::addPlayerToMatch
+ also signals when the required
+ number of players to start a match
+ is reached
+end note
+note left of GameModel::finishMatch
+   assign the final points
+   when ending the game
+end note
+
+note right of GameModel::updateMatchState
+    To replace with specific user interactions
+end note
+note left of GameModel::setTurn
+ returns the next player
+end note
+note left of GameModel::setupPlayers
+inizialize points at 0
+handle initial player cards
+(2 res and 1 gold)
+assign common objectives
+set secret objects
+end note
+
+GameModel --> Match
+
+Player --> PlayingGrid
+
+enum PlayerColor{
+}
+PlayerColor <-- Player
+
+class DrawTable{
+ +gold1 : GoldCard
+ +gold2 : GoldCard
+ +res1 : ResourceCard
+ +res2 : ResourceCard
+ +goldDeck : List<GoldCard>[]
+ +resDeck : List<ResourceCard>[]
+
+ initializeCards()
+ getPublicCards()
+ getColorTopGoldDeck()
+ getColorTopResDeck()
+ resetCards(int index)
+}
+
+hide PublicObj
+class PublicObj{
+ +publicObj : ObjectiveCard[2]
+
+ setPublicObj(ObjDeck)
+ getPublicObj()
+ getChoiceCards()
+}
+PublicObj --> ObjDeck
+note left of PublicObj{
+Alternative B for public objectives
+handling, to be reviewed
+}
+
+
+abstract class MultiplierCondition{
++ mult : int
+getMultiplyingFactor()
+setMultiplyingFactor()
+}
+
+class CornerCondition{
++ cornerCounter : int
+setCornerCounter()
+getCornerCounter()
+getCornersNumber(p : Player)
+}
+
+class ObjectCondition{
++ reqElement : Element
++elementCounter : int
+setElementCounter()
+getElementCounter()
+getElementsNumber(p : Player)
+}
+
+MultiplierCondition <|-- CornerCondition
+MultiplierCondition <|-- ObjectCondition
+
+hide CommonObjectives
+class CommonObjectives{
+    +commonA : ResourceObjectiveCard
+    +commonB : ResourceObjectiveCard
+    +commonC : PatternObjectiveCard
+    +commonD : PatternObjectiveCard
+
+
+    extract4CommonObjectives()
+    set2RandomDiscardFlagsTo1(commonA,commonB,commonC,commonD)
+}
+class ElementsObjectiveCard{
++ reqElements : List<Element>[]
+    checkElements(p: Player)
+}
+note left of ElementsObjectiveCard {
+  To check both resources and objects
+  owned by any player
+}
+
+class PatternObjectiveCard{
++reqPattern : List<GameCard>[][]
+    checkPatterns(p: Player)
+}
+
+note right of PatternObjectiveCard{
+The pattern required to get points
+is also expressed as a matrix
+}
+
+
+CommonObjectives --> ElementsObjectiveCard
+CommonObjectives --> PatternObjectiveCard
+abstract class ObjectiveCard{
+    +completedCounter : int
+    getCompletedCounter()
+    setCompletedCounter(completions : int)
+    addPointsToPlayer(p: Player, ScoreTrack)
+}
+
+ObjectiveCard <|-- ElementsObjectiveCard
+ObjectiveCard <|-- PatternObjectiveCard
+
+hide Deck
+abstract class Deck{
++cards : List<Card>[]
+shuffle()
+pop()
+}
+
+hide ObjDeck
+class ObjDeck{
++objectives : List<ObjectiveCard>[]
+extractRandomObj()
+}
+
+
+hide ResDeck
+class ResDeck
+hide GoldDeck
+class GoldDeck
+hide InitDeck
+class InitDeck
+
+Deck <|-- ObjDeck
+Deck <|-- ResDeck
+Deck <|-- GoldDeck
+Deck <|-- InitDeck
+
+abstract class Card{
++index : int
+}
+note right of Card: Create a factory to initialize different types of cards
+
+Card <|-- GameCard
+Card <|-- ObjectiveCard
+
+GoldFront --> MultiplierCondition
+GoldFront --> Requirements
+Card <-- Deck
+
 
 @enduml
