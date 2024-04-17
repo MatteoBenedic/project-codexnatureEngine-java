@@ -1,0 +1,239 @@
+[  {
+        "index": 80,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": "animal"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.StartBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": ["insect"]
+        },
+        "colour": null
+    },
+    {
+        "index": 81,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": "insect"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.StartBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "fungus"
+                }
+            ],
+            "center": ["fungus"]
+        },
+        "colour": null
+    },
+    {
+        "index": 82,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": "plant"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.StartBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": ["plant", "fungus"]
+        },
+        "colour": null
+    },
+    {
+        "index": 83,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": "fungus"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.StartBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": ["animal", "insect"]
+        },
+        "colour": null
+    },
+    {
+        "index": 84,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "animal"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.StartBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                null,
+                null
+            ],
+            "center": ["animal", "insect", "plant"]
+        },
+        "colour": null
+    },
+    {
+        "index": 85,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "insect"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.StartBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                null,
+                null
+            ],
+            "center": ["plant", "animal", "fungus"]
+        },
+        "colour": null
+    }
+]

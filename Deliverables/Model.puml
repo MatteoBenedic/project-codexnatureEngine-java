@@ -1,274 +1,114 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-
-abstract class Side {
-+corners : List<Corner>[][]
-getCorners()
-getCorner(int, int)
-createSquares()
-}
-note right of Side::getCorner
-    The corners are on a
-    matrix or array,
-    the param of getCorner decides
-    which corner we want to check
-end note
-
-class GoldFront{
-    +condition : MultiplierCondition
-    +requirement : Requirements
-}
-class GoldBack{
-createSquares()
-}
-class StartFront
-class StartBack{
-createSquares()
-}
-class ResourceFront
-class ResourceBack{
-createSquares()
-}
-
-Front <|-- GoldFront
-Front <|-- ResourceFront
-Front <|-- StartFront
-Back <|-- GoldBack
-Back <|-- ResourceBack
-Back <|-- StartBack
-
-class ScoreTrack{
-+points : Map<String><Int>
-initializeScore()
-addPoints(p : Player, points : int)
-getScoreTrack()
-getScore(p: Player)
-}
-
-
-class Front{
-createSquares()
-}
-class Back{
-+center : Center
-}
-
-abstract class Square{
-getResource()
-}
-
-Square <|-- Center
-Square <|-- Corner
-Side <|-- Front
-Side <|-- Back
-
-
-abstract class GameCard {
-+numCarta : int
-+front : Side
-+back : Side
-+validSide : Side
-createSides()
-setSide()
-switchSide()
-}
-
-note left of GameCard::validSide
-Points to the side in use
-end note
-
-class Requirements{
-+base : List<ReignElement>[]
-countReq()
-countRes()
-acceptReq()
-}
-
-Requirements --> ReignElement
-
-class Corner{
-+element : Element
-}
-abstract class Center{
-}
-class ColCardCenter{
-+element: Element
-}
-class StartCenter{
-+elements : List<ReignElement>[]
-}
-
-Center <|--ColCardCenter
-Center <|--StartCenter
-
-Center --> Element
-Corner --> Element
-
-abstract class Element
-class GoldCard {
-createSides()
-}
-
-class ResourceCard {
-createSides()
-}
-class StartCard {
-createSides()
-}
-
-class ColouredCard {
-+points : int
-+colour : String
-}
-
-GameCard <|-- ColouredCard
-ColouredCard <|-- GoldCard
-ColouredCard <|-- ResourceCard
-GameCard <|-- StartCard
-
-Element <|-- ObjectElement
-Element <|-- ReignElement
-
-enum ReignElement {
-ANIMALS
-PLANTS
-FUNGI
-INSECTS
-}
-
-GameCard *- Side
-Side *- Square
-
-enum ObjectElement {
-MANUSCRIPT
-INKWELL
-QUILL
-}
-
-
 class PlayingGrid{
-+plcards : List<GameCard>[][]
-+numElements : List<int>[7]
++plcards : GameCard[81][81]
++numElements : int[7]
 +lastPlacedCard : GameCard
-place()
-getPlaceablePositions()
-getPlacedCards()
-getPlacedCard(int, int)
-getElements()
-getElements(String)
-computePoints()
+
+List<Coordinate> getPlaceablePositions(i : int, j : int)
+int place(i : int, j : int, card : GameCard)
+GameCard getLastPlacedCard()
+GameCard getPlacedCard(i : int, j : int)
+GameCard[81][81] getPlacedCards()
+int getNumElement(e : Element)
+int[7] getNumElements()
+int computePoints()
+Boolean checkCardPlaceability(c : GameCard)
+
+int checkPatterns(patternCard : PatternObjectiveCard)
+Boolean cellIsEmpty(row : int, column : int)
+Boolean checkColourMatch(row : int, column : int, patternCard: PatternObjectiveCard, coordReqPatternIndex : int)
+Boolean cardWasAlreadyUsedForThisObjective (row : int, column : int, patternCard : PatternObjectiveCard)
+void markCardAsUsedForThisObjective(row : int, column : int, patternCard : PatternObjectiveCard)
+int checkElements(elementCard : ElementObjectiveCard)
+}
+
+note left of PlayingGrid::getNumElements{
+returns an array of 7 int counters representing
+the number of each type of element currently owned by the player
 }
 
 
 
 
 class Player{
-+colour : String
++colour : PlayerColour
 +nickname : String
 +points : int
-+gameCards : List<GameCard>[]
++cardsInHand : List<GameCard>
 +objCard : ObjectiveCard
-Player(String nickname, String colour)
-getObjectiveCard()
-getCardsInHand()
-getPlayingGrid()
-calculatePoints()
-}
 
-hide Turn
-class Turn{
-+round : int
-+orderedPlayers : List<String>[]
-
-setOrderedPlayers()
+ObjectiveCard getObjectiveCard()
+List<GameCard> getCardsInHand()
+PlayingGrid getPlayingGrid()
+String getNickname()
+void addCartInHand(Gamecard c)
+void setObjectiveCard(ObjectiveCard oc)
+int getPoints()
+void setColour(Colour colour)
+void placePlayingGrid(int i, int j, Gamecard c)
 }
 
 class Match {
-    +matchID: String
     + numPlayers : int
-    + round : int
-    + playerOrder : List<Player>[]
+    + remainingRounds : int
+    + playerOrder : List<Player>
     + playerTurn : int
-    +publicObj : ObjectiveCard[2]
-    +startDeck : List<StartCard>[]
-    + objDeck : List<ObjectiveCard>[]
+    + publicObj : ObjectiveCard[2]
+    + startDeck : List<StartCard>
+    + objDeck : List<ObjectiveCard>
 
+    int getNumPlayers()
+    List<String> getPlayerNames();
+    List<String> getCardsInHand(nickname : String)
+    int getSecretObjective(nickname : String)
+    int[2] getPublicObjectives()
+    List<Coordinate> getPlaceablePositions(x : int, y : int)
 
-    startMatch()
-    setStartingCards()
-    randomizePlayerOrder()
-    createDecks()
-    setPublicObj(ObjDeck)
-    getPublicObj()
+    void addPlayer(nickname : String)
+    void randomizePlayerOrder()
+    void createDecks()
+    void assignStartCards()
+    void placeStartCards(selectedSides : Map<String, Boolean>)
+    void setPlayerColors(selectedColors : Map<String, PlayerColor>)
+    void drawObjective()
+    void distributeCards()
+    void setPlayerObjectives(selectedObjectives : Map<String, Boolean>)
+    void placeCard(index : int, side : boolean, xpos : int, ypos : int)
+    void drawCard(index : int)
+    int nextTurn()
+    Boolean checkEndgameCondition()
 }
 note right of Match::createDecks
     this method creates the cards and
     puts them in their decks (JSON/XML
     to be defined)
 end note
-note left of Match::publicObj
-    Alternative A for public
-    objectives handling,
-    to be reviewed: if chosen,
-    remove the PublicObj class
-end note
 
 Match --> Player
-Match --> ScoreTrack
 Match --> DrawTable
 
 class GameModel{
-+ match: Match
-
-    createMatch(nickname : String, numPlayers : int)
-    addPlayersToMatch(nicknames : List<String>)
-    placeInitialCard(nickname : String, selectedSide : boolean)
-    setTurn(matchID : String)
-    setPlayerColor(nickname : String, color : PlayerColor)
-    setupPlayers()
-    chooseSecretObjective(nickname : String, index : int)
-    placeCard(index : int, side : boolean, xpos : int, ypos : int)
-    drawCard(index : int)
-    finishMatch()
-
-    //getDiscoveredCards()
-
-    //getStartCard()
-
-    //getCardsInHand()
-    //getPublicObjCards()
-
-
-    //getNicknamePlaying()
-    //setOrder(List<String>[])
+    +listeners : List<ModelListener>
+    void addListener(listener : ModelListener)
+    void addPlayersToMatch(nicknames : List<String>)
+    void placeStartCards(selectedSides : Map<String, Boolean>)
+    void setPlayerColors(selectedColors : Map<String, PlayerColor>)
+    void distributeCards()
+    void setPlayerObjectives(selectedObjectives : Map<String, Boolean>)
+    void selectPlacingPosition(x : int, y : int)
+    void placeCard(index : int, side : boolean, xpos : int, ypos : int)
+    void drawCard(index : int)
+    void nextTurn()
 }
-note left of GameModel::createUser
- also ensures that there aren't
- any duplicate names
-end note
-note right of GameModel::addPlayerToMatch
- also signals when the required
- number of players to start a match
- is reached
-end note
-note left of GameModel::finishMatch
-   assign the final points
-   when ending the game
-end note
-
-note right of GameModel::updateMatchState
-    To replace with specific user interactions
-end note
-note left of GameModel::setTurn
- returns the next player
-end note
-note left of GameModel::setupPlayers
-inizialize points at 0
-handle initial player cards
-(2 res and 1 gold)
-assign common objectives
-set secret objects
+note right of GameModel
+    These are the methods available to the Controller.
+    At the end of each method,
+    the Model will notify the Controller (subscribed as a listener)
+    about the changes in the state.
+    These methods validate the parameters and invoke the methods
+    of the class Match, which contains the actual state of the match.
 end note
 
 GameModel --> Match
@@ -276,6 +116,10 @@ GameModel --> Match
 Player --> PlayingGrid
 
 enum PlayerColor{
+RED
+YELLOW
+GREEN
+BLUE
 }
 PlayerColor <-- Player
 
@@ -284,135 +128,187 @@ class DrawTable{
  +gold2 : GoldCard
  +res1 : ResourceCard
  +res2 : ResourceCard
- +goldDeck : List<GoldCard>[]
- +resDeck : List<ResourceCard>[]
+ +goldDeck : List<GoldCard>
+ +resDeck : List<ResourceCard>
 
- initializeCards()
- getPublicCards()
- getColorTopGoldDeck()
- getColorTopResDeck()
- resetCards(int index)
+ void initializeGoldDeck()
+ void initializeResourceDeck()
+ GameCard[4] getPublicCards()
+ String getColorTopGoldDeck()
+ String getColorTopResDeck()
+ GameCard drawCard(i : int)
 }
 
-hide PublicObj
-class PublicObj{
- +publicObj : ObjectiveCard[2]
-
- setPublicObj(ObjDeck)
- getPublicObj()
- getChoiceCards()
-}
-PublicObj --> ObjDeck
-note left of PublicObj{
-Alternative B for public objectives
-handling, to be reviewed
-}
-
-
-abstract class MultiplierCondition{
-+ mult : int
-getMultiplyingFactor()
-setMultiplyingFactor()
-}
-
-class CornerCondition{
-+ cornerCounter : int
-setCornerCounter()
-getCornerCounter()
-getCornersNumber(p : Player)
-}
-
-class ObjectCondition{
-+ reqElement : Element
-+elementCounter : int
-setElementCounter()
-getElementCounter()
-getElementsNumber(p : Player)
-}
-
-MultiplierCondition <|-- CornerCondition
-MultiplierCondition <|-- ObjectCondition
-
-hide CommonObjectives
-class CommonObjectives{
-    +commonA : ResourceObjectiveCard
-    +commonB : ResourceObjectiveCard
-    +commonC : PatternObjectiveCard
-    +commonD : PatternObjectiveCard
-
-
-    extract4CommonObjectives()
-    set2RandomDiscardFlagsTo1(commonA,commonB,commonC,commonD)
-}
 class ElementsObjectiveCard{
-+ reqElements : List<Element>[]
-    checkElements(p: Player)
-}
-note left of ElementsObjectiveCard {
-  To check both resources and objects
-  owned by any player
+ +reqElements : int[7]
+ int[] getReqElements()
 }
 
 class PatternObjectiveCard{
-+reqPattern : List<GameCard>[][]
-    checkPatterns(p: Player)
+    +coordReqPattern : CoordinateSubMatrix[3]
+    +deltaXSecond : int
+    +deltaYSecond : int
+    +deltaXThird : int
+    +deltaYThird : int
+
+    void calculateDeltas()
+    CoordinateSubMatrix getCoordReqPattern(arrayIndex : int)
+    int getDeltaXSecond()
+    int getDeltaYSecond()
+    int getDeltaXThird()
+    int getDeltaYThird()
 }
 
-note right of PatternObjectiveCard{
+note left of PatternObjectiveCard::coordReqPattern{
 The pattern required to get points
-is also expressed as a matrix
+is expressed as an array of 3 Coordinate
+objects, representing the coordinates
+and colours of the cards required by the
+pattern, which can be seen either as a
+3x3 submatrix or a 4x2 submatrix.
+The coordinates represent the positions
+of the cards in the submatrix.
 }
 
 
-CommonObjectives --> ElementsObjectiveCard
-CommonObjectives --> PatternObjectiveCard
-abstract class ObjectiveCard{
-    +completedCounter : int
-    getCompletedCounter()
-    setCompletedCounter(completions : int)
-    addPointsToPlayer(p: Player, ScoreTrack)
+
+class ObjectiveCard{
+    +objIndex : int
+    void setObjIndex()
+    int getObjIndex()
 }
 
 ObjectiveCard <|-- ElementsObjectiveCard
 ObjectiveCard <|-- PatternObjectiveCard
 
-hide Deck
-abstract class Deck{
-+cards : List<Card>[]
-shuffle()
-pop()
-}
 
-hide ObjDeck
-class ObjDeck{
-+objectives : List<ObjectiveCard>[]
-extractRandomObj()
-}
-
-
-hide ResDeck
-class ResDeck
-hide GoldDeck
-class GoldDeck
-hide InitDeck
-class InitDeck
-
-Deck <|-- ObjDeck
-Deck <|-- ResDeck
-Deck <|-- GoldDeck
-Deck <|-- InitDeck
-
-abstract class Card{
+class GameCard{
 +index : int
++front : Side
++back : Side
++validSide : Side
++coordinate : Coordinate
++flagObj : Boolean[8]
+
+Side getValidSide()
+void setValidSide(side : Boolean)
+int getPoints()
+Boolean isThereCorner(i : int)
+Element getResourceCorner(i : int)
+String getColour()
+int[7] getResources()
+Condition getCondition()
+int[7] getRequirements()
+Coordinate getCoordinates()
+void setCoordinates(Coordinate c)
+Boolean getCompleteObjFlag(patternObjIndex : int)
+void setCompleteObjFlag(patternObjIndex : int)
 }
-note right of Card: Create a factory to initialize different types of cards
 
-Card <|-- GameCard
-Card <|-- ObjectiveCard
+class GoldCard{
+    +colour : String
+    String getColour()
+    Boolean getCompleteObjFlag(patternObjIndex : int)
+    void setCompleteObjFlag(patternObjIndex : int)
+}
+class ResourceCard{
+    +colour : String
+    String getColour();
+    Boolean getCompleteObjFlag(patternObjIndex : int)
+    void setCompleteObjFlag(patternObjIndex : int)
+}
 
-GoldFront --> MultiplierCondition
-GoldFront --> Requirements
-Card <-- Deck
+GameCard <|-- GoldCard
+GameCard <|-- StartCard
+GameCard <|-- ResourceCard
+
+abstract class Side{
++corners : Corner[4]
++points : int
+Corner getCorner(i : int)
+int getPoints()
+List<Element> getRequirements()
+Condition getCondition()
+abstract List<Element> getCenter()
+}
+
+class GoldFront{
++requirements : List<Element>
+List<Element> getRequirements()
+Condition getCondition()
+List<Element> getCenter()
+}
+
+class NotGoldFront{
+List<Element> getCenter()
+}
+
+class StartBack{
++center : List<Element>
+List<Element> getCenter()
+}
+
+class ColouredBack{
++center: Element
+List<Element> getCenter()
+}
+note left of GameCard::flagObj{
+array of 8 boolean flags initialized to false:
+each flag can be set to true if this instance
+of a GoldCard object is used to count a
+pattern objective card
+e.g. flagObj[4] is set to true is this instance
+of a GoldCard is used to count pattern objective
+number 4 in the deck.
+}
 
 
+Side <|-- GoldFront
+Side <|-- NotGoldFront
+Side <|-- StartBack
+Side <|-- ColouredBack
+
+class Corner{
++elem : Element
+Element getElement()
+}
+
+GameCard *- Side
+Side *- Corner
+Corner --> Element
+
+enum Element {
+ANIMAL
+FUNGUS
+PLANT
+INSECT
+MANUSCRIPT
+INKWELL
+QUILL
+}
+
+PatternObjectiveCard --> CoordinateSubMatrix
+
+class CoordinateSubMatrix{
+     +x : int
+     +y : int
+     +colour : String
+
+     int getX()
+     void setX(x : int)
+     int getY()
+     void setY(y : int)
+     String getColour()
+     void setColour(colour : String)
+}
+
+GoldFront --> Condition
+
+class Condition{
+    +type : String
+    +object : Element
+
+    String getType()
+    Element getObject()
+}
 @enduml

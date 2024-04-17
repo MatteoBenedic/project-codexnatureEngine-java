@@ -1,0 +1,1605 @@
+[  {
+        "index": 0,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "fungus"
+                },
+                null
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "fungus"
+        },
+        "colour": "red"
+    },
+
+    {
+        "index": 1,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": "fungus"
+                },
+                null,
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "fungus"
+        },
+        "colour": "red"
+    },
+
+    {
+        "index": 2,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                null,
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": "fungus"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "fungus"
+        },
+        "colour": "red"
+    },
+
+    {
+        "index": 3,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                null,
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "fungus"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "fungus"
+        },
+        "colour": "red"
+    },
+
+    {
+        "index": 4,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                null,
+                {
+                    "elem": "quill"
+                },
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "fungus"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "fungus"
+        },
+        "colour": "red"
+    },
+
+    {
+        "index": 5,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "inkwell"
+                },
+                {
+                    "elem": "fungus"
+                },
+                null,
+                {
+                    "elem": "animal"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "fungus"
+        },
+        "colour": "red"
+    },
+
+    {
+        "index": 6,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": "manuscript"
+                },
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "fungus"
+        },
+        "colour": "red"
+    },
+
+    {
+        "index": 7,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": null
+                },
+                null
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "fungus"
+        },
+        "colour": "red"
+    },
+
+    {
+        "index": 8,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                {
+                    "elem": "fungus"
+                },
+                null,
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "fungus"
+        },
+        "colour": "red"
+    },
+
+    {
+        "index": 9,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                null,
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "fungus"
+        },
+        "colour": "red"
+    },
+
+
+    {
+        "index": 10,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "plant"
+                },
+                null
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "plant"
+        },
+        "colour": "green"
+    },
+
+    {
+        "index": 11,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "plant"
+                },
+                null,
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "plant"
+        },
+        "colour": "green"
+    },
+
+    {
+        "index": 12,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                null,
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "plant"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "plant"
+        },
+        "colour": "green"
+    },
+
+    {
+        "index": 13,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                null,
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "plant"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "plant"
+        },
+        "colour": "green"
+    },
+
+    {
+        "index": 14,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                null,
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": "quill"
+                },
+                {
+                    "elem": "plant"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "plant"
+        },
+        "colour": "green"
+    },
+
+    {
+        "index": 15,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "fungus"
+                },
+                {
+                    "elem": "plant"
+                },
+                null,
+                {
+                    "elem": "inkwell"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "plant"
+        },
+        "colour": "green"
+    },
+
+    {
+        "index": 16,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "manuscript"
+                },
+                null,
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "animal"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "plant"
+        },
+        "colour": "green"
+    },
+
+    {
+        "index": 17,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "plant"
+                },
+                null
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "plant"
+        },
+        "colour": "green"
+    },
+
+    {
+        "index": 18,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                null,
+                {
+                    "elem": "plant"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "plant"
+        },
+        "colour": "green"
+    },
+
+    {
+        "index": 19,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                null,
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "plant"
+        },
+        "colour": "green"
+    },
+
+
+    {
+        "index": 20,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": null
+                },
+                null
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "animal"
+        },
+        "colour": "blue"
+    },
+
+    {
+        "index": 21,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                null,
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": "animal"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "animal"
+        },
+        "colour": "blue"
+    },
+
+    {
+        "index": 22,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "animal"
+                },
+                null,
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "animal"
+        },
+        "colour": "blue"
+    },
+
+    {
+        "index": 23,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "animal"
+                },
+                null,
+                {
+                    "elem": "animal"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "animal"
+        },
+        "colour": "blue"
+    },
+
+    {
+        "index": 24,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                null,
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": "inkwell"
+                },
+                {
+                    "elem": "animal"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "animal"
+        },
+        "colour": "blue"
+    },
+
+    {
+        "index": 25,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "animal"
+                },
+                null,
+                {
+                    "elem": "manuscript"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "animal"
+        },
+        "colour": "blue"
+    },
+
+    {
+        "index": 26,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "quill"
+                },
+                null,
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": "fungus"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "animal"
+        },
+        "colour": "blue"
+    },
+
+    {
+        "index": 27,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                null,
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "animal"
+        },
+        "colour": "blue"
+    },
+
+    {
+        "index": 28,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                {
+                    "elem": null
+                },
+                null,
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "animal"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "animal"
+        },
+        "colour": "blue"
+    },
+
+    {
+        "index": 29,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": null
+                },
+                null
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "animal"
+        },
+        "colour": "blue"
+    },
+
+
+    {
+        "index": 30,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": null
+                },
+                null
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "insect"
+        },
+        "colour": "purple"
+    },
+
+    {
+        "index": 31,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                null,
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": "insect"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "insect"
+        },
+        "colour": "purple"
+    },
+
+    {
+        "index": 32,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "insect"
+                },
+                null,
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "insect"
+        },
+        "colour": "purple"
+    },
+
+    {
+        "index": 33,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": "insect"
+                },
+                null,
+                {
+                    "elem": "insect"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "insect"
+        },
+        "colour": "purple"
+    },
+
+    {
+        "index": 34,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                null,
+                {
+                    "elem": "quill"
+                },
+                {
+                    "elem": "animal"
+                },
+                {
+                    "elem": "insect"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "insect"
+        },
+        "colour": "purple"
+    },
+
+    {
+        "index": 35,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "manuscript"
+                },
+                {
+                    "elem": "insect"
+                },
+                null,
+                {
+                    "elem": "fungus"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "insect"
+        },
+        "colour": "purple"
+    },
+
+    {
+        "index": 36,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": "plant"
+                },
+                {
+                    "elem": "inkwell"
+                },
+                null
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "insect"
+        },
+        "colour": "purple"
+    },
+
+    {
+        "index": 37,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                {
+                    "elem": "insect"
+                },
+                null,
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "insect"
+        },
+        "colour": "purple"
+    },
+
+    {
+        "index": 38,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                null,
+                {
+                    "elem": "insect"
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "insect"
+        },
+        "colour": "purple"
+    },
+
+    {
+        "index": 39,
+        "front": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.NotGoldFront",
+            "points": 1,
+            "corners": [
+                null,
+                {
+                    "elem": "insect"
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ]
+        },
+        "back": {
+            "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.ColouredBack",
+            "points": 0,
+            "corners": [
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                },
+                {
+                    "elem": null
+                }
+            ],
+            "center": "insect"
+        },
+        "colour": "purple"
+    }
+]

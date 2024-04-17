@@ -1,0 +1,234 @@
+[
+  {
+    "objIndex": 86,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard",
+    "points": 2,
+    "coordReqPattern":
+            [
+              {
+                "x": 2,
+                "y": 0,
+                "colour": "red"
+              },
+              {
+                "x": 1,
+                "y": 1,
+                "colour": "red"
+              },
+              {
+                "x": 0,
+                "y": 2,
+                "colour": "red"
+              }
+            ]
+  },
+  {
+    "objIndex": 87,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard",
+    "points": 2,
+    "coordReqPattern":
+    [
+      {
+        "x": 0,
+        "y": 0,
+        "colour": "green"
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "colour": "green"
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "colour": "green"
+      }
+    ]
+  },
+  {
+    "objIndex": 88,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard",
+    "points": 2,
+    "coordReqPattern":
+    [
+      {
+        "x": 2,
+        "y": 0,
+        "colour": "blue"
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "colour": "blue"
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "colour": "blue"
+      }
+    ]
+  },
+  {
+    "objIndex": 89,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard",
+    "points": 2,
+    "coordReqPattern":
+    [
+      {
+        "x": 0,
+        "y": 0,
+        "colour": "purple"
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "colour": "purple"
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "colour": "purple"
+      }
+    ]
+  },
+  {
+    "objIndex": 90,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard",
+    "points": 3,
+    "coordReqPattern":
+    [
+      {
+        "x": 0,
+        "y": 0,
+        "colour": "red"
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "colour": "red"
+      },
+      {
+        "x": 1,
+        "y": 3,
+        "colour": "green"
+      }
+    ]
+  },
+  {
+    "objIndex": 91,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard",
+    "points": 3,
+    "coordReqPattern":
+    [
+      {
+        "x": 1,
+        "y": 0,
+        "colour": "green"
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "colour": "green"
+      },
+      {
+        "x": 0,
+        "y": 3,
+        "colour": "purple"
+      }
+    ]
+  },
+  {
+    "objIndex": 92,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard",
+    "points": 3,
+    "coordReqPattern":
+    [
+      {
+        "x": 1,
+        "y": 0,
+        "colour": "red"
+      },
+      {
+        "x": 0,
+        "y": 1,
+        "colour": "blue"
+      },
+      {
+        "x": 0,
+        "y": 3,
+        "colour": "blue"
+      }
+    ]
+  },
+  {
+    "objIndex": 93,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard",
+    "points": 3,
+    "coordReqPattern":
+    [
+      {
+        "x": 0,
+        "y": 0,
+        "colour": "blue"
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "colour": "purple"
+      },
+      {
+        "x": 1,
+        "y": 3,
+        "colour": "purple"
+      }
+    ]
+  },
+  {
+    "objIndex": 94,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ElementsObjectiveCard",
+    "points": 2,
+    "reqElements": [0, 3, 0, 0, 0, 0, 0]
+  },
+  {
+    "objIndex": 95,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ElementsObjectiveCard",
+    "points": 2,
+    "reqElements": [0, 0, 0, 0, 0, 3, 0]
+  },
+  {
+    "objIndex": 96,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ElementsObjectiveCard",
+    "points": 2,
+    "reqElements": [3, 0, 0, 0, 0, 0, 0]
+  },
+  {
+    "objIndex": 97,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ElementsObjectiveCard",
+    "points": 2,
+    "reqElements": [0, 0, 0, 3, 0, 0, 0]
+  },
+  {
+    "objIndex": 98,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ElementsObjectiveCard",
+    "points": 3,
+    "reqElements": [0, 0, 1, 0, 1, 0, 1]
+  },
+  {
+    "objIndex": 99,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ElementsObjectiveCard",
+    "points": 2,
+    "reqElements": [0, 0, 0, 0, 2, 0, 0]
+  },
+  {
+    "objIndex": 100,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ElementsObjectiveCard",
+    "points": 2,
+    "reqElements": [0, 0, 2, 0, 0, 0, 0]
+  },
+  {
+    "objIndex": 101,
+    "type": "it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ElementsObjectiveCard",
+    "points": 2,
+    "reqElements": [0, 0, 0, 0, 0, 0, 2]
+  }
+]
