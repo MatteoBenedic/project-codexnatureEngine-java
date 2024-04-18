@@ -316,7 +316,7 @@ class PlayingGridTest {
     }
 
     @Test
-    void checkColourMatch() throws IllegalRequirementsException {
+    void checkColourMatch() throws IllegalRequirementsException,InvalidPlacementException {
         JSONParser p = new JSONParser();
         List<GameCard> goldcards = p.parseGoldCards();
         List<GameCard> startcards = p.parseStartCards();
@@ -351,7 +351,7 @@ class PlayingGridTest {
     }
 
     @Test
-    void cardWasAlreadyUsedForThisObjective() throws IllegalRequirementsException {
+    void cardWasAlreadyUsedForThisObjective() throws IllegalRequirementsException,InvalidPlacementException {
 
         JSONParser p = new JSONParser();
         List<GameCard> goldcards = p.parseGoldCards();
@@ -376,7 +376,7 @@ class PlayingGridTest {
     }
 
     @Test
-    void markCardAsUsedForThisObjective() throws IllegalRequirementsException {
+    void markCardAsUsedForThisObjective() throws IllegalRequirementsException,InvalidPlacementException {
 
         JSONParser p = new JSONParser();
         List<GameCard> goldcards = p.parseGoldCards();

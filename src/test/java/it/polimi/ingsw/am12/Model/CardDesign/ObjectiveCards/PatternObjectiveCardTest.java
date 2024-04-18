@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards;
 
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
+import it.polimi.ingsw.am12.Model.Logic.InvalidPlacementException;
 import it.polimi.ingsw.am12.Model.Logic.PlayingGrid;
 import it.polimi.ingsw.am12.Utils.JSONParser;
 import org.junit.jupiter.api.Test;
@@ -75,7 +76,7 @@ class PatternObjectiveCardTest {
 
 
     @Test
-    void calculatePointsC0() throws IllegalRequirementsException {
+    void calculatePointsC0() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor
         CoordinateSubmatrix[] obj86Coord = new CoordinateSubmatrix[3];
         obj86Coord[0]= new CoordinateSubmatrix(2,0, "red");
@@ -106,7 +107,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsC1() throws IllegalRequirementsException {
+    void calculatePointsC1() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor
         CoordinateSubmatrix[] obj86Coord = new CoordinateSubmatrix[3];
         obj86Coord[0]= new CoordinateSubmatrix(2,0, "red");
@@ -139,7 +140,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsC2() throws IllegalRequirementsException {
+    void calculatePointsC2() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor
         CoordinateSubmatrix[] obj86Coord = new CoordinateSubmatrix[3];
         obj86Coord[0]= new CoordinateSubmatrix(2,0, "red");
@@ -179,7 +180,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsC3() throws IllegalRequirementsException {
+    void calculatePointsC3() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor
         CoordinateSubmatrix[] obj91Coord = new CoordinateSubmatrix[3];
         obj91Coord[0]= new CoordinateSubmatrix(1,0, "green");
@@ -212,7 +213,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsC4() throws IllegalRequirementsException {
+    void calculatePointsC4() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor
         CoordinateSubmatrix[] obj86Coord = new CoordinateSubmatrix[3];
         obj86Coord[0]= new CoordinateSubmatrix(2,0, "red");
@@ -256,7 +257,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsC5() throws IllegalRequirementsException {
+    void calculatePointsC5() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor
         CoordinateSubmatrix[] obj86Coord = new CoordinateSubmatrix[3];
         obj86Coord[0] = new CoordinateSubmatrix(2,0,"red");
@@ -316,7 +317,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsC6() throws IllegalRequirementsException {
+    void calculatePointsC6() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor
         CoordinateSubmatrix[] obj86Coord = new CoordinateSubmatrix[3];
         obj86Coord[0] = new CoordinateSubmatrix(2,0,"red");
@@ -366,7 +367,7 @@ class PatternObjectiveCardTest {
 
 
     @Test
-    void calculatePointsP0() {
+    void calculatePointsP0() throws InvalidPlacementException {
         //Parser
         JSONParser p = new JSONParser();
         List<GameCard> resourcecards = p.parseResourceCards();
@@ -395,7 +396,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsP1() {
+    void calculatePointsP1() throws InvalidPlacementException {
         //Parser
         JSONParser p = new JSONParser();
         List<GameCard> resourcecards = p.parseResourceCards();
@@ -426,7 +427,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsP2() {
+    void calculatePointsP2() throws InvalidPlacementException {
         //Parser
         JSONParser p = new JSONParser();
         List<GameCard> resourcecards = p.parseResourceCards();
@@ -464,7 +465,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsP3() {
+    void calculatePointsP3() throws InvalidPlacementException {
         //Parser
         JSONParser p = new JSONParser();
         List<GameCard> resourcecards = p.parseResourceCards();
@@ -496,7 +497,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsP4() {
+    void calculatePointsP4() throws InvalidPlacementException {
         //Parser
         JSONParser p = new JSONParser();
         List<GameCard> resourcecards = p.parseResourceCards();
@@ -538,7 +539,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsP5() {
+    void calculatePointsP5() throws InvalidPlacementException {
         //Parser
         JSONParser p = new JSONParser();
         List<GameCard> resourcecards = p.parseResourceCards();
@@ -590,7 +591,7 @@ class PatternObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsP6() {
+    void calculatePointsP6() throws InvalidPlacementException {
         //Parser
         JSONParser p = new JSONParser();
         List<GameCard> resourcecards = p.parseResourceCards();

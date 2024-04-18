@@ -44,6 +44,14 @@ public class Match {
         this.objToChoose = new HashMap<>();
     }
 
+    //testing
+
+    public List<Player> getPlayerOrder(){
+        return this.playerOrder;
+    }
+
+
+
     /**
      * Get the number of players of the match
      * @return the number of the players of the match
@@ -223,15 +231,13 @@ public class Match {
      * @throws InvalidPlacementException if a start card has already been placed.
      */
     public void placeStartCard(String nickname, Boolean selectedSide) throws InvalidPlacementException {
-        for(Player player: playerOrder) {
+        for(Player player: playerOrder) 
             if(player.getNickname().equals(nickname)) {
                 GameCard card = player.getCardsInHand().getFirst();
                 player.removeCardFromHand(card);
                 card.setValidSide(selectedSide);
-                if(!player.placeStartCard(40, 40, card))
-                    throw new InvalidPlacementException("Start card already placed");
-            }
-        }
+                player.placeStartCard(40, 40, card);
+            }   
     }
 
     /**

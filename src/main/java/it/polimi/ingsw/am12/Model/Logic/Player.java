@@ -140,10 +140,9 @@ public class Player {
      * @param i the row of the position
      * @param j the column of the position
      * @param c the start card to place
-     * @return true if the placement is successful, otherwise false
      */
-    public boolean placeStartCard(int i, int j, GameCard c) {
-        return this.playingGrid.placeStartCard(i, j, c);
+    public void placeStartCard(int i, int j, GameCard c) throws InvalidPlacementException {
+         this.playingGrid.placeStartCard(i, j, c);
     }
 
     /**

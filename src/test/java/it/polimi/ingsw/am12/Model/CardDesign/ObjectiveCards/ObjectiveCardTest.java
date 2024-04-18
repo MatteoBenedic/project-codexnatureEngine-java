@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards;
 
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
+import it.polimi.ingsw.am12.Model.Logic.InvalidPlacementException;
 import it.polimi.ingsw.am12.Model.Logic.PlayingGrid;
 import it.polimi.ingsw.am12.Utils.JSONParser;
 import org.junit.jupiter.api.Test;
@@ -56,7 +57,7 @@ class ObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsC() throws IllegalRequirementsException {
+    void calculatePointsC() throws IllegalRequirementsException, InvalidPlacementException {
 
         CoordinateSubmatrix[] obj91Coord = new CoordinateSubmatrix[3];
         obj91Coord[0]= new CoordinateSubmatrix(1,0, "green");
@@ -90,7 +91,7 @@ class ObjectiveCardTest {
     }
 
     @Test
-    void calculatePointsP() {
+    void calculatePointsP() throws InvalidPlacementException {
 
         JSONParser p = new JSONParser();
         List<ObjectiveCard> objcards = p.parseObjectiveCards();

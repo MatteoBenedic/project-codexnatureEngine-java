@@ -15,11 +15,17 @@ public class PlayingGrid {
     private int[] numElements;
     private GameCard lastPlacedCard;
 
+    private static final int MAX_NUMBER_OF_ROW= 81;
+    private static final int MAX_NUMBER_OF_COL= 81;
+
+    private static final int MAX_NUMBER_OF_ELEMENTS = 7;
+
+
     /**
      * Class constructor: instantiates a new PlayingGrid.
      */
     public PlayingGrid() {
-        this.plcards = new GameCard[81][81];
+        this.plcards = new GameCard[MAX_NUMBER_OF_ROW][MAX_NUMBER_OF_COL];
         this.numElements = new int[]{0, 0, 0, 0, 0, 0, 0};
         this.lastPlacedCard = null;
 
@@ -31,22 +37,21 @@ public class PlayingGrid {
      * @param j: an int that represents the column
      * @param startcard is the initial card to place
      *
-     * @return true if tha card is placed, false if there is already a card in that position.
+     * @throws InvalidPlacementException when there's been already a start card.
      **/
 
-    public boolean placeStartCard(int i, int j, GameCard startcard){
+    public void placeStartCard(int i, int j, GameCard startcard) throws InvalidPlacementException{
         if(plcards[i][j] == null){
             plcards[i][j] = startcard;
             lastPlacedCard = startcard;
             lastPlacedCard.setCoordinates(i, j);
             int[] temp2 = startcard.getResources();
-            for (int a = 0; a < 7; a++)
+            for (int a = 0; a < MAX_NUMBER_OF_ELEMENTS; a++)
                 numElements[a] += temp2[a];
 
-
-            return true;
         }
-        else return false; //method already called
+        else
+            throw new InvalidPlacementException("There's already a startcard!");
     }
 
 
@@ -135,7 +140,7 @@ public class PlayingGrid {
 
 
             int[] temp2 = card.getResources();
-            for (int a = 0; a < 7; a++) {
+            for (int a = 0; a < MAX_NUMBER_OF_ELEMENTS; a++) {
                 numElements[a] += temp2[a];
             }
 
@@ -267,7 +272,7 @@ public class PlayingGrid {
      * @return true if the position is within the matrix, otherwise false.
      */
     private boolean checkBoundaries(int x, int y){
-        return (x > -1 && x < 81) && (y > -1 && y < 81);
+        return (x > -1 && x < MAX_NUMBER_OF_ROW) && (y > -1 && y < MAX_NUMBER_OF_COL);
     }
 
     /**
@@ -332,7 +337,7 @@ public class PlayingGrid {
 
             int[] temp1 = card.getRequirements();
 
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < MAX_NUMBER_OF_ELEMENTS; i++) {
                 if (numElements[i] < temp1[i])
                     return false;
             }

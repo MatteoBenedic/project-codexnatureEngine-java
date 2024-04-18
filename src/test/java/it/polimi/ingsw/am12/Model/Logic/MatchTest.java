@@ -2,8 +2,11 @@ package it.polimi.ingsw.am12.Model.Logic;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
+import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.IllegalRequirementsException;
 import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ObjectiveCard;
 import it.polimi.ingsw.am12.Utils.Coordinate;
+import it.polimi.ingsw.am12.Utils.JSONParser;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -264,7 +267,7 @@ class MatchTest {
     }
 
     @Test
-    void checkEndGameCondition() throws EmptyDeckException, InvalidPlacementException {
+    void checkEndGameCondition() throws EmptyDeckException, InvalidPlacementException, InvalidSearchPositionException, IllegalRequirementsException {
         //Test case: 1 player (player 1 triggers final stage)
         Match match = new Match(1);
         match.addPlayer("player1");
@@ -317,6 +320,56 @@ class MatchTest {
         assertEquals(1, match2.nextTurn());
         assertEquals(1, match2.nextTurn());
         assertEquals(0, match2.nextTurn());
+
+        //second end game condition: player reaches 20 points
+
+        Match match3 = new Match(1);
+        match3.addPlayer("player1");
+        match3.createDecks();
+        match3.assignStartCards();
+        match3.placeStartCards(new HashMap<>() {{put("player1", true);}});
+
+        List<Player> temp = match3.getPlayerOrder();
+
+        int[] numElements = {1000, 15000, 20000, 3000, 10000, 5000, 6000}; // Esempio di array di numeri di elementi
+        PlayingGrid playingGrid;
+        playingGrid = temp.getFirst().getPlayingGrid();
+        playingGrid.setNumElements(numElements);
+
+        //pesco dal json per avere le carte in ordine
+        JSONParser parser = new JSONParser();
+        List<GameCard> golds = parser.parseGoldCards();
+        for(int j=0; j<39;j++){
+            golds.get(j).setValidSide(true);
+        }
+
+        while(temp.getFirst().getPoints()<20) {
+
+            int i = 0;
+            temp.getFirst().placePlayingGrid(41, 39, golds.get(i));
+            i++;
+            temp.getFirst().placePlayingGrid(41, 41, golds.get(i));
+            i++;
+            temp.getFirst().placePlayingGrid(39, 41, golds.get(i));
+            i++;
+            temp.getFirst().placePlayingGrid(39, 39, golds.get(i));
+            i++;
+            temp.getFirst().placePlayingGrid(42, 42, golds.get(i));
+            i++;
+            temp.getFirst().placePlayingGrid(38, 38, golds.get(i));
+            i++;
+            temp.getFirst().placePlayingGrid(38, 42, golds.get(i));
+            i++;
+            temp.getFirst().placePlayingGrid(42, 38, golds.get(i));
+            i++;
+            temp.getFirst().placePlayingGrid(41, 37, golds.get(i));
+            i++;
+            temp.getFirst().placePlayingGrid(41, 43, golds.get(i));
+
+        }
+
+        assertTrue(match3.checkEndGameCondition());
+
     }
 
     @Test
