@@ -101,11 +101,9 @@ class MatchTest {
 
         match.createDecks();
         match.assignStartCards();
-        Map<String, Boolean> selectedSides = new HashMap<>();
-        selectedSides.put("player1", false);
-        selectedSides.put("player2", true);
-        selectedSides.put("player3", true);
-        match.placeStartCards(selectedSides);
+        match.placeStartCard("player1", false);
+        match.placeStartCard("player2", true);
+        match.placeStartCard("player3", true);
         
         for(String player : match.getPlayerNames()) {
             assertTrue(match.getCardsInHand(player).isEmpty());
@@ -116,7 +114,9 @@ class MatchTest {
         assertEquals(true, match.getLastPlacedCardSide("player3"));
 
         match.assignStartCards();
-        assertThrows(InvalidPlacementException.class, ()-> match.placeStartCards(selectedSides));
+        assertThrows(InvalidPlacementException.class, ()-> match.placeStartCard("player1", false));
+        assertThrows(InvalidPlacementException.class, ()-> match.placeStartCard("player2", true));
+        assertThrows(InvalidPlacementException.class, ()-> match.placeStartCard("player3", false));
     }
 
     @Test
@@ -126,12 +126,9 @@ class MatchTest {
         match.addPlayer("player2");
         match.addPlayer("player3");
 
-        Map<String, PlayerColour> selectedColours = new HashMap<>();
-        selectedColours.put("player1", PlayerColour.RED);
-        selectedColours.put("player2", PlayerColour.GREEN);
-        selectedColours.put("player3", PlayerColour.YELLOW);
-
-        match.setPlayerColours(selectedColours);
+        match.setPlayerColour("player1", PlayerColour.RED);
+        match.setPlayerColour("player2", PlayerColour.GREEN);
+        match.setPlayerColour("player3", PlayerColour.YELLOW);
         
         assertEquals(PlayerColour.RED, match.getPlayerColour("player1"));
         assertEquals(PlayerColour.GREEN, match.getPlayerColour("player2"));
@@ -206,11 +203,8 @@ class MatchTest {
         match.createDecks();
         match.distributeCards();
 
-        Map<String, Boolean> selectedObjectives = new HashMap<>();
-        selectedObjectives.put("player1", true);
-        selectedObjectives.put("player2", false);
-
-        match.setPlayerObjectives(selectedObjectives);
+        match.setPlayerObjective("player1", true);
+        match.setPlayerObjective("player2", false);
 
         assertEquals(match.getSecretObjective("player1"), match.getObjectivesToChoose("player1")[0]);
         assertEquals(match.getSecretObjective("player2"), match.getObjectivesToChoose("player2")[1]);
@@ -224,7 +218,7 @@ class MatchTest {
         match.addPlayer("player");
         match.createDecks();
         match.assignStartCards();
-        match.placeStartCards(new HashMap<>() {{put("player", true);}});
+        match.placeStartCard("player", true);
 
         List<Coordinate> expectedResult = Arrays.asList(new Coordinate(39,39), new Coordinate(39,41), new Coordinate(41,39), new Coordinate(41,41));
         List<Coordinate> actualResult = match.getPlaceablePositions(40, 40);
@@ -276,7 +270,7 @@ class MatchTest {
         match.addPlayer("player1");
         match.createDecks();
         match.assignStartCards();
-        match.placeStartCards(new HashMap<>() {{put("player1", true);}});
+        match.placeStartCard("player1", true);
 
         for(int i = 0; i<38; i++) {
             match.drawCard(4);
@@ -302,7 +296,9 @@ class MatchTest {
         match2.addPlayer("player3");
         match2.createDecks();
         match2.assignStartCards();
-        match2.placeStartCards(new HashMap<>() {{put("player1", true); put("player2", true); put("player3", true);}});
+        match2.placeStartCard("player1", true);
+        match2.placeStartCard("player2", true);
+        match2.placeStartCard("player3", true);
 
         assertTrue(match2.nextTurn() > 2);
         for(int i = 0; i<38; i++) {
@@ -321,6 +317,37 @@ class MatchTest {
         assertEquals(1, match2.nextTurn());
         assertEquals(1, match2.nextTurn());
         assertEquals(0, match2.nextTurn());
+    }
+
+    @Test
+    void isTurn() throws WrongInformationException {
+        Match match = new Match(3);
+        match.addPlayer("player1");
+        match.addPlayer("player2");
+        match.addPlayer("player3");
+
+        match.createDecks();
+
+        assertTrue(match.isTurn("player1"));
+        assertFalse(match.isTurn("player2"));
+        assertFalse(match.isTurn("player3"));
+
+        match.nextTurn();
+        assertFalse(match.isTurn("player1"));
+        assertTrue(match.isTurn("player2"));
+        assertFalse(match.isTurn("player3"));
+
+        match.nextTurn();
+        assertFalse(match.isTurn("player1"));
+        assertFalse(match.isTurn("player2"));
+        assertTrue(match.isTurn("player3"));
+
+        match.nextTurn();
+        assertTrue(match.isTurn("player1"));
+        assertFalse(match.isTurn("player2"));
+        assertFalse(match.isTurn("player3"));
+
+        assertThrows(WrongInformationException.class, () -> match.isTurn("notExistingPlayer"));
     }
 
 }

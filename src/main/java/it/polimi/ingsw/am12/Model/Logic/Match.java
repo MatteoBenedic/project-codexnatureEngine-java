@@ -151,6 +151,26 @@ public class Match {
         return obj;
     }
 
+    /**
+     * Check whether it's the turn of a specific player
+     * @param nickname A String to identify the player
+     * @return true if it's the turn of the player, otherwise false.
+     * @throws WrongInformationException if the player is not part of the match.
+     */
+    public boolean isTurn(String nickname) throws WrongInformationException {
+        if(!getPlayerNames().contains(nickname)) {
+            throw new WrongInformationException("This player is not part of this match");
+        }
+        int p = -1;
+        for(int i =0; i<playerOrder.size(); i++) {
+            if(playerOrder.get(i).getNickname().equals(nickname)) {
+                p = i;
+            }
+        }
+
+        return p==playerTurn;
+    }
+
 
     /**
      * Add a player to the match, only if the match has not reached the maximum number of players
@@ -196,31 +216,34 @@ public class Match {
     }
 
     /**
-     * Place the starter card on the grid of each the player.
-     * @param selectedSides A Map<String, Boolean> that associates to each nickname
-     *                      the selected side of the starter card: TRUE = front; FALSE = back
-     * @throws InvalidPlacementException if a start card has already been placed for one or more players.
+     * Place the starter card on the grid of the player.
+     * @param nickname A String that identifies the player.
+     * @param selectedSide A Boolean that indicates the selected side
+     *                     of the starter card: TRUE = front; FALSE = back
+     * @throws InvalidPlacementException if a start card has already been placed.
      */
-    public void placeStartCards(Map<String, Boolean> selectedSides) throws InvalidPlacementException {
+    public void placeStartCard(String nickname, Boolean selectedSide) throws InvalidPlacementException {
         for(Player player: playerOrder) {
-            Boolean side = selectedSides.get(player.getNickname());
-            GameCard card = player.getCardsInHand().getFirst();
-            player.removeCardFromHand(card);
-            card.setValidSide(side);
-            if(!player.placeStartCard(40, 40, card))
-                throw new InvalidPlacementException("Start card already placed");
+            if(player.getNickname().equals(nickname)) {
+                GameCard card = player.getCardsInHand().getFirst();
+                player.removeCardFromHand(card);
+                card.setValidSide(selectedSide);
+                if(!player.placeStartCard(40, 40, card))
+                    throw new InvalidPlacementException("Start card already placed");
+            }
         }
     }
 
     /**
-     * Assign a color to each player
-     * @param selectedColors A Map<String, Color> that associates to each nickname
-     *                       the selected color.
+     * Assign a color to the player.
+     * @param nickname A String that identifies the player.
+     * @param selectedColour the colour chosen by th player.
      */
-    public void setPlayerColours(Map<String, PlayerColour> selectedColors) {
+    public void setPlayerColour(String nickname, PlayerColour selectedColour) {
         for(Player player: playerOrder) {
-            PlayerColour colour = selectedColors.get(player.getNickname());
-            player.setColour(colour);
+            if(player.getNickname().equals(nickname)) {
+                player.setColour(selectedColour);
+            }
         }
     }
 
@@ -259,19 +282,21 @@ public class Match {
 
     /**
      * Assign the selected secret objective to each player.
-     * @param selectedObjectives A Map<String, Boolean> that associates to each nickname
-     *                           the selected secret objective: TRUE = first objective; FALSE = second objective.
+     * @param nickname A String that identifies the player
+     * @param selectedObjective A Boolean that indicates the selected secret objective:
+     *                          TRUE = first objective; FALSE = second objective.
      */
-    public void setPlayerObjectives(Map<String, Boolean> selectedObjectives) {
+    public void setPlayerObjective(String nickname, Boolean selectedObjective) {
         for(Player player: playerOrder) {
-            Boolean selection = selectedObjectives.get(player.getNickname());
-            if(selection)
-            {
-                player.setObjectiveCards(objToChoose.get(player.getNickname())[0]);
-            }
-            else
-            {
-                player.setObjectiveCards(objToChoose.get(player.getNickname())[1]);
+            if(player.getNickname().equals(nickname)) {
+                if(selectedObjective)
+                {
+                    player.setObjectiveCards(objToChoose.get(player.getNickname())[0]);
+                }
+                else
+                {
+                    player.setObjectiveCards(objToChoose.get(player.getNickname())[1]);
+                }
             }
         }
     }
