@@ -17,6 +17,12 @@ public class GameModel{
     private final List<String> lobby;
     private List<PlayerColour> availableColours;
 
+    private static final int MAX_NUMBER_OF_ROW= 81;
+    private static final int MAX_NUMBER_OF_COL= 81;
+
+    private static final int MAX_NUMBER_OF_PLAYER= 4;
+    private static final int MIN_NUMBER_OF_PLAYER= 2;
+
     /**
      * Class constructor specifying numPlayers
      * @param numPlayers  An int that represents the number of players that
@@ -24,10 +30,10 @@ public class GameModel{
      * @throws WrongNumberOfPlayersException If numPlayers < 2 or numPlayers > 4
      */
     public GameModel(int numPlayers) throws WrongNumberOfPlayersException {
-        if(numPlayers >= 2 && numPlayers <=4)
+        if(numPlayers >= MIN_NUMBER_OF_PLAYER && numPlayers <=MAX_NUMBER_OF_PLAYER)
         {
             this.match = new Match(numPlayers);
-        } else if (numPlayers < 2) {
+        } else if (numPlayers < MIN_NUMBER_OF_PLAYER) {
             throw new WrongNumberOfPlayersException("The minimum number of players is 2");
         }
         else {
@@ -189,7 +195,7 @@ public class GameModel{
         if(!match.isTurn(nickname)) {
             throw new NotYourTurnException("It's not your turn");
         }
-        if(xpos<0 || xpos>80 || ypos<0 || ypos>80) {
+        if(xpos<0 || xpos> MAX_NUMBER_OF_ROW-1 || ypos<0 || ypos>MAX_NUMBER_OF_COL-1) {
             throw new InvalidSearchPositionException("The given position is not within the playing area.");
         }
 
@@ -223,7 +229,7 @@ public class GameModel{
         if(!match.isTurn(nickname)) {
             throw new NotYourTurnException("It's not your turn");
         }
-        if(index<0 || index>2 || xpos<0 || xpos>80 || ypos<0 || ypos>80) {
+        if(index<0 || index>2 || xpos<0 || xpos>MAX_NUMBER_OF_ROW-1 || ypos<0 || ypos>MAX_NUMBER_OF_COL-1) {
             throw new InvalidParameterException("Parameter out of bounds");
         }
         match.placeCard(index, side, xpos, ypos);
