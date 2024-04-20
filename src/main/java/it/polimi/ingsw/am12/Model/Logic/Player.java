@@ -129,10 +129,13 @@ public class Player {
      * @param i the row of the position
      * @param j the column of the position
      * @param c the card to place
+     * @return the number of points obtained with the placement
      * @throws InvalidPlacementException if the placement fails.
      */
-    public void placePlayingGrid(int i, int j,GameCard c) throws InvalidPlacementException{
-            points += this.playingGrid.place(i, j, c);
+    public int placePlayingGrid(int i, int j,GameCard c) throws InvalidPlacementException{
+            int gainedPoints = this.playingGrid.place(i, j, c);
+            points += gainedPoints;
+            return gainedPoints;
     }
 
     /**

@@ -327,7 +327,7 @@ class MatchTest {
         match3.addPlayer("player1");
         match3.createDecks();
         match3.assignStartCards();
-        match3.placeStartCards(new HashMap<>() {{put("player1", true);}});
+        match3.placeStartCard("player1", true);
 
         List<Player> temp = match3.getPlayerOrder();
 

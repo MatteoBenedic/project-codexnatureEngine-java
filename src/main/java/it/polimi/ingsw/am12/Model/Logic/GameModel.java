@@ -1,21 +1,22 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
+import it.polimi.ingsw.am12.Controller.EventListener;
+import it.polimi.ingsw.am12.Controller.Events.*;
 import it.polimi.ingsw.am12.Utils.Coordinate;
-
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class is the Model of the game. It contains the
  * state of the game and provides some methods to update this
  * state, according to the game rules.
+ * When the state of the game changes, an Event is created and notified to the controller.
  */
 public class GameModel{
     private final Match match;
     private final List<String> lobby;
     private List<PlayerColour> availableColours;
+    private final List<EventListener> listeners = new ArrayList<>();
 
     private static final int MAX_NUMBER_OF_ROW= 81;
     private static final int MAX_NUMBER_OF_COL= 81;
@@ -41,9 +42,29 @@ public class GameModel{
         }
 
         lobby = new ArrayList<>();
-        availableColours = Arrays.asList(PlayerColour.RED, PlayerColour.YELLOW, PlayerColour.GREEN, PlayerColour.BLUE);
+        availableColours = new ArrayList<>();
+        availableColours.add(PlayerColour.GREEN);
+        availableColours.add(PlayerColour.RED);
+        availableColours.add(PlayerColour.YELLOW);
+        availableColours.add(PlayerColour.BLUE);
+    }
 
-        //TODO: notify controller
+    /**
+     * Subscribe a listener to this GameModel
+     * @param listener the EventListener to add as a listener of this GameModel
+     */
+    public void addListener(EventListener listener) {
+        listeners.add(listener);
+    }
+
+    /**
+     * Perform an Event, that will be listened by the subscribed listeners
+     * @param e the Event to perform
+     */
+    private void performEvent(Event e) {
+        for(EventListener listener : listeners) {
+            listener.actionPerformed(e);
+        }
     }
 
     /**
@@ -60,7 +81,12 @@ public class GameModel{
             throw new WrongNumberOfPlayersException("The lobby is already full");
         }
 
-        //TODO: notify controller (when the lobby is full)
+        lobby.add(nickname);
+
+        if(lobby.size() == match.getNumPlayers()) {
+            PlayersAddedEvent e = new PlayersAddedEvent(lobby);
+            performEvent(e);
+        }
     }
 
     /**
@@ -80,34 +106,48 @@ public class GameModel{
         match.createDecks();
         match.assignStartCards();
 
-        //TODO: notify controller
+        Map<String, Integer> startCards = new HashMap<>();
+        for(String nickname : match.getPlayerNames()) {
+            startCards.put(nickname, match.getCardsInHand(nickname).getFirst());
+        }
+        MatchStartedEvent e = new MatchStartedEvent(
+                match.getPlayerNames(),
+                startCards,
+                match.getDeckColours()[0],
+                match.getDeckColours()[1],
+                match.getPublicCards(),
+                match.getPlayerTurn());
+        performEvent(e);
     }
 
     /**
      * Place the starter card on the grid of each the player.
      * @param nickname A String that identifies the player.
-     * @param selectedSide A Boolean that indicates the selected side
+     * @param selectedSide A boolean that indicates the selected side
      *                     of the starter card: TRUE = front; FALSE = back
      * @throws InvalidParameterException if any of the parameters is null
      * @throws WrongInformationException if the player is not part of the match
      * @throws NotYourTurnException  if it's not the turn of the player
      * @throws InvalidPlacementException  if a start card has already been placed for the player
      */
-    public void placeStartCard(String nickname, Boolean selectedSide)
+    public void placeStartCard(String nickname, boolean selectedSide)
             throws InvalidPlacementException, WrongInformationException, NotYourTurnException, InvalidParameterException {
         if(nickname==null) {
             throw new InvalidParameterException("The nickname is null");
-        }
-        if(selectedSide==null) {
-            throw new InvalidParameterException("The selected side is null");
         }
         if(!match.isTurn(nickname))
         {
             throw new NotYourTurnException("It's not your turn");
         }
         match.placeStartCard(nickname, selectedSide);
+        nextTurn();
 
-        //TODO: notify controller
+        StartCardPlacedEvent e = new StartCardPlacedEvent(
+                nickname,
+                match.getLastPlacedCard(nickname),
+                match.getLastPlacedCardSide(nickname),
+                match.getPlayerTurn());
+        performEvent(e);
     }
 
     /**
@@ -135,8 +175,13 @@ public class GameModel{
         }
         match.setPlayerColour(nickname, selectedColour);
         availableColours.remove(selectedColour);
+        nextTurn();
 
-        //TODO: notify controller
+        ColourSelectedEvent e = new ColourSelectedEvent(
+                nickname,
+                match.getPlayerColour(nickname),
+                match.getPlayerTurn());
+        performEvent(e);
     }
 
     /**
@@ -146,42 +191,55 @@ public class GameModel{
     public void distributeCards() throws EmptyDeckException {
         match.distributeCards();
 
-        //TODO: notify controller
+        Map<String, List<Integer>> cardsDistributed = new HashMap<>();
+        Map<String, int[]> secretObjectives = new HashMap<>();
+
+        for(String nickname: match.getPlayerNames()){
+            cardsDistributed.put(nickname, match.getCardsInHand(nickname));
+            secretObjectives.put(nickname, match.getObjectivesToChoose(nickname));
+        }
+        CardsDistributedEvent e = new CardsDistributedEvent(
+                cardsDistributed,
+                secretObjectives,
+                match.getPublicObjectives(),
+                match.getPlayerTurn());
+        performEvent(e);
     }
 
     /**
      * Assign the selected secret objective to a player.
      * @param nickname A String that identifies the player.
-     * @param selectedObjective A Boolean that indicates the selected objective
+     * @param selectedObjective A boolean that indicates the selected objective
      *                          TRUE = first objective; FALSE = second objective
      * @throws InvalidParameterException if any of the parameters is null
      * @throws WrongInformationException if the player is not part of the match
      * @throws NotYourTurnException  if it's not the turn of the player
      */
-    public void setPlayerObjective(String nickname, Boolean selectedObjective)
+    public void setPlayerObjective(String nickname, boolean selectedObjective)
             throws WrongInformationException, NotYourTurnException, InvalidParameterException {
         if(nickname==null) {
             throw new InvalidParameterException("The nickname is null");
-        }
-        if(selectedObjective==null) {
-            throw new InvalidParameterException("The selected objective is null");
         }
         if(!match.isTurn(nickname))
         {
             throw new NotYourTurnException("It's not your turn");
         }
         match.setPlayerObjective(nickname, selectedObjective);
+        nextTurn();
 
-        //TODO: notify controller
+        ObjectiveSelectedEvent e = new ObjectiveSelectedEvent(
+                nickname,
+                match.getSecretObjective(nickname),
+                match.getPlayerTurn()
+        );
+        performEvent(e);
     }
 
     /**
      * Check which positions are available for placing, around a selected card.
      * @param nickname A String that identifies the player
      * @param xpos An int that represents the row of the selected card.
-     *             It must be between 0 and 80.
      * @param ypos An int that represents the column of the selected card.
-     *             It must be between 0 and 80.
      * @throws InvalidParameterException if the nickname is null
      * @throws WrongInformationException if the player is not part of the match
      * @throws NotYourTurnException if it's not the turn of the player
@@ -200,31 +258,32 @@ public class GameModel{
         }
 
         List<Coordinate> availablePositions = match.getPlaceablePositions(xpos, ypos);
+        PlaceablePositionsReturnedEvent e = new PlaceablePositionsReturnedEvent(
+                nickname,
+                availablePositions,
+                match.getPlayerTurn());
+        performEvent(e);
     }
 
     /**
-     * Place the selected card on the grid of the player whose turn is now.
+     * Place the selected card on the grid of the player.
      * @param nickname A String that identifies the player
-     * @param index An int that indicates which card has to be placed. It must be between 0 and 2.
+     * @param index An int that indicates which card has to be placed.
+     *              (0 = first card in hand, 1 = second card in hand ...)
      * @param side  A boolean that indicates the selected side of the card:
      *              TRUE = front; FALSE = back;
      * @param xpos  An int that represents the row of the position where to place the card.
-     *              It must be between 0 and 80.
      * @param ypos  An int that represents the column of the position where to place the card.
-     *              It must be between 0 and 80.
      *
      * @throws WrongInformationException if the player is not part of the match
      * @throws NotYourTurnException if it's not the turn of the player
      * @throws InvalidParameterException if any of the parameters null or is invalid
      * @throws InvalidPlacementException if the placement fails
      */
-    public void placeCard(String nickname, int index, Boolean side, int xpos, int ypos)
+    public void placeCard(String nickname, int index, boolean side, int xpos, int ypos)
             throws InvalidParameterException, InvalidPlacementException, NotYourTurnException, WrongInformationException {
         if(nickname == null) {
             throw new InvalidParameterException("The nickname is null");
-        }
-        if(side == null) {
-            throw new InvalidParameterException("The selected side is null");
         }
         if(!match.isTurn(nickname)) {
             throw new NotYourTurnException("It's not your turn");
@@ -232,13 +291,20 @@ public class GameModel{
         if(index<0 || index>2 || xpos<0 || xpos>MAX_NUMBER_OF_ROW-1 || ypos<0 || ypos>MAX_NUMBER_OF_COL-1) {
             throw new InvalidParameterException("Parameter out of bounds");
         }
-        match.placeCard(index, side, xpos, ypos);
+        int points = match.placeCard(index, side, xpos, ypos);
 
-        //TODO: notify controller
+        CardPlacedEvent e = new CardPlacedEvent(
+                nickname,
+                match.getLastPlacedCard(nickname),
+                match.getLastPlacedCardSide(nickname),
+                points,
+                match.getPlayerTurn()
+        );
+        performEvent(e);
     }
 
     /**
-     * Draw a card for the player whose turn is now.
+     * Draw a card for the player.
      * @param nickname A String that identifies the player
      * @param index An int that indicates which card has to be drawn.
      *              - index = 0  : public gold 1;
@@ -247,7 +313,7 @@ public class GameModel{
      *              - index = 3  : public resource 2;
      *              - index = 4  : hidden gold;
      *              - index = 5  : hidden resource;
-     * @throws InvalidParameterException if the nockname is null
+     * @throws InvalidParameterException if the nickname is null
      * @throws WrongInformationException if the player is not part of the match
      * @throws NotYourTurnException if it's not the turn of the player
      * @throws InvalidParameterException if index<0 or index>5
@@ -265,18 +331,37 @@ public class GameModel{
             throw new InvalidParameterException("Index out of bounds");
         }
         match.drawCard(index);
+        nextTurn();
 
-        //TODO: notify controller
+        int newPublicCard = -1;
+        if(index<=3) {
+            newPublicCard = match.getPublicCards()[index];
+        }
+        String newGoldDeckColour = null;
+        if(index <= 1 || index ==4) {
+            newGoldDeckColour = match.getDeckColours()[0];
+        }
+        String newResDeckColour = null;
+        if(index ==2 || index ==3 || index == 5) {
+            newResDeckColour = match.getDeckColours()[1];
+        }
+
+        CardDrawnEvent e = new CardDrawnEvent(
+                nickname,
+                match.getCardsInHand(nickname).getLast(),
+                index,
+                newPublicCard,
+                newGoldDeckColour,
+                newResDeckColour,
+                match.getPlayerTurn()
+        );
+        performEvent(e);
     }
 
     /**
      * Pass the turn to the next player
      */
-    public void nextTurn() {
+  private void nextTurn() {
         int remainingRounds = match.nextTurn();
-
-        //TODO: notify controller.
-        // If remainingRounds == 0 it means that there
-        // are no turns left to play
     }
 }

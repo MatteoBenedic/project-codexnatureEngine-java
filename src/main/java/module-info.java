@@ -1,6 +1,7 @@
 module it.polimi.ingsw.am12 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
     requires org.controlsfx.controls;
     requires com.google.gson;

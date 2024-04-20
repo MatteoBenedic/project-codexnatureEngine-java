@@ -61,12 +61,42 @@ public class Match {
     }
 
     /**
-     *
      * Get the list of the nicknames of the players of the match
      * @return a List of the nicknames of the players of the match
      */
     public List<String> getPlayerNames() {
         return playerOrder.stream().map(Player::getNickname).collect(Collectors.toList());
+    }
+
+    /**
+     * Get the indexes of the public drawable cards
+     * @return an int[4] array, that are the indexes of the public drawable cards
+     * 0 = gold card 1
+     * 1 = gold card 2
+     * 2 = resource card 1
+     * 3 = resource card 2
+     */
+    public int[] getPublicCards() {
+        GameCard[] publicCards = drawTable.getPublicCards();
+        int [] indexes = new int[4];
+        for(int i =0; i<publicCards.length; i++) {
+            indexes[i] = publicCards[i].getIndex();
+
+        }
+        return indexes;
+    }
+
+    /**
+     * Get the colour of the first card of each deck
+     * @return a String[2] array, that are the colours of the first card of each deck
+     * 0 = gold deck
+     * 1 = resource deck
+     */
+    public String[] getDeckColours() {
+        String [] colours = new String[2];
+        colours[0] = drawTable.getColorTopGoldDeck();
+        colours[1] = drawTable.getColorTopResDeck();
+        return colours;
     }
 
     /**
@@ -80,6 +110,14 @@ public class Match {
                 .flatMap(player -> player.getCardsInHand().stream())
                 .map(GameCard::getIndex)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Get the player whose turn is now
+     * @return a String that is a nickname of the player whose turn is now
+     */
+    public String getPlayerTurn(){
+        return playerOrder.get(playerTurn).getNickname();
     }
 
     /**
@@ -138,7 +176,7 @@ public class Match {
     /**
      * Get the secret objective of a player.
      * @param nickname A String that identifies the player.
-     * @return An Integers that is the index of the player's secret objective.
+     * @return An int that is the index of the player's secret objective.
      */
     public Integer getSecretObjective(String nickname) {
         return playerOrder.stream()
@@ -150,10 +188,10 @@ public class Match {
 
     /**
      * Get the public objectives.
-     * @return An array of 2 Integers that are the indexes of public objectives.
+     * @return An array of 2 int, that are the indexes of public objectives.
      */
-    public Integer[] getPublicObjectives() {
-        Integer[] obj = new Integer[2];
+    public int[] getPublicObjectives() {
+        int[] obj = new int[2];
         obj[0] = publicObj[0].getObjIndex();
         obj[1] = publicObj[1].getObjIndex();
         return obj;
@@ -226,12 +264,12 @@ public class Match {
     /**
      * Place the starter card on the grid of the player.
      * @param nickname A String that identifies the player.
-     * @param selectedSide A Boolean that indicates the selected side
+     * @param selectedSide A boolean that indicates the selected side
      *                     of the starter card: TRUE = front; FALSE = back
      * @throws InvalidPlacementException if a start card has already been placed.
      */
     public void placeStartCard(String nickname, Boolean selectedSide) throws InvalidPlacementException {
-        for(Player player: playerOrder) 
+        for(Player player: playerOrder)
             if(player.getNickname().equals(nickname)) {
                 GameCard card = player.getCardsInHand().getFirst();
                 player.removeCardFromHand(card);
@@ -289,10 +327,10 @@ public class Match {
     /**
      * Assign the selected secret objective to each player.
      * @param nickname A String that identifies the player
-     * @param selectedObjective A Boolean that indicates the selected secret objective:
+     * @param selectedObjective A boolean that indicates the selected secret objective:
      *                          TRUE = first objective; FALSE = second objective.
      */
-    public void setPlayerObjective(String nickname, Boolean selectedObjective) {
+    public void setPlayerObjective(String nickname, boolean selectedObjective) {
         for(Player player: playerOrder) {
             if(player.getNickname().equals(nickname)) {
                 if(selectedObjective)
@@ -327,14 +365,15 @@ public class Match {
      *              TRUE = front; FALSE = back;
      * @param xpos  An int that represents the row of the position where to place the card.
      * @param ypos  An int that represents the column of the position where to place the card.
+     * @return the number of points obtained with the placement
      * @throws InvalidPlacementException if the placement fails.
      */
-    public void placeCard(int index, boolean side, int xpos, int ypos) throws InvalidPlacementException{
+    public int placeCard(int index, boolean side, int xpos, int ypos) throws InvalidPlacementException{
         Player currentPlayer = playerOrder.get(playerTurn);
         GameCard card = currentPlayer.getCardsInHand().get(index);
         card.setValidSide(side);
         currentPlayer.removeCardFromHand(card);
-        currentPlayer.placePlayingGrid(xpos, ypos, card);
+        return currentPlayer.placePlayingGrid(xpos, ypos, card);
     }
 
     /**
