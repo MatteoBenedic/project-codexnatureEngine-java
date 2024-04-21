@@ -39,15 +39,14 @@ public class ObjectiveCard {
      * in order to take advantage of the override.
      * @return a default value of -1
      */
-    public int calculatePoints(PlayingGrid placedCards){
-        //this method will be overridden in the PatternObjectiveCard and ElementObjectiveCard classes
-        return -1;
+    public int calculatePoints(PlayingGrid grid){
+        //this method will be overridden respectively in the PatternObjectiveCard and ElementObjectiveCard classes
+        return  -1;
     }
 
     /**
      * This method is implemented in the PatternObjectiveCard class in order to take advantage of the override.
      */
-    public void calculateDeltas(){
-    }
+    public void calculateDeltas(){}
 
 }

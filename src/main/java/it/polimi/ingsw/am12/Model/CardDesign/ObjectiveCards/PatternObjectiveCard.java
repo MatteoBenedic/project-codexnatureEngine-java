@@ -32,16 +32,6 @@ public class PatternObjectiveCard extends ObjectiveCard{
 
     }
 
-    /**
-     * getter method for a coordinate object in the coordReqPattern array, given the array index
-     * @param arrayIndex an int value representing the index in the array of the submatrix coordinate to return
-     * @return a CoordinateSubmatrix object
-     */
-    public CoordinateSubmatrix getCoordReqPattern(int arrayIndex) {
-        return coordReqPattern[arrayIndex];
-    }
-
-
 
     /**
      * method that calculates the delta attributes for this PatternObjectiveCard object
@@ -55,45 +45,53 @@ public class PatternObjectiveCard extends ObjectiveCard{
     }
 
     /**
+     * getter method for a coordinate object in the coordReqPattern array, given the array index
+     * @param requiredIndex an int value representing the index in the array of the submatrix coordinate to return
+     * @return a CoordinateSubmatrix object
+     */
+    public CoordinateSubmatrix getCoordReqPattern(int requiredIndex) {
+        return coordReqPattern[requiredIndex];
+    }
+
+    /**
      * Override of the calculatePoints method: this method calculates the final points to be assigned to a player, given the number of completions of a PatternObjectiveCard
-     * @param placedCards a PlayingGrid instance
+     * @param grid a PlayingGrid instance
      * @return the final number of points for the completions of the PatternObjectiveCard
      */
     @Override
-    public int calculatePoints(PlayingGrid placedCards){
-        int completions = checkPatterns(placedCards);
-        int assignedPoints = getPoints() * completions;
-        return assignedPoints;
+    public int calculatePoints(PlayingGrid grid){
+        int completions = checkPatterns(grid);
+        int pointsAdded = getPoints() * completions;
+        return pointsAdded;
     }
 
 
     /**
      * This method calculates how many pattern objective completions are made in the playing grid
-     * @param placedCards a PlayingGrid instance
+     * @param grid a PlayingGrid instance
      * @return int value representing the number of completions
      */
-    private int checkPatterns(PlayingGrid placedCards){
-        int completions = 0;
-
-        for(int i=0; i<placedCards.getPlcards().length; i++){
-            for(int j=0; j<placedCards.getPlcards()[i].length; j++){
-                if(!placedCards.cellIsEmpty(i,j) && placedCards.getPlcards()[i][j].getColour()!=null){
-                    if(placedCards.checkColourMatch(i,j,this,0)
-                            && !(placedCards.cardWasAlreadyUsedForThisObjective(i,j,this))){
-                        //at this point working starting from the master cell
-                        if(i+deltaYSecond >=0 && i+deltaYSecond <= placedCards.getPlcards().length && j+deltaXSecond>=0 && j+deltaXSecond <= placedCards.getPlcards()[i].length &&
-                                i+deltaYThird >=0 && i+deltaYThird <= placedCards.getPlcards().length && j+deltaXThird>=0 && j+deltaXThird <= placedCards.getPlcards()[i].length) {
-                            //checking colour match
-                            if (placedCards.checkColourMatch(i + deltaYSecond, j + deltaXSecond, this, 1)
-                                    && placedCards.checkColourMatch(i + deltaYThird, j + deltaXThird, this, 2)) {
-                                //checking whether already used
-                                if (!(placedCards.cardWasAlreadyUsedForThisObjective(i + deltaYSecond, j + deltaXSecond, this) &&
-                                        !(placedCards.cardWasAlreadyUsedForThisObjective(i + deltaYThird, j + deltaXThird, this)))) {
-
-                                    placedCards.markCardAsUsedForThisObjective(i, j, this);
-                                    placedCards.markCardAsUsedForThisObjective(i + deltaYSecond, j + deltaXSecond, this);
-                                    placedCards.markCardAsUsedForThisObjective(i + deltaYThird, j + deltaXThird, this);
-                                    completions = completions + 1;
+    private int checkPatterns(PlayingGrid grid){
+        //v.1.0
+        int objCompletions = 0;
+        for(int i=0; i<grid.getPlcards().length; i++){
+            for(int j=0; j<grid.getPlcards()[i].length; j++){
+                if(!grid.cellIsEmpty(i,j) && grid.getPlcards()[i][j].getColour()!=null){
+                    if(grid.checkColourMatch(i,j,this,0)
+                            && !(grid.cardWasAlreadyUsedForThisObjective(i,j,this))){
+                        //From here: working starting from the master cell
+                        if(i+deltaYSecond >=0 && i+deltaYSecond <= grid.getPlcards().length && j+deltaXSecond>=0 && j+deltaXSecond <= grid.getPlcards()[i].length &&
+                                i+deltaYThird >=0 && i+deltaYThird <= grid.getPlcards().length && j+deltaXThird>=0 && j+deltaXThird <= grid.getPlcards()[i].length) {
+                            //checking whether the colours match
+                            if (grid.checkColourMatch(i + deltaYSecond, j + deltaXSecond, this, 1)
+                                    && grid.checkColourMatch(i + deltaYThird, j + deltaXThird, this, 2)) {
+                                //checking whether the cards were already used
+                                if (!(grid.cardWasAlreadyUsedForThisObjective(i + deltaYSecond, j + deltaXSecond, this) &&
+                                        !(grid.cardWasAlreadyUsedForThisObjective(i + deltaYThird, j + deltaXThird, this)))) {
+                                    grid.markCardAsUsedForThisObjective(i, j, this);
+                                    grid.markCardAsUsedForThisObjective(i + deltaYSecond, j + deltaXSecond, this);
+                                    grid.markCardAsUsedForThisObjective(i + deltaYThird, j + deltaXThird, this);
+                                    objCompletions = objCompletions + 1;
                                 }
                             }
                         }
@@ -102,8 +100,6 @@ public class PatternObjectiveCard extends ObjectiveCard{
 
             }
         }
-
-        return completions;
+        return objCompletions;
     }
-
 }

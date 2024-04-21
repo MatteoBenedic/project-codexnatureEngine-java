@@ -4,6 +4,10 @@ package it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards;
  * This class represents a coordinate in the submatrix to search for calculating the completions of a PatternObjectiveCard
  */
 public class CoordinateSubmatrix {
+
+    private static final int MAX_NUMBER_OF_ROWS = 81;
+    private static final int MAX_NUMBER_OF_COL = 81;
+
     int x;
     int y;
     String colour;
@@ -17,19 +21,19 @@ public class CoordinateSubmatrix {
      */
     public CoordinateSubmatrix(int x, int y, String colour) throws IllegalRequirementsException {
 
-        if(x >= 0 && x < 81 && y>=0 && y < 81) {
+        if(x >= 0 && x < MAX_NUMBER_OF_COL && y>=0 && y < MAX_NUMBER_OF_ROWS) {
             this.x = x;
             this.y = y;
         }
         else{
-            throw new IllegalRequirementsException("Cannot support coordinates outside the assigned PlayingGrid boundaries");
+            throw new IllegalRequirementsException("Cannot support coordinates outside the assigned PlayingGrid boundaries (81x81)");
         }
 
         if(colour.equals("red") || colour.equals("green") || colour.equals("blue") || colour.equals("purple")) {
             this.colour = colour;
         }
         else{
-            throw new IllegalRequirementsException("colour should be either red, green, blue or purple for submatrix coordinate");
+            throw new IllegalRequirementsException("colour should be either red, green, blue or purple for the submatrix coordinate");
         }
     }
 
@@ -56,7 +60,6 @@ public class CoordinateSubmatrix {
      * @return a string representing the colour
      */
     public String getColour() {
-
         return colour;
     }
 

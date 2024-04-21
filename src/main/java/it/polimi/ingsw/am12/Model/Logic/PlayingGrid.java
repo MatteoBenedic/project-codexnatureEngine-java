@@ -20,6 +20,8 @@ public class PlayingGrid {
 
     private static final int MAX_NUMBER_OF_ELEMENTS = 7;
 
+    private static final int FIRST_PATT_OBJ_INDEX = 86;
+
 
     /**
      * Class constructor: instantiates a new PlayingGrid.
@@ -406,20 +408,20 @@ public class PlayingGrid {
      * Checks if the colour of a cell of the playing grid and a cell in the required submatrix to find match
      * @param row the row index in the playing grid
      * @param column the column index in the playing grid
-     * @param patternCard a given pattern objective card to find in the playing grid
+     * @param patternObjCard a given pattern objective card to find in the playing grid
      * @param coordReqPatternIndex index of the cell in the submatrix that we're checking
      * @return true if the colours of the given cell and the cell in the required pattern match; otherwise false.
      */
-    public boolean checkColourMatch(int row, int column, PatternObjectiveCard patternCard, int coordReqPatternIndex){
+    public boolean checkColourMatch(int row, int column, PatternObjectiveCard patternObjCard, int coordReqPatternIndex){
         try{
-            if(plcards[row][column].getColour().equals(patternCard.getCoordReqPattern(coordReqPatternIndex).getColour())){
+            if(plcards[row][column].getColour().equals(patternObjCard.getCoordReqPattern(coordReqPatternIndex).getColour())){
                 return true;
             }
             else{
                 return false;
             }
-        } catch(NullPointerException eccNullPointer){
-            return false;
+        } catch(NullPointerException e){
+                return false;
         }
     }
 
@@ -427,11 +429,11 @@ public class PlayingGrid {
      * Checks if a gamecard in the playing grid has already been used for a given pattern objective
      * @param row row index of the gamecard to check
      * @param column column index of the gamecard to check
-     * @param patternCard the pattern objective card to check
+     * @param patternObjCard the pattern objective card to check
      * @return true if the card was already used for the given objective; otherwise false.
      */
-    public boolean cardWasAlreadyUsedForThisObjective(int row, int column, PatternObjectiveCard patternCard) {
-        int index = patternCard.getObjIndex() - 86;
+    public boolean cardWasAlreadyUsedForThisObjective(int row, int column, PatternObjectiveCard patternObjCard) {
+        int index = patternObjCard.getObjIndex() - FIRST_PATT_OBJ_INDEX;
         if (plcards[row][column].getCompletedObjFlag(index)) {
             return true;
         } else return false;
@@ -441,10 +443,10 @@ public class PlayingGrid {
      * Marks a gamecard in the playing grid as used for a given pattern objective
      * @param row the row index of the gamecard to check
      * @param column the column index of the gamecard to check
-     * @param patternCard the pattern objective card completed
+     * @param patternObjCard the pattern objective card completed
      */
-    public void markCardAsUsedForThisObjective(int row, int column, PatternObjectiveCard patternCard){
-        int index = patternCard.getObjIndex() - 86;
+    public void markCardAsUsedForThisObjective(int row, int column, PatternObjectiveCard patternObjCard){
+        int index = patternObjCard.getObjIndex() - FIRST_PATT_OBJ_INDEX;
         plcards[row][column].setCompletedObjFlag(index);
     }
 

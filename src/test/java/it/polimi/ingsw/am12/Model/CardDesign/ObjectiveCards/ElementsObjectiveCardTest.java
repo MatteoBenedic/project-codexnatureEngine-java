@@ -10,85 +10,85 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ElementsObjectiveCardTest {
     @Test
-    void calculatePointsC100() throws IllegalRequirementsException {
-        //Case Objective Card 100
-        int[] reqElements = {0,0,2,0,0,0,0};
-        ElementsObjectiveCard elem100 = new ElementsObjectiveCard(100,2,reqElements);
-        int[] numElements100 = {0,0,6,2,2,0,2};
-        PlayingGrid plcards100 = new PlayingGrid();
-        plcards100.setNumElements(numElements100);
-        assertEquals(6, elem100.calculatePoints(plcards100));
+    void calculatePointsConstr100() throws IllegalRequirementsException {
+        //Case Objective Card index 100
+        int[] requiredElements = {0,0,2,0,0,0,0};
+        ElementsObjectiveCard elem100 = new ElementsObjectiveCard(100,2,requiredElements);
+        int[] numElements = {0,0,6,2,2,0,2};
+        PlayingGrid grid = new PlayingGrid();
+        grid.setNumElements(numElements);
+        assertEquals(6, elem100.calculatePoints(grid));
 
     }
 
 
     @Test
-    void calculatePointsP100() throws IllegalRequirementsException {
-        JSONParser p = new JSONParser();
-        List<ObjectiveCard> objcards = p.parseObjectiveCards();
-        //Case Objective Card 100
-        ObjectiveCard elem100 = objcards.get(14);
-        int[] numElements100 = {0,0,6,2,2,0,2};
-        PlayingGrid plcards100 = new PlayingGrid();
-        plcards100.setNumElements(numElements100);
-        assertEquals(6, elem100.calculatePoints(plcards100));
+    void calculatePointsPrs100() throws IllegalRequirementsException {
+        JSONParser parser = new JSONParser();
+        List<ObjectiveCard> objCards = parser.parseObjectiveCards();
+        //Case Objective Card index 100
+        ObjectiveCard elem100 = objCards.get(14);
+        int[] numElements = {0,0,6,2,2,0,2};
+        PlayingGrid grid = new PlayingGrid();
+        grid.setNumElements(numElements);
+        assertEquals(6, elem100.calculatePoints(grid));
 
     }
 
     @Test
-    void calculatePointsC0() throws IllegalRequirementsException {
-        //Case 0: see attached documentation
-        int[] reqElements0 ={0,0,2,1,0,2,0};
-        int[] numElements0 ={0,0,4,1,0,2,2};
-        ElementsObjectiveCard elem0 = new ElementsObjectiveCard(0,2,reqElements0);
-        PlayingGrid plcards0 = new PlayingGrid();
-        plcards0.setNumElements(numElements0);
-        assertEquals(2,elem0.calculatePoints(plcards0));
+    void calculatePointsConstr0() throws IllegalRequirementsException {
+        //Case Test 0: see attached documentation
+        int[] reqiredElements0 = {0,0,2,1,0,2,0};
+        int[] numElements0={0,0,4,1,0,2,2};
+        ElementsObjectiveCard elem0 = new ElementsObjectiveCard(0,2,reqiredElements0);
+        PlayingGrid grid0 = new PlayingGrid();
+        grid0.setNumElements(numElements0);
+        assertEquals(2,elem0.calculatePoints(grid0));
 
     }
 
     @Test
-    void calculatePointsC1() throws IllegalRequirementsException {
-        //Case 1: see attached documentation
-        int[] reqElements1 = {0,0,2,2,0,2,0};
-        int[] numElements1 = {0,0,4,1,0,2,2};
-        ElementsObjectiveCard elem1 = new ElementsObjectiveCard(0, 2, reqElements1);
-        PlayingGrid plcards1 = new PlayingGrid();
-        plcards1.setNumElements(numElements1);
-        assertEquals(0, elem1.calculatePoints(plcards1));
+    void calculatePointsConstr1() throws IllegalRequirementsException {
+        //Case Test 1: see attached documentation
+        int[] requiredElements1 = {0,0,2,2,0,2,0};
+        int[] numElements1={0,0,4,1,0,2,2};
+        ElementsObjectiveCard elem1 = new ElementsObjectiveCard(0, 2, requiredElements1);
+        PlayingGrid grid1 = new PlayingGrid();
+        grid1.setNumElements(numElements1);
+        assertEquals(0, elem1.calculatePoints(grid1));
     }
 
     @Test
-    void calculatePointsC2() throws IllegalRequirementsException {
-        //Case 2: see attached documentation
-        int[] reqElements2 = {0,0,0,2,2,0,2};
-        int[] numElements2 = {0,0,0,2,4,0,6};
-        ElementsObjectiveCard elem2 = new ElementsObjectiveCard(0,2,reqElements2);
-        PlayingGrid plcards2 = new PlayingGrid();
-        plcards2.setNumElements(numElements2);
-        assertEquals(2, elem2.calculatePoints(plcards2));
+    void calculatePointsConstr2() throws IllegalRequirementsException {
+        //Case Test 2: see attached documentation
+        int[] requiredElements2 = {0,0,0,2,2,0,2};
+        int[] numElements2={0,0,0,2,4,0,6};
+        ElementsObjectiveCard elem2 = new ElementsObjectiveCard(0,2,requiredElements2);
+        PlayingGrid grid2 = new PlayingGrid();
+        grid2.setNumElements(numElements2);
+        assertEquals(2, elem2.calculatePoints(grid2));
     }
 
     @Test
-    void calculatePointsC3() throws IllegalRequirementsException {
-        //Case 3: see attached documentation
-        int[] reqElements3 = {0,0,0,2,2,0,2};
-        int[] numElements3 = {0,0,0,6,4,0,2};
-        ElementsObjectiveCard elem3 = new ElementsObjectiveCard(0,2,reqElements3);
-        PlayingGrid plcards3 = new PlayingGrid();
-        plcards3.setNumElements(numElements3);
-        assertEquals(2, elem3.calculatePoints(plcards3));
+    void calculatePointsConstr3() throws IllegalRequirementsException {
+        //Case Test 3: see attached documentation
+        int[] requiredElements3 = {0,0,0,2,2,0,2};
+        int[] numElements3={0,0,0,6,4,0,2};
+        ElementsObjectiveCard elem3 = new ElementsObjectiveCard(0,2,requiredElements3);
+        PlayingGrid grid3 = new PlayingGrid();
+        grid3.setNumElements(numElements3);
+        assertEquals(2, elem3.calculatePoints(grid3));
     }
 
     @Test
-    void calculatePointsC4() throws IllegalRequirementsException {
-        //Case 4: see attached documentation
-        int[] reqElements4 = {0,0,0,2,2,0,2};
-        int[] numElements4 = {0,0,0,6,4,0,1};
-        ElementsObjectiveCard elem4 = new ElementsObjectiveCard(0,2,reqElements4);
-        PlayingGrid plcards4 = new PlayingGrid();
-        plcards4.setNumElements(numElements4);
-        assertEquals(0, elem4.calculatePoints(plcards4));
+    void calculatePointsConstr4() throws IllegalRequirementsException {
+        //Case Test 4: see attached documentation
+        int[] requiredElements4 = {0,0,0,2,2,0,2};
+        int[] numElements4={0,0,0,6,4,0,1};
+        ElementsObjectiveCard elem4 = new ElementsObjectiveCard(0,2,requiredElements4);
+        PlayingGrid grid4 = new PlayingGrid();
+        grid4.setNumElements(numElements4);
+        assertEquals(0, elem4.calculatePoints(grid4));
     }
 
 
