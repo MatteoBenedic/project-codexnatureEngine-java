@@ -158,4 +158,12 @@ public class VirtualView {
         performEvent(e);
     }
 
+    /**
+     * This function has to be called when there are no remaining rounds, to determine
+     * the final result of the game
+     */
+    public void endGame() {
+        EndGameEvent e = new EndGameEvent();
+        performEvent(e);
+    }
 }

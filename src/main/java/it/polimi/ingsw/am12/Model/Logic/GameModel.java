@@ -382,12 +382,13 @@ public class GameModel{
 
         int winners = match.orderByPoints(finalPoints);
 
-        Map<String, Integer> classification = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> classification = new LinkedHashMap<>();
 
         for (String nickname : match.getPlayerNames()){
             classification.put(nickname, match.getPlayerPoints(nickname));
         }
 
-        //TODO: notify controller
+        GameEndedEvent e = new GameEndedEvent(winners, classification);
+        performEvent(e);
     }
 }
