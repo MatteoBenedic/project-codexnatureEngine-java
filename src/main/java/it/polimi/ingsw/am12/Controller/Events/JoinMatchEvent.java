@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Controller.Events;
 
+import it.polimi.ingsw.am12.Model.Logic.DuplicateNicknameException;
 import it.polimi.ingsw.am12.Model.Logic.GameModel;
 import it.polimi.ingsw.am12.Model.Logic.WrongNumberOfPlayersException;
 import it.polimi.ingsw.am12.View.VirtualView;
@@ -17,7 +18,7 @@ public class JoinMatchEvent implements Event{
         try {
             model.addPlayerToLobby(nickname);
         }
-        catch (WrongNumberOfPlayersException e){
+        catch (WrongNumberOfPlayersException | DuplicateNicknameException e){
             for(VirtualView view : views) {
                 if(view.getNickname().equals(nickname)) {
                     view.setMessage(e.getMessage());

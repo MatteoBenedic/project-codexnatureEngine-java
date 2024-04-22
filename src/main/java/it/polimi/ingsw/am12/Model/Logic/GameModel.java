@@ -15,14 +15,14 @@ import java.util.*;
 public class GameModel{
     private final Match match;
     private final List<String> lobby;
-    private List<PlayerColour> availableColours;
+    private final List<PlayerColour> availableColours;
     private final List<EventListener> listeners = new ArrayList<>();
 
     private static final int MAX_NUMBER_OF_ROW= 81;
     private static final int MAX_NUMBER_OF_COL= 81;
-
     private static final int MAX_NUMBER_OF_PLAYER= 4;
     private static final int MIN_NUMBER_OF_PLAYER= 2;
+    private static final int MAX_NUMBER_OF_CARDS_IN_HAND = 3;
 
     /**
      * Class constructor specifying numPlayers
@@ -35,10 +35,10 @@ public class GameModel{
         {
             this.match = new Match(numPlayers);
         } else if (numPlayers < MIN_NUMBER_OF_PLAYER) {
-            throw new WrongNumberOfPlayersException("The minimum number of players is 2");
+            throw new WrongNumberOfPlayersException("The minimum number of players is "+MIN_NUMBER_OF_PLAYER);
         }
         else {
-            throw new WrongNumberOfPlayersException("The maximum number of players is 4");
+            throw new WrongNumberOfPlayersException("The maximum number of players is "+MAX_NUMBER_OF_PLAYER);
         }
 
         lobby = new ArrayList<>();
@@ -71,11 +71,15 @@ public class GameModel{
      * Add a user to the match lobby.
      * @param nickname A String to identify the new user.
      * @throws InvalidParameterException if the nickname is null
+     * @throws DuplicateNicknameException if the nickname is already in use
      * @throws WrongNumberOfPlayersException if there is the maximum number of players in the lobby already.
      */
-    public void addPlayerToLobby(String nickname) throws WrongNumberOfPlayersException {
+    public void addPlayerToLobby(String nickname) throws WrongNumberOfPlayersException, DuplicateNicknameException {
         if(nickname==null) {
             throw new InvalidParameterException("The nickname is null");
+        }
+        if(lobby.contains(nickname)) {
+            throw new DuplicateNicknameException();
         }
         if(lobby.size() == match.getNumPlayers()) {
             throw new WrongNumberOfPlayersException("The lobby is already full");
@@ -288,7 +292,7 @@ public class GameModel{
         if(!match.isTurn(nickname)) {
             throw new NotYourTurnException("It's not your turn");
         }
-        if(index<0 || index>2 || xpos<0 || xpos>MAX_NUMBER_OF_ROW-1 || ypos<0 || ypos>MAX_NUMBER_OF_COL-1) {
+        if(index<0 || index>MAX_NUMBER_OF_CARDS_IN_HAND-1 || xpos<0 || xpos>MAX_NUMBER_OF_ROW-1 || ypos<0 || ypos>MAX_NUMBER_OF_COL-1) {
             throw new InvalidParameterException("Parameter out of bounds");
         }
         int points = match.placeCard(index, side, xpos, ypos);
@@ -331,7 +335,7 @@ public class GameModel{
             throw new InvalidParameterException("Index out of bounds");
         }
         match.drawCard(index);
-        nextTurn();
+        int remainigRounds = nextTurn();
 
         int newPublicCard = -1;
         if(index<=3) {
@@ -353,15 +357,19 @@ public class GameModel{
                 newPublicCard,
                 newGoldDeckColour,
                 newResDeckColour,
-                match.getPlayerTurn()
+                match.getPlayerTurn(),
+                remainigRounds
         );
         performEvent(e);
     }
 
     /**
      * Pass the turn to the next player
+     * @return an int:
+     *  if the return value is <=2, it's the number of remaining rounds.
+     *  if the return value is > 2, it means that the match has not reached its final stage yet.
      */
-  private void nextTurn() {
-        int remainingRounds = match.nextTurn();
+  private int nextTurn() {
+        return match.nextTurn();
     }
 }

@@ -16,7 +16,7 @@ public class ElementsObjectiveCard extends ObjectiveCard {
      */
     public ElementsObjectiveCard(int objIndex, int points, int[] requiredElements) throws IllegalRequirementsException {
         super(objIndex,points);
-        if(requiredElements.length!=MAX_NUMBER_OF_ELEMENTS) throw new IllegalRequirementsException("Must be an array of 7 required elements");
+        if(requiredElements.length!=MAX_NUMBER_OF_ELEMENTS) throw new IllegalRequirementsException("Must be an array of "+MAX_NUMBER_OF_ELEMENTS+" required elements");
         this.reqElements = requiredElements;
     }
 

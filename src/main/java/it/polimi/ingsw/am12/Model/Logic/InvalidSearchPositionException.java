@@ -12,4 +12,3 @@ public class InvalidSearchPositionException extends Exception{
         super(message);
     }
 }
-

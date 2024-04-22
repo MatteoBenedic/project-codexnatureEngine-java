@@ -26,7 +26,7 @@ public class CoordinateSubmatrix {
             this.y = y;
         }
         else{
-            throw new IllegalRequirementsException("Cannot support coordinates outside the assigned PlayingGrid boundaries (81x81)");
+            throw new IllegalRequirementsException("Cannot support coordinates outside the assigned PlayingGrid boundaries ("+MAX_NUMBER_OF_ROWS+"x"+MAX_NUMBER_OF_COL+")");
         }
 
         if(colour.equals("red") || colour.equals("green") || colour.equals("blue") || colour.equals("purple")) {

@@ -17,11 +17,8 @@ public class PlayingGrid {
 
     private static final int MAX_NUMBER_OF_ROW= 81;
     private static final int MAX_NUMBER_OF_COL= 81;
-
     private static final int MAX_NUMBER_OF_ELEMENTS = 7;
-
     private static final int FIRST_PATT_OBJ_INDEX = 86;
-
 
     /**
      * Class constructor: instantiates a new PlayingGrid.
@@ -53,7 +50,7 @@ public class PlayingGrid {
 
         }
         else
-            throw new InvalidPlacementException("There's already a startcard!");
+            throw new InvalidPlacementException("There's already a start card!");
     }
 
 
@@ -473,10 +470,10 @@ public class PlayingGrid {
      * @throws IllegalRequirementsException if the length of numElements is not 7
      */
     public void setNumElements(int[] numElements) throws IllegalRequirementsException {
-        if(numElements.length==7) {
+        if(numElements.length==MAX_NUMBER_OF_ELEMENTS) {
             this.numElements = numElements;
         }
-        else throw new IllegalRequirementsException("numElements array should be 7 elements long");
+        else throw new IllegalRequirementsException("numElements array should be "+MAX_NUMBER_OF_ELEMENTS+" elements long");
     }
 }
 

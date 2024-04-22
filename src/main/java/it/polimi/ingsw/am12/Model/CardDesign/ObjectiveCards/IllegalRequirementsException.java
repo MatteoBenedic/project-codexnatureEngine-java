@@ -12,8 +12,6 @@ public class IllegalRequirementsException extends Exception{
         super(message);
     }
 
-
-
 }
 
 

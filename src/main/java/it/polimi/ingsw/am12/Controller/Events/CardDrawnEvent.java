@@ -13,8 +13,9 @@ public class CardDrawnEvent implements Event{
     String newGoldDeckColour;
     String newResDeckColour;
     String turn;
+    int remaningRounds;
 
-    public CardDrawnEvent(String nickname, int indexDrawnCard, int deckIndex, int newPublicCard, String newGoldDeckColour, String newResDeckColour, String turn){
+    public CardDrawnEvent(String nickname, int indexDrawnCard, int deckIndex, int newPublicCard, String newGoldDeckColour, String newResDeckColour, String turn, int remaningRounds){
         this.nickname = nickname;
         this.indexDrawnCard=indexDrawnCard;
         this.deckIndex=deckIndex;
@@ -22,6 +23,7 @@ public class CardDrawnEvent implements Event{
         this.newGoldDeckColour=newGoldDeckColour;
         this.newResDeckColour=newResDeckColour;
         this.turn=turn;
+        this.remaningRounds = remaningRounds;
     }
 
     @Override
@@ -43,6 +45,7 @@ public class CardDrawnEvent implements Event{
             else {
                 message += "\nÈ il turno di " + turn;
             }
+            message += "\nRimangono "+remaningRounds+" turni";
             view.setMessage(message);
         }
     }

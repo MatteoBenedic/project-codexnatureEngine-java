@@ -17,10 +17,10 @@ public class Player {
     private int points;
     private ObjectiveCard objectiveCard;
     private List<GameCard> cardsInHand;
-
     private PlayingGrid playingGrid;
-
     private int countCompletedObj;
+
+    private static final int MAX_NUMBER_OF_CARDS_IN_HAND = 3;
 
     /**
      * Class constructor: instantiates a new Player.
@@ -84,7 +84,7 @@ public class Player {
      * @throws IllegalStateException if the hand is already full
      */
         public void addCardInHand(GameCard c) throws IllegalStateException{
-            if (this.cardsInHand.size() >= 3) {
+            if (this.cardsInHand.size() >= MAX_NUMBER_OF_CARDS_IN_HAND) {
                 throw new IllegalStateException("The hand is full. You cannot add more cards");
             }
             this.cardsInHand.add(c);
