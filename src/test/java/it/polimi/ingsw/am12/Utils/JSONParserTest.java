@@ -201,14 +201,14 @@ class JSONParserTest {
             {
                 numOfConditions[4]++;
             }
-            else if(c.getType().equals("Corner"))
+            else if(c.equals(Condition.CORNER))
             {
-                assertNull(c.getObject());
+                assertNull(c.getName());
                 numOfConditions[3]++;
             }
             else
             {
-                switch (c.getObject()) {
+                switch (c.getName()) {
                     case Element.INKWELL:
                         numOfConditions[0]++;
                         break;

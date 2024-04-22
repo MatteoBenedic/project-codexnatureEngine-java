@@ -87,11 +87,10 @@ class SideTest {
         Side b1 = gc1.getValidSide();
         Side br1 = resCard.getValidSide();
 
-        assertEquals("Corner", f1.getCondition().getType());
-        assertNull(f1.getCondition().getObject());
+        assertEquals(Condition.CORNER, f1.getCondition());
 
-        assertEquals("Object", f2.getCondition().getType());
-        assertEquals(Element.INKWELL, f2.getCondition().getObject());
+
+        assertEquals(Condition.INKWELL, f2.getCondition());
 
         assertNull(f3.getCondition());
         assertNull(fr1.getCondition());

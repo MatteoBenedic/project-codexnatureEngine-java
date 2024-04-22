@@ -369,7 +369,25 @@ public class GameModel{
      *  if the return value is <=2, it's the number of remaining rounds.
      *  if the return value is > 2, it means that the match has not reached its final stage yet.
      */
-  private int nextTurn() {
+    private int nextTurn() {
         return match.nextTurn();
+    }
+
+    /**
+     * It calculates the endgame points of the match and defines the result of it. It creates a classification ordered
+     * from the winner to the worst player
+     */
+    public void endGame() {
+        Map<String, Integer> finalPoints = match.calculateEndgamePoints();
+
+        int winners = match.orderByPoints(finalPoints);
+
+        Map<String, Integer> classification = new LinkedHashMap<>();
+
+        for (String nickname : match.getPlayerNames()){
+            classification.put(nickname, match.getPlayerPoints(nickname));
+        }
+
+        //TODO: notify controller
     }
 }

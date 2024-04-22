@@ -165,5 +165,26 @@ public class Player {
     public int getPoints(){
         return this.points;
     }
+
+    /**
+     * Calculate the points scored with an objective card
+     * @param card the objective card
+     * @return the number of points scored
+     */
+    public int calculateObjPoints(ObjectiveCard card){
+        int objPoints = card.calculatePoints(playingGrid);
+        points += objPoints;
+        return objPoints;
+    }
+
+    /**
+     * Calculate the points scored with the player's secret objective
+     * @return the number of points scored
+     */
+    public int calculateObjPoints(){
+        int objPoints = objectiveCard.calculatePoints(playingGrid);
+        points += objPoints;
+        return objPoints;
+    }
 }
 

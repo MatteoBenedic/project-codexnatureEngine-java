@@ -4,9 +4,6 @@ import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.*;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.*;
 import it.polimi.ingsw.am12.Utils.Coordinate;
 import it.polimi.ingsw.am12.Utils.JSONParser;
-
-import java.io.FileNotFoundException;
-import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,13 +41,10 @@ public class Match {
         this.objToChoose = new HashMap<>();
     }
 
-    //testing
-
-    public List<Player> getPlayerOrder(){
-        return this.playerOrder;
+    //TODO: remove this method
+    public List<Player> getPlayerOrder () {
+        return playerOrder;
     }
-
-
 
     /**
      * Get the number of players of the match
@@ -195,6 +189,18 @@ public class Match {
         obj[0] = publicObj[0].getObjIndex();
         obj[1] = publicObj[1].getObjIndex();
         return obj;
+    }
+
+    /**
+     * Get the points of a player
+     * @param nickname A String that identifies the player.
+     * @return the total number of points that the player has scored
+     */
+    public Integer getPlayerPoints(String nickname) {
+        return playerOrder.stream()
+                .filter(player -> Objects.equals(player.getNickname(), nickname))
+                .map(Player::getPoints)
+                .findFirst().orElse(null);
     }
 
     /**
@@ -421,5 +427,70 @@ public class Match {
         return remainingRounds > 2 &&
                (playerOrder.get(playerTurn).getPoints() >= 20 ||
                         (drawTable.getColorTopGoldDeck() == null && drawTable.getColorTopResDeck() == null));
+    }
+
+    /**
+     * It calculates for every player the points won by achieving the objectives: the 2 public objectives shared in all
+     * the match and, for each player, their secret one.
+     * It puts them in the total points of each player and also regroups them in a map.
+     * @return a map with every player nickname and their objectives points
+     */
+    public Map<String, Integer> calculateEndgamePoints(){
+        Map<String, Integer> objPoints = new LinkedHashMap<>();
+        Player pl;
+
+        ObjectiveCard obj1 = publicObj[0];
+        ObjectiveCard obj2 = publicObj[1];
+
+        for (Player player : playerOrder) {
+            pl = player;
+            int o1 = pl.calculateObjPoints(obj1);
+            int o2 = pl.calculateObjPoints(obj2);
+            int o3 = pl.calculateObjPoints();
+            objPoints.put(pl.getNickname(), o1 + o2 + o3);
+        }
+
+        return objPoints;
+    }
+
+    /**
+     * It defines the final order, the result of the match, and reorders the players accordingly
+     * @param finalPoints a map containing the objective points of every player
+     * @return the number of winners
+     */
+    public int orderByPoints(Map<String, Integer> finalPoints){
+        Map<Player, Integer> fp = new LinkedHashMap<>();
+        for(Player player : playerOrder)
+        {
+            fp.put(player, finalPoints.get(player.getNickname()));
+        }
+        playerOrder.sort(Comparator.comparingInt(Player::getPoints).reversed());
+
+        int k = playerOrder.size();
+        Player[] finalOrder = new Player[k];
+        for(int i = 0; i < k; i++)
+            finalOrder[i] = playerOrder.get(i);
+
+        int winners = 1;
+        for(int i = 1; i < k; i++) {
+            if (finalOrder[i].getPoints() == finalOrder[0].getPoints()){
+                if (fp.get(finalOrder[i]) > fp.get(finalOrder[0])) {
+                    Player temp = finalOrder[i];
+                    finalOrder[i] = finalOrder[0];
+                    finalOrder[0] = temp;
+                    winners = 1;
+                } else if (fp.get(finalOrder[i]).equals(fp.get(finalOrder[0]))) {
+                    Player temp = finalOrder[i];
+                    finalOrder[i] = finalOrder[winners];
+                    finalOrder[winners] = temp;
+                    winners++;
+                }
+            }
+        }
+
+        playerOrder.clear();
+        playerOrder.addAll(Arrays.asList(finalOrder).subList(0, k));
+
+        return winners;
     }
 }

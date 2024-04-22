@@ -56,8 +56,8 @@ class GameCardTest {
 
         assertNull(rc.getCondition());
         assertNotNull(gc.getCondition());
-        assertEquals("Corner", gc.getCondition().getType());
-        assertNull(gc.getCondition().getObject());
+        assertEquals(Condition.CORNER, gc.getCondition());
+
 
 
         t1 = gc.getResources();

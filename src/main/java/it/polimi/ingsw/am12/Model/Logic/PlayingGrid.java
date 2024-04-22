@@ -357,12 +357,8 @@ public class PlayingGrid {
         try {
             Condition condition = lastPlacedCard.getCondition();
 
-            if (condition.getType().equals("Object")) {
-                Element element = condition.getObject();
-                int occ = getNumElements(element);
-                if (occ > 0) points = points * occ;
-            }
-            else if (condition.getType().equals("Corner")) {
+
+            if (condition == Condition.CORNER) {
                 int i = lastPlacedCard.getCoordinates().getX();
                 int j = lastPlacedCard.getCoordinates().getY();
 
@@ -373,6 +369,10 @@ public class PlayingGrid {
                 if (checkBoundaries(i+1, j+1) && (plcards[i + 1][j - 1] != null)) cont++;
 
                 points = points * cont;
+            }
+            else {
+                int occ = getNumElements(condition.getName());
+                if (occ > 0) points = points * occ;
             }
             return points;
         }

@@ -3,10 +3,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "quill"
-            },
+            "condition": "quill",
             "requirements": ["fungus", "fungus", "animal"],
             "corners": [
                 null,
@@ -48,10 +45,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "inkwell"
-            },
+            "condition": "inkwell",
             "requirements": ["fungus", "fungus", "plant"],
             "corners": [
                 {
@@ -93,10 +87,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "manuscript"
-            },
+            "condition": "manuscript",
             "requirements": ["fungus", "fungus", "insect"],
             "corners": [
                 {
@@ -138,10 +129,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["fungus", "fungus", "fungus", "animal"],
             "corners": [
                 {
@@ -183,10 +171,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["fungus", "fungus", "fungus", "plant"],
             "corners": [
                 {
@@ -228,10 +213,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["fungus", "fungus", "fungus", "insect"],
             "corners": [
                 {
@@ -434,10 +416,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "quill"
-            },
+            "condition": "quill",
             "requirements": ["plant", "plant", "insect"],
             "corners": [
                 {
@@ -479,10 +458,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "manuscript"
-            },
+            "condition": "manuscript",
             "requirements": ["plant", "plant", "fungus"],
             "corners": [
                 {
@@ -524,10 +500,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "inkwell"
-            },
+            "condition": "inkwell",
             "requirements": ["plant", "plant", "animal"],
             "corners": [
                 {
@@ -569,10 +542,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["plant", "plant", "plant", "insect"],
             "corners": [
                 null,
@@ -614,10 +584,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["plant", "plant", "plant", "animal"],
             "corners": [
                 {
@@ -659,10 +626,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["plant", "plant", "plant", "fungus"],
             "corners": [
                 {
@@ -865,10 +829,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "inkwell"
-            },
+            "condition": "inkwell",
             "requirements": ["animal", "animal", "insect"],
             "corners": [
                 {
@@ -910,10 +871,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "manuscript"
-            },
+            "condition": "manuscript",
             "requirements": ["animal", "animal", "plant"],
             "corners": [
                 null,
@@ -955,10 +913,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "quill"
-            },
+            "condition": "quill",
             "requirements": ["animal", "animal", "fungus"],
             "corners": [
                 {
@@ -1000,10 +955,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["animal", "animal", "animal", "insect"],
             "corners": [
                 {
@@ -1045,10 +997,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["animal", "animal", "animal", "fungus"],
             "corners": [
                 {
@@ -1090,10 +1039,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["animal", "animal", "animal", "plant"],
             "corners": [
                 null,
@@ -1296,10 +1242,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "quill"
-            },
+            "condition": "quill",
             "requirements": ["insect", "insect", "plant"],
             "corners": [
                 {
@@ -1341,10 +1284,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "manuscript"
-            },
+            "condition": "manuscript",
             "requirements": ["insect", "insect", "animal"],
             "corners": [
                 {
@@ -1386,10 +1326,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 1,
-            "condition": {
-                "type": "Object",
-                "object": "inkwell"
-            },
+            "condition": "inkwell",
             "requirements": ["insect", "insect", "fungus"],
             "corners": [
                 null,
@@ -1431,10 +1368,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["insect", "insect", "insect", "animal"],
             "corners": [
                 {
@@ -1476,10 +1410,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["insect", "insect", "insect", "plant"],
             "corners": [
                 {
@@ -1521,10 +1452,7 @@
         "front": {
             "type": "it.polimi.ingsw.am12.Model.CardDesign.GameCard.GoldFront",
             "points": 2,
-            "condition": {
-                "type": "Corner",
-                "object": null
-            },
+            "condition": "corner",
             "requirements": ["insect", "insect", "insect", "fungus"],
             "corners": [
                 {

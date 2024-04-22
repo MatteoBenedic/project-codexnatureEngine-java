@@ -403,4 +403,67 @@ class MatchTest {
         assertThrows(WrongInformationException.class, () -> match.isTurn("notExistingPlayer"));
     }
 
+    @Test
+    public void orderByPointsTest() throws InvalidPlacementException, IllegalRequirementsException {
+        Match match = new Match(4);
+        match.addPlayer("player1");
+        match.addPlayer("player2");
+        match.addPlayer("player3");
+        match.addPlayer("player4");
+        match.createDecks();
+        match.assignStartCards();
+        match.placeStartCard("player1", true);
+        match.placeStartCard("player2", true);
+        match.placeStartCard("player3", true);
+        match.placeStartCard("player4", true);
+
+        JSONParser parser = new JSONParser();
+        List<GameCard> golds = parser.parseGoldCards();
+        for (GameCard card : golds){
+            card.setValidSide(true);
+        }
+        List<Player> temp = match.getPlayerOrder();
+        for(Player player: temp){
+            int[] numEl = {1000, 1000, 0, 1000, 0, 1000, 0};
+            player.getPlayingGrid().setNumElements(numEl);
+        }
+
+        temp.get(0).placePlayingGrid(39, 39, golds.get(2));
+        temp.get(1).placePlayingGrid(39, 41, golds.get(3));
+        temp.get(2).placePlayingGrid(39, 41, golds.get(3));
+        temp.get(3).placePlayingGrid(39, 41, golds.get(3));
+        temp.get(0).placePlayingGrid(38, 38, golds.get(10));
+        temp.get(1).placePlayingGrid(39, 39, golds.get(9));
+        temp.get(2).placePlayingGrid(39, 39, golds.get(9));
+        temp.get(3).placePlayingGrid(39, 39, golds.get(9));
+        temp.get(0).placePlayingGrid(37, 37, golds.get(11));
+        temp.get(1).placePlayingGrid(38, 38, golds.get(19));
+        temp.get(2).placePlayingGrid(38, 38, golds.get(19));
+        temp.get(3).placePlayingGrid(38, 38, golds.get(19));
+
+        assertEquals(3, temp.get(0).getPoints());
+        assertEquals(12, temp.get(1).getPoints());
+        assertEquals(12, temp.get(2).getPoints());
+        assertEquals(12, temp.get(3).getPoints());
+
+        Map<String, Integer> fp = new LinkedHashMap<>();
+        fp.put(temp.get(0).getNickname(), 7);
+        fp.put(temp.get(1).getNickname(), 4);
+        fp.put(temp.get(2).getNickname(), 3);
+        fp.put(temp.get(3).getNickname(), 4);
+
+        Player p1 = temp.get(0); //3 point, 7 obj points
+        Player p2 = temp.get(1); //12 points, 4 obj points
+        Player p3 = temp.get(2); //12 points, 3 obj points
+        Player p4 = temp.get(3); //12 points, 4 obj points
+
+        assertEquals(p3.getNickname(), match.getPlayerOrder().get(2).getNickname());
+        assertEquals(p1.getNickname(), match.getPlayerOrder().get(0).getNickname());
+
+        int winners = match.orderByPoints(fp);
+
+        assertEquals(p3.getNickname(), match.getPlayerOrder().get(2).getNickname());
+        assertEquals(p1.getNickname(), match.getPlayerOrder().get(3).getNickname());
+        assertEquals(2, winners);
+    }
 }
