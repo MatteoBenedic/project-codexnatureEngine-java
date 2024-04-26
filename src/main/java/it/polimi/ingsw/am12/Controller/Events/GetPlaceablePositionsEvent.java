@@ -22,13 +22,10 @@ public class GetPlaceablePositionsEvent implements Event{
     }
 
     @Override
-    public void executeCommand(GameModel model, List<VirtualView> views) {
-        try {
+    public void executeCommand(GameModel model) throws InvalidSearchPositionException, NotYourTurnException ,
+            WrongInformationException, InvalidParameterException, IllegalStateException{
+
             model.getPlaceablePositions(nickname, x, y);
-        } catch (InvalidSearchPositionException | NotYourTurnException | WrongInformationException | InvalidParameterException e){
-            for(VirtualView view : views) {
-                view.setMessage(e.getMessage());
-            }
-        }
+
     }
 }

@@ -9,21 +9,15 @@ import java.util.List;
 public class JoinMatchEvent implements Event{
 
     private String nickname;
-    public JoinMatchEvent(String nickname) {
+    private VirtualView view;
+    public JoinMatchEvent(String nickname, VirtualView view) {
         this.nickname = nickname;
+        this.view = view;
     }
 
     @Override
-    public void executeCommand(GameModel model, List<VirtualView> views) {
-        try {
-            model.addPlayerToLobby(nickname);
-        }
-        catch (WrongNumberOfPlayersException | DuplicateNicknameException e){
-            for(VirtualView view : views) {
-                if(view.getNickname().equals(nickname)) {
-                    view.setMessage(e.getMessage());
-                }
-            }
-        }
+    public void executeCommand(GameModel model) throws WrongNumberOfPlayersException, DuplicateNicknameException,
+            IllegalStateException{
+            model.addPlayerToLobby(nickname, view);
     }
 }

@@ -1,22 +1,18 @@
 package it.polimi.ingsw.am12.Controller;
 
 import it.polimi.ingsw.am12.Controller.Events.Event;
-import it.polimi.ingsw.am12.Model.Logic.GameModel;
-import it.polimi.ingsw.am12.Model.Logic.WrongNumberOfPlayersException;
+import it.polimi.ingsw.am12.Model.Logic.*;
 import it.polimi.ingsw.am12.View.VirtualView;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.security.InvalidParameterException;
 
 /**
- * This class is the controller of the game:  its function is to coordinate
+ * This class is the controller of the game: its function is to coordinate
  * the model and the views.
- * It's subscribed as a listener of a GameModel and a list of VirtualViews (one for each player).
+ * It's subscribed as a listener a list of VirtualViews (one for each player).
  */
 public class Controller implements EventListener {
 
     private GameModel model;
-    private List<VirtualView> views;
 
     /**
      * Class constructor
@@ -25,9 +21,7 @@ public class Controller implements EventListener {
      * @throws WrongNumberOfPlayersException if numPlayers < 2 or numPlayers > 4.
      */
     public Controller(int numPlayers) throws WrongNumberOfPlayersException {
-        this.views = new ArrayList<>();
         model = new GameModel(numPlayers);
-        model.addListener(this);
     }
 
     /**
@@ -36,7 +30,6 @@ public class Controller implements EventListener {
      */
     public void addView(VirtualView view) {
         view.addListener(this);
-        views.add(view);
     }
 
     /**
@@ -44,7 +37,24 @@ public class Controller implements EventListener {
      * @param e the listened Event
      */
     @Override
-    public void actionPerformed(Event e) {
-        e.executeCommand(model, views);
+    public synchronized void actionPerformed(Event e) throws WrongNumberOfPlayersException, DuplicateNicknameException,
+            IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
+            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
+        e.executeCommand(model);
+    }
+
+    /**
+     * Get the model associated to this Controller
+     * @return an instance of GameModel
+     */
+    public GameModel getModel(){
+        return model;
+    }
+
+    /**
+     * Invalidate the model associated to this Controller
+     */
+    public void closeModel(){
+        model = null;
     }
 }

@@ -1,43 +1,87 @@
 package it.polimi.ingsw.am12.View;
 
+import it.polimi.ingsw.am12.ConnectionType;
 import it.polimi.ingsw.am12.Controller.EventListener;
 import it.polimi.ingsw.am12.Controller.Events.*;
-import it.polimi.ingsw.am12.Model.Logic.PlayerColour;
-import java.util.ArrayList;
-import java.util.List;
+import it.polimi.ingsw.am12.Model.Logic.*;
+import it.polimi.ingsw.am12.Client;
+import it.polimi.ingsw.am12.View.Updates.Update;
+import java.io.Serializable;
+import java.rmi.*;
+import java.rmi.registry.*;
+import java.rmi.server.UnicastRemoteObject;
+import java.security.InvalidParameterException;
 
 /**
  * This class is the server side component of the player view.
- * When the player requests an action, it creates an event to notify Controller of the game.
+ * When the player requests an action, it creates an event to notify the Controller of the game.
  */
-public class VirtualView {
-    private final List<EventListener> listeners = new ArrayList<>();
+public class VirtualView extends UnicastRemoteObject implements Remote, UpdateListener, Serializable {
+    private EventListener listener;
+    private final ConnectionType connectionType;
     private final String nickname;
-    private String message;
+    private Client client;
+    private final Registry registry;
 
     /**
      * Class constructor
      * @param nickname a String that identifies the player who owns this instance of VirtualView
+     * @param connectionType the ConnectionType the client chose (RMI or SOCKET)
+     * @param registry the RMI registry
+     * @throws RemoteException if remote communication with the RMI registry failed
+     * @throws NotBoundException if an attempt is made to look for a name that is not currently
+     *                           bound in the RMI registry
      */
-    public VirtualView(String nickname) {
+    public VirtualView(String nickname, ConnectionType connectionType, Registry registry) throws RemoteException, NotBoundException{
         this.nickname = nickname;
+        this.connectionType = connectionType;
+        this.registry = registry;
+        if(connectionType.equals(ConnectionType.RMI)) {
+            this.client = (Client) registry.lookup(nickname+"Client");
+        }
     }
 
     /**
      * Subscribe a listener to this VirtualView
      * @param listener the EventListener to add as a listener of this VirtualView
+     *                 Only one listener can be added: if there's already a listener, this method overwrites it
      */
     public void addListener(EventListener listener) {
-        listeners.add(listener);
+        this.listener = listener;
     }
 
     /**
-     * Perform an Event, that will be listened by the subscribed listeners
+     * Remove the listener of this VirtualView
+     */
+    public void removeListener(){
+        listener = null;
+    }
+
+    /**
+     * Get the connection type
+     * @return the ConnectionType (RMI or SOCKET)
+     */
+    public ConnectionType getConnectionType() {
+        return connectionType;
+    }
+
+    /**
+     * Perform an Event, that will be listened by the subscribed listener
      * @param e the Event to perform
      */
-    private void performEvent(Event e) {
-        for(EventListener listener : listeners) {
-            listener.actionPerformed(e);
+    public void performEvent(Event e) throws WrongNumberOfPlayersException, DuplicateNicknameException,
+            IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
+            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException{
+        listener.actionPerformed(e);
+    }
+
+    /**
+     * Listen to an Update and send it to the client
+     * @param u the listened Update
+     */
+    public void sendUpdate(Update u){
+        if(connectionType.equals(ConnectionType.RMI)) {
+            client.sendMessage(u);
         }
     }
 
@@ -49,121 +93,4 @@ public class VirtualView {
         return nickname;
     }
 
-    /**
-     * Get the latest message of the VirtualView
-     * @return the latest message of the VirtualView
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * Set the message of the VirtualView
-     * @param message the String to set as the message of the VirtualView
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
-     * Join a match
-     */
-    public void joinMatch() {
-        JoinMatchEvent e = new JoinMatchEvent(nickname);
-        performEvent(e);
-    }
-
-    /**
-     * Start a match
-     */
-    public void startMatch() {
-        StartMatchEvent e = new StartMatchEvent();
-        performEvent(e);
-    }
-
-    /**
-     * Place the start card
-     * @param selectedSide A Boolean that indicates the selected side
-     *                     of the starter card: TRUE = front; FALSE = back
-     */
-    public void placeStartCard(Boolean selectedSide) {
-        PlaceStartCardEvent e = new PlaceStartCardEvent(nickname, selectedSide);
-        performEvent(e);
-    }
-
-
-    /**
-     * Select a colour
-     * @param selectedColour the chosen colour
-     */
-    public void selectColour(PlayerColour selectedColour) {
-        SelectColourEvent e = new SelectColourEvent(nickname, selectedColour);
-        performEvent(e);
-    }
-
-    /**
-     * Distribute the cards in order to start the match
-     */
-    public void distributeCards(){
-        DistributeCardsEvent e = new DistributeCardsEvent();
-        performEvent(e);
-    }
-
-    /**
-     * Select a secret objective
-     * @param selectedObjective A Boolean that indicates the selected objective
-     *                          TRUE = first objective; FALSE = second objective
-     */
-    public void selectObjective(Boolean selectedObjective) {
-        SelectObjectiveEvent e = new SelectObjectiveEvent(nickname, selectedObjective);
-        performEvent(e);
-    }
-
-    /**
-     * Check which positions are available for placing, around the selected card
-     * @param x An int that represents the row of the selected card.
-     * @param y An int that represents the column of the selected card.
-     */
-    public void getPlaceablePositions(int x, int y){
-        GetPlaceablePositionsEvent e = new GetPlaceablePositionsEvent(nickname, x, y);
-        performEvent(e);
-    }
-
-    /**
-     * Place a card in the selected position
-     * @param index An int that indicates which card has to be placed
-     *              (0 = first card in hand, 1 = second card in hand ...)
-     * @param side  A boolean that indicates the selected side of the card:
-     *              TRUE = front; FALSE = back;
-     * @param x  An int that represents the row of the position where to place the card.
-     * @param y  An int that represents the column of the position where to place the card.
-     */
-    public void placeCard(int index, Boolean side, int x, int y) {
-        PlaceCardEvent e = new PlaceCardEvent(nickname, index, side, x, y);
-        performEvent(e);
-    }
-
-    /**
-     * Draw a card.
-     * @param deckIndex An int that indicates which card has to be drawn.
-     *              - index = 0  : public gold 1;
-     *              - index = 1  : public gold 2;
-     *              - index = 2  : public resource 1;
-     *              - index = 3  : public resource 2;
-     *              - index = 4  : hidden gold;
-     *              - index = 5  : hidden resource;
-     */
-    public void drawCard(int deckIndex){
-        DrawCardEvent e = new DrawCardEvent(nickname, deckIndex);
-        performEvent(e);
-    }
-
-    /**
-     * This function has to be called when there are no remaining rounds, to determine
-     * the final result of the game
-     */
-    public void endGame() {
-        EndGameEvent e = new EndGameEvent();
-        performEvent(e);
-    }
 }

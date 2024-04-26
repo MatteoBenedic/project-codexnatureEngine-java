@@ -7,14 +7,7 @@ import java.util.List;
 
 public class StartMatchEvent implements Event{
     @Override
-    public void executeCommand(GameModel model, List<VirtualView> views) {
-        try {
+    public void executeCommand(GameModel model) throws WrongNumberOfPlayersException, IllegalStateException{
             model.addPlayersToMatch();
-        }
-        catch (WrongNumberOfPlayersException e){
-            for(VirtualView view : views) {
-                view.setMessage(e.getMessage());
-            }
-        }
     }
 }

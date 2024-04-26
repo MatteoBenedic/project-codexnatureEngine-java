@@ -6,7 +6,6 @@ import it.polimi.ingsw.am12.Utils.Coordinate;
 import it.polimi.ingsw.am12.Utils.JSONParser;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import static java.util.Collections.shuffle;
 
 /**
@@ -21,7 +20,6 @@ public class Match {
     private List<GameCard> startDeck;
     private List<ObjectiveCard> objDeck;
     private DrawTable drawTable;
-
     private Map<String, ObjectiveCard[]> objToChoose;
 
     /**
@@ -211,7 +209,7 @@ public class Match {
      */
     public boolean isTurn(String nickname) throws WrongInformationException {
         if(!getPlayerNames().contains(nickname)) {
-            throw new WrongInformationException("This player is not part of this match");
+            throw new WrongInformationException("You're not part of this match");
         }
         int p = -1;
         for(int i =0; i<playerOrder.size(); i++) {

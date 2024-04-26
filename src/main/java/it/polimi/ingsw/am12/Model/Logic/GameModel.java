@@ -1,8 +1,9 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
-import it.polimi.ingsw.am12.Controller.EventListener;
-import it.polimi.ingsw.am12.Controller.Events.*;
 import it.polimi.ingsw.am12.Utils.Coordinate;
+import it.polimi.ingsw.am12.View.UpdateListener;
+import it.polimi.ingsw.am12.View.Updates.*;
+import it.polimi.ingsw.am12.View.VirtualView;
 import java.security.InvalidParameterException;
 import java.util.*;
 
@@ -16,7 +17,9 @@ public class GameModel{
     private final Match match;
     private final List<String> lobby;
     private final List<PlayerColour> availableColours;
-    private final List<EventListener> listeners = new ArrayList<>();
+    private final List<UpdateListener> listeners = new ArrayList<>();
+
+    private State state;
 
     private static final int MAX_NUMBER_OF_ROW= 81;
     private static final int MAX_NUMBER_OF_COL= 81;
@@ -47,50 +50,72 @@ public class GameModel{
         availableColours.add(PlayerColour.RED);
         availableColours.add(PlayerColour.YELLOW);
         availableColours.add(PlayerColour.BLUE);
+        this.state = State.LOBBY;
     }
 
     /**
      * Subscribe a listener to this GameModel
-     * @param listener the EventListener to add as a listener of this GameModel
+     * @param listener the UpdateListener to add as a listener of this GameModel
      */
-    public void addListener(EventListener listener) {
+    public void addListener(UpdateListener listener) {
         listeners.add(listener);
     }
 
     /**
-     * Perform an Event, that will be listened by the subscribed listeners
-     * @param e the Event to perform
+     * Remove a listener from this GameModel
+     * @param listener the UpdateListener to remove
+     * @return  0 if, after removing this listener, there are no more listeners subscribed to this GameModel
+     *          1 if there are still some listeners subscribed to this GameModel
      */
-    private void performEvent(Event e) {
-        for(EventListener listener : listeners) {
-            listener.actionPerformed(e);
+    public int removeListener(UpdateListener listener){
+        listeners.remove(listener);
+        if(listeners.isEmpty())
+            return 0;
+        return 1;
+    }
+
+    /**
+     * Notify an Update of the state, that will be listened by the subscribed listeners
+     * @param u the Update to notify
+     */
+    private void notifyUpdate(Update u) {
+        for(UpdateListener listener : listeners) {
+            listener.sendUpdate(u);
         }
     }
 
     /**
      * Add a user to the match lobby.
      * @param nickname A String to identify the new user.
+     * @param view     A VirtualView to subscribe to this GameModel as a listener
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      * @throws InvalidParameterException if the nickname is null
      * @throws DuplicateNicknameException if the nickname is already in use
-     * @throws WrongNumberOfPlayersException if there is the maximum number of players in the lobby already.
+     * @throws WrongNumberOfPlayersException if there is already the maximum number of players in the lobby.
      */
-    public void addPlayerToLobby(String nickname) throws WrongNumberOfPlayersException, DuplicateNicknameException {
-        if(nickname==null) {
+    public void addPlayerToLobby(String nickname, VirtualView view) throws WrongNumberOfPlayersException, DuplicateNicknameException, IllegalStateException, InvalidParameterException {
+        
+        if(!(this.state == State.LOBBY)){
+            throw new IllegalStateException("The state is not correct");
+        }
+        if (nickname == null) {
             throw new InvalidParameterException("The nickname is null");
         }
-        if(lobby.contains(nickname)) {
+        if (lobby.contains(nickname)) {
             throw new DuplicateNicknameException();
         }
-        if(lobby.size() == match.getNumPlayers()) {
+        if (lobby.size() == match.getNumPlayers()) {
             throw new WrongNumberOfPlayersException("The lobby is already full");
         }
 
         lobby.add(nickname);
+        addListener(view);
 
-        if(lobby.size() == match.getNumPlayers()) {
-            PlayersAddedEvent e = new PlayersAddedEvent(lobby);
-            performEvent(e);
-        }
+        if (lobby.size() == match.getNumPlayers())
+            this.state = State.INITIALIZATION;
+
+        PlayersAddedUpdate u = new PlayersAddedUpdate(lobby, state);
+        notifyUpdate(u);
     }
 
     /**
@@ -98,7 +123,11 @@ public class GameModel{
      * @throws WrongNumberOfPlayersException    if the number of nicknames in the lobby differs from the
      *                                          number of players of the match. In this case no player is added.
      */
-    public void addPlayersToMatch() throws WrongNumberOfPlayersException {
+    public void addPlayersToMatch() throws WrongNumberOfPlayersException, IllegalStateException {
+
+        if(!(this.state == State.INITIALIZATION)){
+            throw new IllegalStateException("The state is not correct");
+        }
         if(lobby.size() != match.getNumPlayers())
         {
             throw new WrongNumberOfPlayersException("The number of players in the lobby does not correspond to the number of players of the match");
@@ -114,14 +143,14 @@ public class GameModel{
         for(String nickname : match.getPlayerNames()) {
             startCards.put(nickname, match.getCardsInHand(nickname).getFirst());
         }
-        MatchStartedEvent e = new MatchStartedEvent(
+        MatchStartedUpdate u = new MatchStartedUpdate(
                 match.getPlayerNames(),
                 startCards,
                 match.getDeckColours()[0],
                 match.getDeckColours()[1],
                 match.getPublicCards(),
                 match.getPlayerTurn());
-        performEvent(e);
+       notifyUpdate(u);
     }
 
     /**
@@ -129,13 +158,18 @@ public class GameModel{
      * @param nickname A String that identifies the player.
      * @param selectedSide A boolean that indicates the selected side
      *                     of the starter card: TRUE = front; FALSE = back
-     * @throws InvalidParameterException if any of the parameters is null
-     * @throws WrongInformationException if the player is not part of the match
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
+     * @throws InvalidParameterException if the nickname is null
+     * @throws WrongInformationException if the player is not part of this match
      * @throws NotYourTurnException  if it's not the turn of the player
      * @throws InvalidPlacementException  if a start card has already been placed for the player
      */
     public void placeStartCard(String nickname, boolean selectedSide)
-            throws InvalidPlacementException, WrongInformationException, NotYourTurnException, InvalidParameterException {
+            throws InvalidPlacementException, NotYourTurnException, InvalidParameterException, IllegalStateException, WrongInformationException {
+
+        if(!(this.state == State.INITIALIZATION)){
+            throw new IllegalStateException("The state is not correct");
+        }
         if(nickname==null) {
             throw new InvalidParameterException("The nickname is null");
         }
@@ -146,24 +180,29 @@ public class GameModel{
         match.placeStartCard(nickname, selectedSide);
         nextTurn();
 
-        StartCardPlacedEvent e = new StartCardPlacedEvent(
+        StartCardPlacedUpdate u = new StartCardPlacedUpdate(
                 nickname,
                 match.getLastPlacedCard(nickname),
                 match.getLastPlacedCardSide(nickname),
                 match.getPlayerTurn());
-        performEvent(e);
+        notifyUpdate(u);
     }
 
     /**
      * Assign a colour to a player.
      * @param nickname A String that identifies the player.
      * @param selectedColour the colour chosen by the player
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      * @throws InvalidParameterException if any of the parameters is null
-     * @throws WrongInformationException if the player is not part of the match
+     * @throws WrongInformationException if the player is not part of this match,
+     *                                   or the selected colour is not available
      * @throws NotYourTurnException  if it's not the turn of the player
-     * @throws WrongInformationException  if the colour is not available, or some other player selected it
      */
-    public void setPlayerColour(String nickname, PlayerColour selectedColour) throws WrongInformationException, NotYourTurnException {
+    public void setPlayerColour(String nickname, PlayerColour selectedColour) throws NotYourTurnException, IllegalStateException, InvalidParameterException, WrongInformationException {
+
+        if(!(this.state == State.INITIALIZATION)){
+            throw new IllegalStateException("The state is not correct");
+        }
         if(nickname==null) {
             throw new InvalidParameterException("The nickname is null");
         }
@@ -181,18 +220,24 @@ public class GameModel{
         availableColours.remove(selectedColour);
         nextTurn();
 
-        ColourSelectedEvent e = new ColourSelectedEvent(
+        ColourSelectedUpdate u = new ColourSelectedUpdate(
                 nickname,
                 match.getPlayerColour(nickname),
                 match.getPlayerTurn());
-        performEvent(e);
+        notifyUpdate(u);
     }
 
     /**
      * Distribute cards to the players, in order to start the match.
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      * @throws EmptyDeckException if the objective deck is empty
      */
-    public void distributeCards() throws EmptyDeckException {
+    public void distributeCards() throws EmptyDeckException, IllegalStateException {
+        
+        if(!(this.state == State.INITIALIZATION)){
+            throw new IllegalStateException("The state is not correct");
+        }
+
         match.distributeCards();
 
         Map<String, List<Integer>> cardsDistributed = new HashMap<>();
@@ -202,12 +247,12 @@ public class GameModel{
             cardsDistributed.put(nickname, match.getCardsInHand(nickname));
             secretObjectives.put(nickname, match.getObjectivesToChoose(nickname));
         }
-        CardsDistributedEvent e = new CardsDistributedEvent(
+        CardsDistributedUpdate u = new CardsDistributedUpdate(
                 cardsDistributed,
                 secretObjectives,
                 match.getPublicObjectives(),
                 match.getPlayerTurn());
-        performEvent(e);
+        notifyUpdate(u);
     }
 
     /**
@@ -215,12 +260,17 @@ public class GameModel{
      * @param nickname A String that identifies the player.
      * @param selectedObjective A boolean that indicates the selected objective
      *                          TRUE = first objective; FALSE = second objective
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      * @throws InvalidParameterException if any of the parameters is null
-     * @throws WrongInformationException if the player is not part of the match
+     * @throws WrongInformationException if the player is not part of this match
      * @throws NotYourTurnException  if it's not the turn of the player
      */
     public void setPlayerObjective(String nickname, boolean selectedObjective)
-            throws WrongInformationException, NotYourTurnException, InvalidParameterException {
+            throws WrongInformationException, NotYourTurnException, InvalidParameterException, IllegalStateException {
+
+        if(!(this.state == State.INITIALIZATION)){
+            throw new IllegalStateException("The state is not correct");
+        }
         if(nickname==null) {
             throw new InvalidParameterException("The nickname is null");
         }
@@ -231,12 +281,16 @@ public class GameModel{
         match.setPlayerObjective(nickname, selectedObjective);
         nextTurn();
 
-        ObjectiveSelectedEvent e = new ObjectiveSelectedEvent(
+        if(match.getPlayerTurn().equals(match.getPlayerNames().getFirst()))
+            state = State.PLACING;
+
+        ObjectiveSelectedUpdate u = new ObjectiveSelectedUpdate(
                 nickname,
                 match.getSecretObjective(nickname),
-                match.getPlayerTurn()
+                match.getPlayerTurn(),
+                state
         );
-        performEvent(e);
+        notifyUpdate(u);
     }
 
     /**
@@ -244,13 +298,18 @@ public class GameModel{
      * @param nickname A String that identifies the player
      * @param xpos An int that represents the row of the selected card.
      * @param ypos An int that represents the column of the selected card.
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      * @throws InvalidParameterException if the nickname is null
-     * @throws WrongInformationException if the player is not part of the match
+     * @throws WrongInformationException if the player is not part of this match
      * @throws NotYourTurnException if it's not the turn of the player
      * @throws InvalidSearchPositionException if the given position is invalid.
      */
     public void getPlaceablePositions(String nickname, int xpos, int ypos)
-            throws InvalidSearchPositionException, NotYourTurnException, WrongInformationException, InvalidParameterException {
+            throws InvalidSearchPositionException, NotYourTurnException, InvalidParameterException, IllegalStateException, WrongInformationException {
+
+        if(!(state == State.PLACING)){
+            throw  new IllegalStateException("This is not the correct time to place");
+        }
         if(nickname == null) {
             throw new InvalidParameterException("The nickname is null");
         }
@@ -262,11 +321,11 @@ public class GameModel{
         }
 
         List<Coordinate> availablePositions = match.getPlaceablePositions(xpos, ypos);
-        PlaceablePositionsReturnedEvent e = new PlaceablePositionsReturnedEvent(
+        PlaceablePositionsReturnedUpdate u = new PlaceablePositionsReturnedUpdate(
                 nickname,
                 availablePositions,
                 match.getPlayerTurn());
-        performEvent(e);
+        notifyUpdate(u);
     }
 
     /**
@@ -278,33 +337,42 @@ public class GameModel{
      *              TRUE = front; FALSE = back;
      * @param xpos  An int that represents the row of the position where to place the card.
      * @param ypos  An int that represents the column of the position where to place the card.
-     *
-     * @throws WrongInformationException if the player is not part of the match
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      * @throws NotYourTurnException if it's not the turn of the player
-     * @throws InvalidParameterException if any of the parameters null or is invalid
+     * @throws WrongInformationException if the player is not part of this match
+     * @throws InvalidParameterException if any of the parameters null or out of bounds
      * @throws InvalidPlacementException if the placement fails
      */
     public void placeCard(String nickname, int index, boolean side, int xpos, int ypos)
-            throws InvalidParameterException, InvalidPlacementException, NotYourTurnException, WrongInformationException {
+            throws InvalidParameterException, InvalidPlacementException, NotYourTurnException, IllegalStateException, WrongInformationException {
+
+        if(!(state == State.PLACING)){
+            throw  new IllegalStateException("This is not the correct time to place");
+        }
         if(nickname == null) {
             throw new InvalidParameterException("The nickname is null");
         }
         if(!match.isTurn(nickname)) {
             throw new NotYourTurnException("It's not your turn");
         }
-        if(index<0 || index>MAX_NUMBER_OF_CARDS_IN_HAND-1 || xpos<0 || xpos>MAX_NUMBER_OF_ROW-1 || ypos<0 || ypos>MAX_NUMBER_OF_COL-1) {
-            throw new InvalidParameterException("Parameter out of bounds");
+        if(index<0 || index>MAX_NUMBER_OF_CARDS_IN_HAND-1) {
+            throw new InvalidParameterException("Card index out of bounds");
+        }
+        if(xpos<0 || xpos>MAX_NUMBER_OF_ROW-1 || ypos<0 || ypos>MAX_NUMBER_OF_COL-1) {
+            throw new InvalidParameterException("Position out of bounds");
         }
         int points = match.placeCard(index, side, xpos, ypos);
 
-        CardPlacedEvent e = new CardPlacedEvent(
+        state = State.DRAWING;
+        CardPlacedUpdate u = new CardPlacedUpdate(
                 nickname,
                 match.getLastPlacedCard(nickname),
                 match.getLastPlacedCardSide(nickname),
                 points,
-                match.getPlayerTurn()
+                match.getPlayerTurn(),
+                state
         );
-        performEvent(e);
+        notifyUpdate(u);
     }
 
     /**
@@ -317,14 +385,17 @@ public class GameModel{
      *              - index = 3  : public resource 2;
      *              - index = 4  : hidden gold;
      *              - index = 5  : hidden resource;
-     * @throws InvalidParameterException if the nickname is null
-     * @throws WrongInformationException if the player is not part of the match
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
+     * @throws InvalidParameterException if the nickname is null, or index<0 or index>5
+     * @throws WrongInformationException if the player is not part of this match
      * @throws NotYourTurnException if it's not the turn of the player
-     * @throws InvalidParameterException if index<0 or index>5
      * @throws EmptyDeckException if the selected deck is empty.
      */
     public void drawCard(String nickname, int index)
-            throws InvalidParameterException, EmptyDeckException, NotYourTurnException, WrongInformationException {
+            throws InvalidParameterException, EmptyDeckException, NotYourTurnException, IllegalStateException, WrongInformationException {
+        if(!(state == State.DRAWING)){
+            throw  new IllegalStateException("This is not the correct time to draw");
+        }
         if(nickname == null) {
             throw new InvalidParameterException("The nickname is null");
         }
@@ -335,7 +406,7 @@ public class GameModel{
             throw new InvalidParameterException("Index out of bounds");
         }
         match.drawCard(index);
-        int remainigRounds = nextTurn();
+        int remainingRounds = nextTurn();
 
         int newPublicCard = -1;
         if(index<=3) {
@@ -350,7 +421,12 @@ public class GameModel{
             newResDeckColour = match.getDeckColours()[1];
         }
 
-        CardDrawnEvent e = new CardDrawnEvent(
+        if(remainingRounds == 0)
+            state = State.END;
+        else
+            state = State.PLACING;
+
+        CardDrawnUpdate u = new CardDrawnUpdate(
                 nickname,
                 match.getCardsInHand(nickname).getLast(),
                 index,
@@ -358,9 +434,10 @@ public class GameModel{
                 newGoldDeckColour,
                 newResDeckColour,
                 match.getPlayerTurn(),
-                remainigRounds
+                remainingRounds,
+                state
         );
-        performEvent(e);
+        notifyUpdate(u);
     }
 
     /**
@@ -376,8 +453,13 @@ public class GameModel{
     /**
      * It calculates the endgame points of the match and defines the result of it. It creates a classification ordered
      * from the winner to the worst player
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      */
-    public void endGame() {
+    public void endGame() throws IllegalStateException{
+
+        if(!(state == State.END)){
+            throw new IllegalStateException("Game is not ended yet");
+        }
         Map<String, Integer> finalPoints = match.calculateEndgamePoints();
 
         int winners = match.orderByPoints(finalPoints);
@@ -388,7 +470,9 @@ public class GameModel{
             classification.put(nickname, match.getPlayerPoints(nickname));
         }
 
-        GameEndedEvent e = new GameEndedEvent(winners, classification);
-        performEvent(e);
+        state = State.CLOSED;
+
+        GameEndedUpdate u = new GameEndedUpdate(winners, classification, state);
+        notifyUpdate(u);
     }
 }

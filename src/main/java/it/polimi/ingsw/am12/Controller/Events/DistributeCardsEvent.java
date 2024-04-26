@@ -11,13 +11,9 @@ public class DistributeCardsEvent implements Event{
     public DistributeCardsEvent() {}
 
     @Override
-    public void executeCommand(GameModel model, List<VirtualView> views) {
-        try {
+    public void executeCommand(GameModel model) throws EmptyDeckException, IllegalStateException {
+
             model.distributeCards();
-        } catch(EmptyDeckException e){
-            for(VirtualView view : views) {
-                view.setMessage(e.getMessage());
-            }
-        }
+
     }
 }

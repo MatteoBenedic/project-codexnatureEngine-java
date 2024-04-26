@@ -2,6 +2,8 @@ package it.polimi.ingsw.am12.Controller.Events;
 
 import it.polimi.ingsw.am12.Model.Logic.*;
 import it.polimi.ingsw.am12.View.VirtualView;
+
+import java.security.InvalidParameterException;
 import java.util.List;
 
 public class PlaceStartCardEvent implements Event {
@@ -15,14 +17,9 @@ public class PlaceStartCardEvent implements Event {
     }
 
     @Override
-    public void executeCommand(GameModel model, List<VirtualView> views) {
-        try {
+    public void executeCommand(GameModel model) throws InvalidPlacementException, WrongInformationException,
+            NotYourTurnException, InvalidParameterException, IllegalStateException{
+
             model.placeStartCard(nickname, selectedSide);
-        }
-        catch (WrongInformationException | InvalidPlacementException | NotYourTurnException e) {
-            for(VirtualView view : views) {
-                view.setMessage(e.getMessage());
-            }
-        }
     }
 }

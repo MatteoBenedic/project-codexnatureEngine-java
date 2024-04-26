@@ -20,13 +20,10 @@ public class DrawCardEvent implements Event{
     }
 
     @Override
-    public void executeCommand(GameModel model, List<VirtualView> views) {
-        try {
+    public void executeCommand(GameModel model) throws InvalidParameterException, EmptyDeckException,
+            NotYourTurnException, WrongInformationException, IllegalStateException{
+
             model.drawCard(nickname, deckIndex);
-        } catch (InvalidParameterException | EmptyDeckException | NotYourTurnException | WrongInformationException e){
-            for(VirtualView view : views) {
-                view.setMessage(e.getMessage());
-            }
-        }
+
     }
 }

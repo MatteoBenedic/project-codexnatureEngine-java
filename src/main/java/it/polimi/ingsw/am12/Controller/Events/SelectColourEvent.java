@@ -18,13 +18,10 @@ public class SelectColourEvent implements Event{
     }
 
     @Override
-    public void executeCommand(GameModel model, List<VirtualView> views) {
-        try {
+    public void executeCommand(GameModel model) throws WrongInformationException, NotYourTurnException,
+            IllegalStateException{
+
             model.setPlayerColour(nickname, selectedColour);
-        } catch (WrongInformationException | NotYourTurnException e) {
-            for(VirtualView view : views) {
-                view.setMessage(e.getMessage());
-            }
-        }
+
     }
 }

@@ -4,6 +4,8 @@ import it.polimi.ingsw.am12.Model.Logic.GameModel;
 import it.polimi.ingsw.am12.Model.Logic.NotYourTurnException;
 import it.polimi.ingsw.am12.Model.Logic.WrongInformationException;
 import it.polimi.ingsw.am12.View.VirtualView;
+
+import java.security.InvalidParameterException;
 import java.util.List;
 
 public class SelectObjectiveEvent implements Event{
@@ -17,13 +19,10 @@ public class SelectObjectiveEvent implements Event{
     }
 
     @Override
-    public void executeCommand(GameModel model, List<VirtualView> views) {
-        try {
+    public void executeCommand(GameModel model) throws WrongInformationException, NotYourTurnException,
+            InvalidParameterException, IllegalStateException {
+
             model.setPlayerObjective(nickname, selectedObjective);
-        } catch(WrongInformationException | NotYourTurnException e){
-            for(VirtualView view : views) {
-                view.setMessage(e.getMessage());
-            }
-        }
+
     }
 }

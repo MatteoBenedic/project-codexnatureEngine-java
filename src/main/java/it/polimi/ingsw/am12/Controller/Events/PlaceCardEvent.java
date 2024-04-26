@@ -22,14 +22,9 @@ public class PlaceCardEvent implements Event{
     }
 
     @Override
-    public void executeCommand(GameModel model, List<VirtualView> views) {
-        try {
+    public void executeCommand(GameModel model) throws InvalidParameterException, InvalidPlacementException,
+            NotYourTurnException, WrongInformationException, IllegalStateException{
+
             model.placeCard(nickname, index, side, xpos, ypos);
-        } catch (InvalidPlacementException | NotYourTurnException | WrongInformationException |
-                 InvalidParameterException e){
-            for(VirtualView view : views) {
-                view.setMessage(e.getMessage());
-            }
-        }
     }
 }

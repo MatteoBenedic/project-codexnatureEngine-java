@@ -5,6 +5,7 @@ module it.polimi.ingsw.am12 {
 
     requires org.controlsfx.controls;
     requires com.google.gson;
+    requires java.rmi;
 
     opens it.polimi.ingsw.am12 to javafx.fxml;
     opens it.polimi.ingsw.am12.Model.CardDesign.GameCard to com.google.gson;
