@@ -41,6 +41,8 @@ public class VirtualView extends UnicastRemoteObject implements Remote, UpdateLi
         }
     }
 
+
+
     /**
      * Subscribe a listener to this VirtualView
      * @param listener the EventListener to add as a listener of this VirtualView

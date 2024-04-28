@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.security.InvalidParameterException;
 
 /**
- * Interface that defines and event:
+ * Interface that defines an event that allows the client to excute a model function
  * requires method executeCommand
  */
 public interface Event extends Serializable {

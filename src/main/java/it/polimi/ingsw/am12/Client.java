@@ -5,11 +5,12 @@ import java.io.Serializable;
 import java.rmi.Remote;
 
 /**
- * The client of a player
+ * The client of a player (RMI)
  */
 public class Client implements Remote, Serializable {
 
     public void sendMessage(Update update){
         // update.executeViewUpdate in override
     }
+
 }

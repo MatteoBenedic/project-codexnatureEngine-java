@@ -75,6 +75,20 @@ public class GameModel{
     }
 
     /**
+     * Getter method for listeners
+     */
+    public List<UpdateListener> getListeners() {
+        return listeners;
+    }
+
+    /**
+     * Getter method for the players in the lobby
+     */
+    public List<String> getLobby() {
+        return lobby;
+    }
+
+    /**
      * Notify an Update of the state, that will be listened by the subscribed listeners
      * @param u the Update to notify
      */
@@ -125,13 +139,14 @@ public class GameModel{
      */
     public void addPlayersToMatch() throws WrongNumberOfPlayersException, IllegalStateException {
 
-        if(!(this.state == State.INITIALIZATION)){
-            throw new IllegalStateException("The state is not correct");
-        }
         if(lobby.size() != match.getNumPlayers())
         {
             throw new WrongNumberOfPlayersException("The number of players in the lobby does not correspond to the number of players of the match");
         }
+        if(!(this.state == State.INITIALIZATION)){
+            throw new IllegalStateException("The state is not correct");
+        }
+
         for (String nickname : lobby) {
             this.match.addPlayer(nickname);
         }
@@ -143,13 +158,15 @@ public class GameModel{
         for(String nickname : match.getPlayerNames()) {
             startCards.put(nickname, match.getCardsInHand(nickname).getFirst());
         }
+        this.state = State.STARTCARD;
         MatchStartedUpdate u = new MatchStartedUpdate(
                 match.getPlayerNames(),
                 startCards,
                 match.getDeckColours()[0],
                 match.getDeckColours()[1],
                 match.getPublicCards(),
-                match.getPlayerTurn());
+                match.getPlayerTurn(),
+                state);
        notifyUpdate(u);
     }
 
@@ -167,7 +184,7 @@ public class GameModel{
     public void placeStartCard(String nickname, boolean selectedSide)
             throws InvalidPlacementException, NotYourTurnException, InvalidParameterException, IllegalStateException, WrongInformationException {
 
-        if(!(this.state == State.INITIALIZATION)){
+        if(!(this.state == State.STARTCARD)){
             throw new IllegalStateException("The state is not correct");
         }
         if(nickname==null) {
@@ -179,12 +196,16 @@ public class GameModel{
         }
         match.placeStartCard(nickname, selectedSide);
         nextTurn();
+        if(match.getPlayerTurn().equals(match.getPlayerNames().getFirst()))
+            state = State.COLOUR;
+
 
         StartCardPlacedUpdate u = new StartCardPlacedUpdate(
                 nickname,
                 match.getLastPlacedCard(nickname),
                 match.getLastPlacedCardSide(nickname),
-                match.getPlayerTurn());
+                match.getPlayerTurn(),
+                state);
         notifyUpdate(u);
     }
 
@@ -200,7 +221,7 @@ public class GameModel{
      */
     public void setPlayerColour(String nickname, PlayerColour selectedColour) throws NotYourTurnException, IllegalStateException, InvalidParameterException, WrongInformationException {
 
-        if(!(this.state == State.INITIALIZATION)){
+        if(!(this.state == State.COLOUR)){
             throw new IllegalStateException("The state is not correct");
         }
         if(nickname==null) {
@@ -220,10 +241,14 @@ public class GameModel{
         availableColours.remove(selectedColour);
         nextTurn();
 
+        if(match.getPlayerTurn().equals(match.getPlayerNames().getFirst()))
+            state = State.DISTRIBUTION;
+
         ColourSelectedUpdate u = new ColourSelectedUpdate(
                 nickname,
                 match.getPlayerColour(nickname),
-                match.getPlayerTurn());
+                match.getPlayerTurn(),
+                state);
         notifyUpdate(u);
     }
 
@@ -234,7 +259,7 @@ public class GameModel{
      */
     public void distributeCards() throws EmptyDeckException, IllegalStateException {
         
-        if(!(this.state == State.INITIALIZATION)){
+        if(!(this.state == State.DISTRIBUTION)){
             throw new IllegalStateException("The state is not correct");
         }
 
@@ -247,11 +272,15 @@ public class GameModel{
             cardsDistributed.put(nickname, match.getCardsInHand(nickname));
             secretObjectives.put(nickname, match.getObjectivesToChoose(nickname));
         }
+
+        state = State.OBJECTIVE;
+
         CardsDistributedUpdate u = new CardsDistributedUpdate(
                 cardsDistributed,
                 secretObjectives,
                 match.getPublicObjectives(),
-                match.getPlayerTurn());
+                match.getPlayerTurn(),
+                state);
         notifyUpdate(u);
     }
 
@@ -268,7 +297,7 @@ public class GameModel{
     public void setPlayerObjective(String nickname, boolean selectedObjective)
             throws WrongInformationException, NotYourTurnException, InvalidParameterException, IllegalStateException {
 
-        if(!(this.state == State.INITIALIZATION)){
+        if(!(this.state == State.OBJECTIVE)){
             throw new IllegalStateException("The state is not correct");
         }
         if(nickname==null) {

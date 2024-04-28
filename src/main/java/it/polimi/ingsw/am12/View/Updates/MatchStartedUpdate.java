@@ -12,14 +12,17 @@ public class MatchStartedUpdate implements Update {
     String resDeckColour;
     int[] publicCards;
     String turn;
+    State state;
 
-    public MatchStartedUpdate(List<String> nicknames, Map<String, Integer> startCards, String goldDeckColour, String resDeckColour, int[] publicCards, String turn) {
+
+    public MatchStartedUpdate(List<String> nicknames, Map<String, Integer> startCards, String goldDeckColour, String resDeckColour, int[] publicCards, String turn, State state) {
         this.nicknames = nicknames;
         this.startCards = startCards;
         this.goldDeckColour = goldDeckColour;
         this.resDeckColour = resDeckColour;
         this.publicCards = publicCards;
         this.turn = turn;
+        this.state = state;
     }
 
     public List<String> getNicknames() {
@@ -44,5 +47,9 @@ public class MatchStartedUpdate implements Update {
 
     public String getTurn() {
         return turn;
+    }
+
+    public State getState() {
+        return state;
     }
 }

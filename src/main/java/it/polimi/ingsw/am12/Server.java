@@ -1,20 +1,20 @@
 package it.polimi.ingsw.am12;
 
 import it.polimi.ingsw.am12.Controller.Controller;
-import it.polimi.ingsw.am12.Model.Logic.DuplicateNicknameException;
-import it.polimi.ingsw.am12.Model.Logic.GameModel;
-import it.polimi.ingsw.am12.Model.Logic.WrongNumberOfPlayersException;
+import it.polimi.ingsw.am12.Controller.Events.JoinMatchEvent;
+import it.polimi.ingsw.am12.Model.Logic.*;
 import it.polimi.ingsw.am12.View.VirtualView;
 import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.InvalidParameterException;
 import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.registry.Registry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+import static java.lang.System.out;
 
 /**
  * The server that contains all the ongoing matches
@@ -25,22 +25,23 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
     private final Map<String, Controller> matches;
     private final Map<String, String> nicknamesToMatch;
     private final Map<String, VirtualView> linkClientViews;
-    private final ExecutorService executor;
-    private final ServerSocket serverSocket;
+    private ServerSocket serverSocket;
+    private int portServerSocket;
+    private int serverAddress;
+
 
     /**
      * Class constructor
-     * @param port the port of the Socket Connection
+     * @param portServerSocket the port of the Socket Connection
      * @param registry the RMI registry
-     * @throws IOException in an I/O error occurs while opening the Socket
+     * @throws RemoteException if remote communication with the RMI registry failed
      */
-    public Server(int port, Registry registry) throws IOException {
+    public Server(int portServerSocket, Registry registry) throws RemoteException{
         this.matches = new HashMap<>();
         this.nicknamesToMatch = new HashMap<>();
         this.linkClientViews = new HashMap<>();
-        this.serverSocket = new ServerSocket(port);
+        this.portServerSocket = portServerSocket;
         this.registry = registry;
-        this.executor = Executors.newFixedThreadPool(128);
     }
 
     /**
@@ -60,8 +61,9 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
      *                               that already has an associated binding in the RMI registry.
      */
     public synchronized int createMatch(String matchName, int numPlayers, String nickname, ConnectionType connectionType)
-            throws NotBoundException, RemoteException, DuplicateNicknameException, WrongNumberOfPlayersException,
-            DuplicateMatchException, AlreadyBoundException {
+            throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, WrongNumberOfPlayersException,
+            DuplicateMatchException, IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
+            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
 
         if(matches.containsKey(matchName)) {
             throw new DuplicateMatchException("There's already a match with this name!");
@@ -72,14 +74,23 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
             throw new DuplicateNicknameException();
         }
 
+
+
         Controller c = new Controller(numPlayers);
         matches.put(matchName, c);
-        VirtualView v = new VirtualView(nickname, connectionType, registry);
-        if(v.getConnectionType() == ConnectionType.RMI)
+
+        VirtualView v;
+        if(connectionType.equals(ConnectionType.RMI)) {
+           v = new VirtualView(nickname, connectionType, registry);
             registry.bind(nickname+"VirtualView", v);
+        } else {
+            v = new VirtualView(nickname, connectionType, null);
+        }
         linkClientViews.put(nickname, v);
         matches.get(matchName).addView(v);
         nicknamesToMatch.put(nickname, matchName);
+        JoinMatchEvent e = new JoinMatchEvent(nickname, v);
+        v.performEvent(e);
         return 0;
     }
 
@@ -106,7 +117,9 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
      *                               that already has an associated binding in the RMI registry.
      */
     public synchronized int joinMatch(String matchName, String nickname, ConnectionType connectionType)
-            throws NotBoundException, RemoteException, DuplicateNicknameException, NoMatchException, AlreadyBoundException {
+            throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, NoMatchException,  WrongNumberOfPlayersException,
+            IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
+            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
         if(!matches.containsKey(matchName)) {
             throw new NoMatchException("There isn't any match with this name!");
         }
@@ -119,6 +132,9 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
         linkClientViews.put(nickname, v);
         matches.get(matchName).addView(v);
         nicknamesToMatch.put(nickname, matchName);
+
+        JoinMatchEvent e = new JoinMatchEvent(nickname, v);
+        v.performEvent(e);
         return 0;
     }
 
@@ -154,16 +170,45 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
         }
     }
 
+
     /**
-     * Starts the server that waits for clients connection, and every time one client links with the server, it creates
-     * a thread where the server will communicate with this particular client.
-     * @throws IOException if an I/O error occurs when waiting for a Socket connection.
+     *  Starts the server that waits for clients connection
      */
-    public void start() throws IOException {
+    public void start(){
+        startServerSocket();
+        out.println("Server is ready!");
+        acceptClientsSocket();
+    }
+
+    /**
+     * Starts the server socket.
+     */
+    private void startServerSocket() {
+        try{
+            serverSocket = new ServerSocket(portServerSocket);
+        } catch(IOException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Every time one client links with the server, it creates
+     * a thread where the server will communicate with this particular client.
+     */
+    private void acceptClientsSocket() {
         while(true){
-            Socket socket = serverSocket.accept();
-            SocketConnection scConnection = new SocketConnection(socket, this);
-            executor.submit(scConnection);
+            Socket clientSocket;
+            try{
+                clientSocket = serverSocket.accept();
+                out.println(clientSocket.toString());
+                new Thread(()->
+                {
+                    new ServerSideSocketHandler(clientSocket, this).run();
+                }).start();
+            } catch(IOException e){
+                out.println("Client not connected");
+            }
+            out.println("Client accepted");
         }
     }
 }
