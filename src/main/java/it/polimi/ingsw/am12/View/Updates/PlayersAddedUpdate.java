@@ -36,6 +36,8 @@ public class PlayersAddedUpdate implements Update{
     }
 
     public String getTurn() {
-        return nicknames.getFirst();
+        if(state == State.INITIALIZATION)
+            return nicknames.getFirst();
+        else return "";
     }
 }

@@ -98,9 +98,9 @@ public class VirtualView extends UnicastRemoteObject implements UpdateListener, 
             } catch (RemoteException e) {
                 throw new RuntimeException(e.getMessage());
             }
-            if (connectionType == ConnectionType.SOCKET) {
-                socketHandler.sendMessage(u);
-            }
+        }
+        if (connectionType == ConnectionType.SOCKET) {
+            socketHandler.sendMessage(u);
         }
     }
 
