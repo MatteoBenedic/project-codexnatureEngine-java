@@ -81,24 +81,32 @@ public class ClientSideSocketHandler implements Runnable{
                 throw new RuntimeException();
             }
 
-            CLI cli = new CLI();
+            Scanner cliScanner = new Scanner(System.in);
+            System.out.println("Enter nickname: ");
+            String nickname = cliScanner.nextLine();
+            this.idNickname = nickname;
+
+            CLI cli = new CLI(idNickname);
             while(true) {
                 //Leggi comandi e lancia evento
-                Scanner cliScanner = new Scanner(System.in);
                 System.out.println("Enter command: ");
                 String command = cliScanner.nextLine();
                 Object message = cli.parseCommandSocket(command);
-                send(message);
+                if(message!= null)
+                    send(message);
 
                 //Rimani in attesa di update
                 Object u;
+                boolean isTurn;
+                do {
                 try {
                     u = input.readObject();
-                    cli.showUpdateSocket(u);
+                    isTurn = cli.showUpdateSocket(u, idNickname);
                 } catch (IOException | ClassNotFoundException e) {
                     out.println("Server not connected");
                     throw new RuntimeException(e);
                 }
+                }while(!isTurn);
             }
         }
     }

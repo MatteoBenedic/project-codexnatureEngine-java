@@ -7,8 +7,6 @@ import java.util.List;
 
 public class StartMatchEvent implements Event{
     @Override
-
-
     /**
      * Add the users in the lobby as players of the match
      * @throws WrongNumberOfPlayersException    if the number of nicknames in the lobby differs from the

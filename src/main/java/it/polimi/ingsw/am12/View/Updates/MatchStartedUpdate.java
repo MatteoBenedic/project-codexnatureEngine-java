@@ -25,6 +25,28 @@ public class MatchStartedUpdate implements Update {
         this.state = state;
     }
 
+    public String toString(String receiver) {
+        if(receiver==null || !nicknames.contains(receiver))
+            return "";
+
+        String message = "\nMatch has started.";
+        message += "\nThe colour of the gold deck is "+goldDeckColour;
+        message += "\nThe colour of the resource deck is "+resDeckColour;
+        message += "\nThe public cards are:";
+        for(int card: publicCards) {
+            message += " "+card;
+        }
+        message += "\nYour start card is: " + startCards.get(receiver);
+        if(turn.equals(receiver)) {
+            message += "\nIt's your turn: place your start card";
+        }
+        else {
+            message += "\nIt's " + turn + "'s turn. Please wait.";
+        }
+
+        return message;
+    }
+
     public List<String> getNicknames() {
         return nicknames;
     }

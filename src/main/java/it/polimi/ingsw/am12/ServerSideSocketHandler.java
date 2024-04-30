@@ -2,6 +2,7 @@ package it.polimi.ingsw.am12;
 
 import it.polimi.ingsw.am12.Controller.Events.Event;
 import it.polimi.ingsw.am12.Model.Logic.*;
+import it.polimi.ingsw.am12.View.VirtualView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,6 +11,7 @@ import java.net.Socket;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.security.InvalidParameterException;
 
 /**
  * This class handles a socket connection on server side
@@ -18,8 +20,8 @@ public class ServerSideSocketHandler implements Runnable {
     private Socket socket;
     private ObjectOutputStream output;
     private ObjectInputStream input;
-    private String idNickname;
     private Server server;
+    private VirtualView view;
 
     /**
      * Constructor of a socket connection handler
@@ -75,23 +77,49 @@ public class ServerSideSocketHandler implements Runnable {
         if(inObj instanceof CreateMatchMessage) {
             CreateMatchMessage message = (CreateMatchMessage) inObj;
             try {
-                int r = server.createMatch(message.getNickname(), message.getNumPlayers(), message.getMatchName(), message.getConnectionType());
-                if(r==0)
-                    output.writeObject("Match created!");
+                server.createMatch(message.getMatchName(), message.getNumPlayers(), message.getNickname(), message.getConnectionType(), this);
+                this.view = server.getVirtuaView(message.getNickname());
             } catch (AlreadyBoundException | DuplicateNicknameException | WrongNumberOfPlayersException |
                      DuplicateMatchException | NotBoundException | IOException | WrongInformationException |
                      InvalidSearchPositionException | NotYourTurnException | EmptyDeckException |
                      InvalidPlacementException e) {
-                try {
-                    output.writeObject(e);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                sendMessage(e);
+            }
+        }
+        if(inObj instanceof JoinMatchMessage) {
+            JoinMatchMessage message = (JoinMatchMessage) inObj;
+            try {
+                server.joinMatch(message.getMatchName(), message.getNickname(), message.getConnectionType(), this);
+                this.view = server.getVirtuaView(message.getNickname());
+            } catch (AlreadyBoundException | DuplicateNicknameException | WrongNumberOfPlayersException |
+                     NotBoundException | IOException | WrongInformationException |
+                     InvalidSearchPositionException | NotYourTurnException | EmptyDeckException |
+                     InvalidPlacementException | NoMatchException e) {
+                sendMessage(e);
             }
         }
         if(inObj instanceof Event){
             Event event = (Event) inObj;
-            //chiama performEvent su virtual view per notificare il controller dell'evento
+            try {
+                view.performEvent(event);
+            } catch (WrongInformationException | InvalidSearchPositionException | NotYourTurnException |
+                     WrongNumberOfPlayersException | EmptyDeckException | DuplicateNicknameException |
+                     InvalidPlacementException | IllegalStateException | InvalidParameterException e) {
+                sendMessage(e);
+            }
+        }
+    }
+
+    /**
+     * Send an object to the client
+     * @param inObj the Object to send
+     */
+    public void sendMessage(Object inObj){
+        try {
+            output.reset();
+            output.writeObject(inObj);
+        } catch(IOException e){
+            System.err.println(e.getMessage());
         }
     }
 
@@ -103,7 +131,7 @@ public class ServerSideSocketHandler implements Runnable {
      * @throws RemoteException if remote communication with the RMI registry failed
      */
     public void close() throws NoMatchException, NotBoundException, RemoteException {
-        server.closeMatchForPlayer(idNickname);
+        server.closeMatchForPlayer(view.getNickname());
         closeConnection();
     }
 

@@ -1,9 +1,6 @@
 package it.polimi.ingsw.am12.View.Updates;
 
-import it.polimi.ingsw.am12.Controller.Events.Event;
-import it.polimi.ingsw.am12.Model.Logic.GameModel;
 import it.polimi.ingsw.am12.Model.Logic.State;
-import it.polimi.ingsw.am12.View.VirtualView;
 import java.util.List;
 import java.util.Map;
 
@@ -42,4 +39,33 @@ public class CardsDistributedUpdate implements Update {
     public State getState() {
         return state;
     }
+
+    public String toString(String receiver) {
+        if(receiver==null)
+            return "";
+
+        String message = "\nCards have been distributed.";
+        message += "\nYour cards are: ";
+        for(Integer card : cardsDistributed.get(receiver)) {
+            message += " "+card;
+        }
+        message += "\nYour secret objectives are: ";
+        int[] secretObj = secretObjectives.get(receiver);
+        for(int i=0; i<secretObj.length; i++) {
+            message += " "+secretObj[i];
+        }
+        message += "\nThe public objectives are: ";
+        for(int j=0; j<publicObjectives.length; j++) {
+            message += " " + publicObjectives[j];
+        }
+        if(turn.equals(receiver)) {
+            message += "\nIt's your turn";
+        }
+        else {
+            message += "\nIt's " + turn + "'s turn. Please wait.";
+        }
+
+        return message;
+    }
+
 }

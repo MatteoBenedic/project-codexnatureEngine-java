@@ -1,8 +1,6 @@
 package it.polimi.ingsw.am12.View.Updates;
 
-import it.polimi.ingsw.am12.Model.Logic.GameModel;
 import it.polimi.ingsw.am12.Utils.Coordinate;
-import it.polimi.ingsw.am12.View.VirtualView;
 import java.util.List;
 
 public class PlaceablePositionsReturnedUpdate implements Update {
@@ -27,5 +25,9 @@ public class PlaceablePositionsReturnedUpdate implements Update {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public String toString(String receiver) {
+        return receiver;
     }
 }

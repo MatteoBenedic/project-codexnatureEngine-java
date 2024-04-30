@@ -41,4 +41,35 @@ public class StartCardPlacedUpdate implements Update {
     public State getState() {
         return state;
     }
+
+    public String toString(String receiver) {
+        if(receiver==null)
+            return "";
+
+        String message;
+        if(receiver.equals(nickname)) {
+            message = "\nYou have placed the Start Card " + startCard;
+        }
+        else
+        {
+            message= "\n" + nickname+ " has placed the Start Card " + startCard;
+        }
+        message += " on its ";
+                if(side) {
+                    message += "front";
+                }
+                else {
+                    message += "back";
+                }
+
+        if(turn.equals(receiver)) {
+            message += "\nIt's your turn now";
+        }
+        else {
+            message += "\nIt's " + turn + "'s turn. Please wait.";
+        }
+
+        return message;
+    }
+
 }

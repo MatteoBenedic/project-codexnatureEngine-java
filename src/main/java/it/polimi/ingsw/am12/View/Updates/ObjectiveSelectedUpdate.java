@@ -16,7 +16,6 @@ public class ObjectiveSelectedUpdate implements Update {
         this.state = state;
     }
 
-
     public String getNickname(){
         return nickname;
     }
@@ -31,5 +30,9 @@ public class ObjectiveSelectedUpdate implements Update {
 
     public State getState() {
         return state;
+    }
+
+    public String toString(String receiver) {
+        return receiver;
     }
 }

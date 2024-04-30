@@ -13,11 +13,29 @@ public class PlayersAddedUpdate implements Update{
         this.state = state;
     }
 
+    public String toString(String receiver) {
+        String message = "\nPlayers in the match: ";
+        for(String nickname : nicknames) {
+            message += " " + nickname;
+        }
+        if(state.equals(State.LOBBY)) {
+            message += "\nWaiting for more players...";
+        }
+        if(state.equals(State.INITIALIZATION)) {
+            message += "\nAll players have joined. Ready to start the match.";
+        }
+        return message;
+    }
+
     public List<String> getNicknames() {
         return nicknames;
     }
 
     public State getState() {
         return state;
+    }
+
+    public String getTurn() {
+        return nicknames.getFirst();
     }
 }

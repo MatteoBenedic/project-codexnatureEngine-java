@@ -1,8 +1,5 @@
 package it.polimi.ingsw.am12.View.Updates;
 
-import it.polimi.ingsw.am12.Controller.Events.Event;
-import it.polimi.ingsw.am12.Model.Logic.GameModel;
-import it.polimi.ingsw.am12.View.VirtualView;
 import it.polimi.ingsw.am12.Model.Logic.State;
 
 import java.util.List;
@@ -47,5 +44,9 @@ public class CardPlacedUpdate implements Update {
 
     public State getState() {
         return state;
+    }
+
+    public String toString(String receiver) {
+        return receiver;
     }
 }

@@ -24,7 +24,7 @@ class VirtualViewTest {
         Controller c = new Controller(2);
         GameModel gm = c.getModel();
 
-        VirtualView v1 = new VirtualView("p1", ConnectionType.SOCKET, null);
+        VirtualView v1 = new VirtualView("p1", null, null, null);
 
         c.addView(v1);
         //The type of connection is not important for the test, neither the registry
@@ -43,7 +43,7 @@ class VirtualViewTest {
         assertThrows(IllegalStateException.class, () -> v1.performEvent(e2));
 
         //Created second player
-        VirtualView v2 = new VirtualView("p2", ConnectionType.SOCKET, null);
+        VirtualView v2 = new VirtualView("p2", null, null, null);
         c.addView(v2);
         JoinMatchEvent e3 = new JoinMatchEvent("p2", v2);
         v2.performEvent(e3);

@@ -27,8 +27,6 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
     private final Map<String, VirtualView> linkClientViews;
     private ServerSocket serverSocket;
     private int portServerSocket;
-    private int serverAddress;
-
 
     /**
      * Class constructor
@@ -45,12 +43,21 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
     }
 
     /**
+     * Get the VirtualView of a player
+     * @param nickname A String that identifies the player
+     * @return the VirtualView of that player
+     */
+    public VirtualView getVirtuaView(String nickname) {
+        return linkClientViews.get(nickname);
+    }
+
+    /**
      * Create a match in the Server
      * @param matchName A String that identifies the match
      * @param numPlayers the number of the players of the match
      * @param nickname A String that identifies the player who wants to create the match
      * @param connectionType The connection type (RMI or SOCKET) chosen by the player who wants to create the match
-     * @return 0 if the match is created successfully
+     * @param socketHandler the server side socket handler of the player who wants to create the match
      * @throws NotBoundException if an attempt is made to look for a name that is not currently
      *                           bound in the RMI registry
      * @throws RemoteException if remote communication with the RMI registry failed
@@ -59,11 +66,13 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
      * @throws DuplicateMatchException if there's already a match with that name
      * @throws AlreadyBoundException if an attempt is made to bind an object to a name
      *                               that already has an associated binding in the RMI registry.
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
+     * @throws InvalidParameterException if the nickname is null
      */
-    public synchronized int createMatch(String matchName, int numPlayers, String nickname, ConnectionType connectionType)
+    public synchronized void createMatch(String matchName, int numPlayers, String nickname, ConnectionType connectionType, ServerSideSocketHandler socketHandler)
             throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, WrongNumberOfPlayersException,
             DuplicateMatchException, IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
-            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
+            InvalidParameterException, InvalidSearchPositionException, EmptyDeckException {
 
         if(matches.containsKey(matchName)) {
             throw new DuplicateMatchException("There's already a match with this name!");
@@ -74,24 +83,21 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
             throw new DuplicateNicknameException();
         }
 
-
-
         Controller c = new Controller(numPlayers);
         matches.put(matchName, c);
 
         VirtualView v;
         if(connectionType.equals(ConnectionType.RMI)) {
-           v = new VirtualView(nickname, connectionType, registry);
+           v = new VirtualView(nickname, connectionType, registry, null);
             registry.bind(nickname+"VirtualView", v);
         } else {
-            v = new VirtualView(nickname, connectionType, null);
+            v = new VirtualView(nickname, connectionType, null, socketHandler);
         }
         linkClientViews.put(nickname, v);
         matches.get(matchName).addView(v);
         nicknamesToMatch.put(nickname, matchName);
         JoinMatchEvent e = new JoinMatchEvent(nickname, v);
         v.performEvent(e);
-        return 0;
     }
 
     /**
@@ -107,7 +113,7 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
      * @param matchName The name of the match to join
      * @param nickname A String that identifies the player who wants to join the match
      * @param connectionType The connection type (RMI or SOCKET) chosen by the player who wants to join the match
-     * @return 0 if the match is joined successfully
+     * @param socketHandler the server side socket handler of the player who wants to join the match
      * @throws NotBoundException if an attempt is made to look for a name that is not currently
      *                           bound in the RMI registry
      * @throws RemoteException if remote communication with the RMI registry failed
@@ -115,8 +121,11 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
      * @throws NoMatchException if there is not a match with that name
      * @throws AlreadyBoundException if an attempt is made to bind an object to a name
      *                               that already has an associated binding in the RMI registry.
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
+     * @throws InvalidParameterException if the nickname is null
+     * @throws WrongNumberOfPlayersException if there is already the maximum number of players in the lobby.
      */
-    public synchronized int joinMatch(String matchName, String nickname, ConnectionType connectionType)
+    public synchronized void joinMatch(String matchName, String nickname, ConnectionType connectionType, ServerSideSocketHandler socketHandler)
             throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, NoMatchException,  WrongNumberOfPlayersException,
             IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
             InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
@@ -126,16 +135,21 @@ public class Server extends UnicastRemoteObject implements Remote, Serializable 
         if(nicknamesToMatch.containsKey(nickname)) {
             throw new DuplicateNicknameException();
         }
-        VirtualView v = new VirtualView(nickname, connectionType, registry);
-        if(v.getConnectionType() == ConnectionType.RMI)
-            registry.bind(nickname, v);
+
+        VirtualView v;
+        if(connectionType.equals(ConnectionType.RMI)) {
+            v = new VirtualView(nickname, connectionType, registry, null);
+            registry.bind(nickname+"VirtualView", v);
+        } else {
+            v = new VirtualView(nickname, connectionType, null, socketHandler);
+        }
+
         linkClientViews.put(nickname, v);
         matches.get(matchName).addView(v);
         nicknamesToMatch.put(nickname, matchName);
 
         JoinMatchEvent e = new JoinMatchEvent(nickname, v);
         v.performEvent(e);
-        return 0;
     }
 
     /**

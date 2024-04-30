@@ -5,6 +5,7 @@ import it.polimi.ingsw.am12.Controller.EventListener;
 import it.polimi.ingsw.am12.Controller.Events.*;
 import it.polimi.ingsw.am12.Model.Logic.*;
 import it.polimi.ingsw.am12.Client;
+import it.polimi.ingsw.am12.ServerSideSocketHandler;
 import it.polimi.ingsw.am12.View.Updates.Update;
 import java.io.Serializable;
 import java.rmi.*;
@@ -22,21 +23,24 @@ public class VirtualView extends UnicastRemoteObject implements Remote, UpdateLi
     private final String nickname;
     private Client client;
     private final Registry registry;
+    private final ServerSideSocketHandler socketHandler;
 
     /**
      * Class constructor
      * @param nickname a String that identifies the player who owns this instance of VirtualView
      * @param connectionType the ConnectionType the client chose (RMI or SOCKET)
      * @param registry the RMI registry
+     * @param socketHandler the server side socket handler associated to this player, to send update messages
      * @throws RemoteException if remote communication with the RMI registry failed
      * @throws NotBoundException if an attempt is made to look for a name that is not currently
      *                           bound in the RMI registry
      */
-    public VirtualView(String nickname, ConnectionType connectionType, Registry registry) throws RemoteException, NotBoundException{
+    public VirtualView(String nickname, ConnectionType connectionType, Registry registry, ServerSideSocketHandler socketHandler) throws RemoteException, NotBoundException{
         this.nickname = nickname;
         this.connectionType = connectionType;
         this.registry = registry;
-        if(connectionType.equals(ConnectionType.RMI)) {
+        this.socketHandler = socketHandler;
+        if(connectionType == ConnectionType.RMI) {
             this.client = (Client) registry.lookup(nickname+"Client");
         }
     }
@@ -82,8 +86,11 @@ public class VirtualView extends UnicastRemoteObject implements Remote, UpdateLi
      * @param u the listened Update
      */
     public void sendUpdate(Update u){
-        if(connectionType.equals(ConnectionType.RMI)) {
+        if(connectionType == ConnectionType.RMI) {
             client.sendMessage(u);
+        }
+        if(connectionType == ConnectionType.SOCKET) {
+            socketHandler.sendMessage(u);
         }
     }
 

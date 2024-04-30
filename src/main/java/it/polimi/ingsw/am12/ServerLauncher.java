@@ -18,7 +18,7 @@ public class ServerLauncher {
             exit(1); //Status 1: port number not provided
         }
         int portSocket = Integer.parseInt(args[0]);
-        Registry registry = LocateRegistry.getRegistry();
+        Registry registry = LocateRegistry.createRegistry(1099);
         Server server = new Server(portSocket, registry);
         registry.bind("CodexServer", server);
 
