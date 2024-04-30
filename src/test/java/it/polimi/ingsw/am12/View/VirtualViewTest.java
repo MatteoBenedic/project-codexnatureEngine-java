@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 
 
 import static java.lang.Thread.sleep;
@@ -24,6 +25,7 @@ class VirtualViewTest {
         Controller c = new Controller(2);
         GameModel gm = c.getModel();
 
+        //VirtualView v1 = new VirtualView("p1", ConnectionType.SOCKET, LocateRegistry.getRegistry(1600));
         VirtualView v1 = new VirtualView("p1", null, null, null);
 
         c.addView(v1);

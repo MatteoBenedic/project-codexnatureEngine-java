@@ -1,0 +1,28 @@
+package it.polimi.ingsw.am12;
+
+import it.polimi.ingsw.am12.Controller.Events.Event;
+import it.polimi.ingsw.am12.Model.Logic.*;
+
+import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.security.InvalidParameterException;
+
+public interface VVStub extends Remote, Serializable {
+    /**
+     * Gets an event and calls the controller to execute it
+     * @param e the event to perform
+     * @throws WrongNumberOfPlayersException
+     * @throws DuplicateNicknameException
+     * @throws IllegalStateException
+     * @throws InvalidPlacementException
+     * @throws WrongInformationException
+     * @throws NotYourTurnException
+     * @throws InvalidParameterException
+     * @throws EmptyDeckException
+     * @throws InvalidSearchPositionException
+     */
+    void performEvent(Event e) throws WrongNumberOfPlayersException, DuplicateNicknameException,
+            IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
+            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException, RemoteException;
+}

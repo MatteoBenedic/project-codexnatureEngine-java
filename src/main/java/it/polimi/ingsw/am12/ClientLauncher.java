@@ -1,7 +1,10 @@
 package it.polimi.ingsw.am12;
 
+import it.polimi.ingsw.am12.View.Updates.Update;
+
 import java.io.IOException;
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
@@ -10,6 +13,7 @@ import java.util.Scanner;
  * Launch the client
  */
 public class ClientLauncher {
+
 
     public static void main(String[] args) throws IOException {
         //Extract args
@@ -30,20 +34,8 @@ public class ClientLauncher {
         }
 
         if(connectionType.equals("rmi")) {
-            Registry registry = LocateRegistry.getRegistry();
-            //Ask for nickname
-            boolean userCreated = false;
-            do {
-                Scanner myObj = new Scanner(System.in);
-                System.out.println("Enter username");
-                String nickname = myObj.nextLine();
-                Client client = new Client();
-                try {
-                    registry.bind(nickname+"Client", client);
-                    userCreated = true;
-                } catch (AlreadyBoundException ignored) {
-                }
-            } while(!userCreated);
+            RMISimulator sim = new RMISimulator();
+            new Thread(sim).start();
         }
     }
 }

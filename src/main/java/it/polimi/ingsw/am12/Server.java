@@ -5,7 +5,6 @@ import it.polimi.ingsw.am12.Controller.Events.JoinMatchEvent;
 import it.polimi.ingsw.am12.Model.Logic.*;
 import it.polimi.ingsw.am12.View.VirtualView;
 import java.io.IOException;
-import java.io.Serializable;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.InvalidParameterException;
@@ -19,7 +18,7 @@ import static java.lang.System.out;
 /**
  * The server that contains all the ongoing matches
  */
-public class Server extends UnicastRemoteObject implements Remote, Serializable {
+public class Server extends UnicastRemoteObject implements ServerStub {
 
     private final Registry registry;
     private final Map<String, Controller> matches;

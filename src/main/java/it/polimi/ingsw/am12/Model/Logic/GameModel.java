@@ -4,6 +4,8 @@ import it.polimi.ingsw.am12.Utils.Coordinate;
 import it.polimi.ingsw.am12.View.UpdateListener;
 import it.polimi.ingsw.am12.View.Updates.*;
 import it.polimi.ingsw.am12.View.VirtualView;
+
+import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
 import java.util.*;
 
