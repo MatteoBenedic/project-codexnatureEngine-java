@@ -96,20 +96,21 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                     int numPlayer = Integer.parseInt(myObj.nextLine());
                     try {
                         server.createMatch(matchname, numPlayer, nickname, ConnectionType.RMI, null);
+
+                        PlayersAddedUpdate up = (PlayersAddedUpdate) update;
+                        List<String> nm = up.getNicknames();
+                        for(String n : nm)
+                            System.out.println(n);
+                        if(up.getState() == State.LOBBY)
+                            System.out.println("Right state");
+
+                        try {
+                            vv = (VVStub) registry.lookup(nickname+"VirtualView");
+                        } catch (RemoteException | NotBoundException e) {
+                            throw new RuntimeException(e);
+                        }
                     }catch(Exception e) {
                         System.out.println(e.getMessage());
-                    }
-                    PlayersAddedUpdate up = (PlayersAddedUpdate) update;
-                    List<String> nm = up.getNicknames();
-                    for(String n : nm)
-                        System.out.println(n);
-                    if(up.getState() == State.LOBBY)
-                        System.out.println("Right state");
-
-                    try {
-                        VVStub VirtualView = (VVStub) registry.lookup("VirtualView"+nickname);
-                    } catch (RemoteException | NotBoundException e) {
-                        throw new RuntimeException(e);
                     }
                     break;
 
@@ -119,22 +120,23 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                     String matchname1 = myObj.nextLine();
                     try {
                         server.joinMatch(matchname1, nickname, ConnectionType.RMI, null);
+
+                        PlayersAddedUpdate up1 = (PlayersAddedUpdate) update;
+                        List<String> nm1 = up1.getNicknames();
+                        for(String n : nm1)
+                            System.out.println(n);
+                        if(up1.getState() == State.LOBBY)
+                            System.out.println("Right state");
+                        else if (up1.getState() == State.INITIALIZATION)
+                            System.out.println("New state");
+
+                        try {
+                            vv = (VVStub) registry.lookup(nickname+"VirtualView");
+                        } catch (RemoteException | NotBoundException e) {
+                            throw new RuntimeException(e);
+                        }
                     }catch(Exception e) {
                         System.out.println(e.getMessage());
-                    }
-                    PlayersAddedUpdate up1 = (PlayersAddedUpdate) update;
-                    List<String> nm1 = up1.getNicknames();
-                    for(String n : nm1)
-                        System.out.println(n);
-                    if(up1.getState() == State.LOBBY)
-                        System.out.println("Right state");
-                    else if (up1.getState() == State.INITIALIZATION)
-                        System.out.println("New state");
-
-                    try {
-                        vv = (VVStub) registry.lookup("VirtualView"+nickname);
-                    } catch (RemoteException | NotBoundException e) {
-                        throw new RuntimeException(e);
                     }
                     break;
 
@@ -154,7 +156,7 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                         MatchStartedUpdate up2 = (MatchStartedUpdate) update;
                         if(up2.getState() == State.STARTCARD) {
                             indStartCard = up2.getStartCards().get(nickname);
-                            GameCard startCard = starters.get(indStartCard);
+                            GameCard startCard = starters.get(indStartCard - 80);
                             startCard.setValidSide(false);
                             int[] res = startCard.getResources();
                             for(int i = 0; i < 7; i++)
@@ -177,6 +179,8 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                         System.out.println(e.getMessage());
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
                     }
 
 
@@ -267,21 +271,21 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                         if(up4.getState() == State.DISTRIBUTION)
                             System.out.println("New state");
                     } catch (WrongNumberOfPlayersException e) {
-                        throw new RuntimeException(e);
+                        System.out.println(e.getMessage());
                     } catch (DuplicateNicknameException e) {
-                        throw new RuntimeException(e);
+                        System.out.println(e.getMessage());
                     } catch (InvalidPlacementException e) {
-                        throw new RuntimeException(e);
+                        System.out.println(e.getMessage());
                     } catch (WrongInformationException e) {
-                        throw new RuntimeException(e);
+                        System.out.println(e.getMessage());
                     } catch (NotYourTurnException e) {
-                        throw new RuntimeException(e);
+                        System.out.println(e.getMessage());
                     } catch (EmptyDeckException e) {
-                        throw new RuntimeException(e);
+                        System.out.println(e.getMessage());
                     } catch (InvalidSearchPositionException e) {
-                        throw new RuntimeException(e);
+                        System.out.println(e.getMessage());
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        System.out.println(e.getMessage());
                     }
 
                     break;
