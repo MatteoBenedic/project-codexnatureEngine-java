@@ -30,6 +30,7 @@ public class RMISimulator implements Runnable, Remote, Serializable {
     String colour;
     PlayerColour colPlayer;
     Boolean selectedSide = null;
+    Client client = null;
 
     public void run() {
         JSONParser parser = new JSONParser();
@@ -50,18 +51,14 @@ public class RMISimulator implements Runnable, Remote, Serializable {
         do {
             System.out.println("Enter username: ");
             nickname = myObj.nextLine();
-            Client client = null;
             try {
                 client = new Client(this);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-            try {
-                registry.bind(nickname+"Client", client);
-                userCreated = true;
-            } catch (Exception ignored) {
-                throw new RuntimeException(ignored.getMessage());
-            }
+
+            userCreated = true;
+
         } while(!userCreated);
 
         ServerStub server;
@@ -95,7 +92,7 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                     System.out.println("inserire numero giocatori: ");
                     int numPlayer = Integer.parseInt(myObj.nextLine());
                     try {
-                        server.createMatch(matchname, numPlayer, nickname, ConnectionType.RMI, null);
+                        server.createMatch(matchname, numPlayer, nickname, client, null);
 
                         PlayersAddedUpdate up = (PlayersAddedUpdate) update;
                         List<String> nm = up.getNicknames();
@@ -119,7 +116,7 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                     System.out.println("Vuoi inserirti in un match già creato! Inserire nomeMatch: ");
                     String matchname1 = myObj.nextLine();
                     try {
-                        server.joinMatch(matchname1, nickname, ConnectionType.RMI, null);
+                        server.joinMatch(matchname1, nickname, client, null);
 
                         PlayersAddedUpdate up1 = (PlayersAddedUpdate) update;
                         List<String> nm1 = up1.getNicknames();
@@ -224,6 +221,8 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                         System.out.println(e.getMessage());
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
                     }
 
 
@@ -286,6 +285,8 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                         System.out.println(e.getMessage());
                     } catch (RemoteException e) {
                         System.out.println(e.getMessage());
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
                     }
 
                     break;
@@ -322,6 +323,8 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                         System.out.println(e.getMessage());
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
                     }
 
 
@@ -367,6 +370,8 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                         System.out.println(e.getMessage());
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
                     }
 
 
@@ -410,6 +415,8 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                         System.out.println(e.getMessage());
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
                     }
 
                     break;
@@ -461,6 +468,8 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                         throw new RuntimeException(e);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
                     }
 
                     break;
@@ -504,6 +513,8 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                         throw new RuntimeException(e);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
                     }
 
                     break;

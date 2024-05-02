@@ -3,7 +3,10 @@ package it.polimi.ingsw.am12;
 import it.polimi.ingsw.am12.Controller.Controller;
 import it.polimi.ingsw.am12.Controller.Events.JoinMatchEvent;
 import it.polimi.ingsw.am12.Model.Logic.*;
+import it.polimi.ingsw.am12.View.VirtualViewSocket;
 import it.polimi.ingsw.am12.View.VirtualView;
+import it.polimi.ingsw.am12.View.VirtualViewRMI;
+
 import java.io.IOException;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
@@ -55,8 +58,9 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * @param matchName A String that identifies the match
      * @param numPlayers the number of the players of the match
      * @param nickname A String that identifies the player who wants to create the match
-     * @param connectionType The connection type (RMI or SOCKET) chosen by the player who wants to create the match
-     * @param socketHandler the server side socket handler of the player who wants to create the match
+     * @param client An interface that identifies the client in case of an RMI connection
+     * @param socketHandler the server side socket handler of the player with a socket connection
+     *                      who wants to create the match
      * @throws NotBoundException if an attempt is made to look for a name that is not currently
      *                           bound in the RMI registry
      * @throws RemoteException if remote communication with the RMI registry failed
@@ -68,7 +72,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      * @throws InvalidParameterException if the nickname is null
      */
-    public synchronized void createMatch(String matchName, int numPlayers, String nickname, ConnectionType connectionType, ServerSideSocketHandler socketHandler)
+    public synchronized void createMatch(String matchName, int numPlayers, String nickname, ClientStub client, ServerSideSocketHandler socketHandler)
             throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, WrongNumberOfPlayersException,
             DuplicateMatchException, IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
             InvalidParameterException, InvalidSearchPositionException, EmptyDeckException {
@@ -86,11 +90,11 @@ public class Server extends UnicastRemoteObject implements ServerStub {
         matches.put(matchName, c);
 
         VirtualView v;
-        if(connectionType.equals(ConnectionType.RMI)) {
-           v = new VirtualView(nickname, connectionType, registry, null);
+        if(client != null) {
+           v = new VirtualViewRMI(nickname, client);
             registry.bind(nickname+"VirtualView", v);
         } else {
-            v = new VirtualView(nickname, connectionType, null, socketHandler);
+            v = new VirtualViewSocket(nickname, socketHandler);
         }
         linkClientViews.put(nickname, v);
         matches.get(matchName).addView(v);
@@ -111,8 +115,9 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * Join a match
      * @param matchName The name of the match to join
      * @param nickname A String that identifies the player who wants to join the match
-     * @param connectionType The connection type (RMI or SOCKET) chosen by the player who wants to join the match
-     * @param socketHandler the server side socket handler of the player who wants to join the match
+     * @param client An interface that identifies the client in case of an RMI connection
+     * @param socketHandler the server side socket handler of the player with a socket connection
+     *      *                      who wants to join the match
      * @throws NotBoundException if an attempt is made to look for a name that is not currently
      *                           bound in the RMI registry
      * @throws RemoteException if remote communication with the RMI registry failed
@@ -124,7 +129,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * @throws InvalidParameterException if the nickname is null
      * @throws WrongNumberOfPlayersException if there is already the maximum number of players in the lobby.
      */
-    public synchronized void joinMatch(String matchName, String nickname, ConnectionType connectionType, ServerSideSocketHandler socketHandler)
+    public synchronized void joinMatch(String matchName, String nickname, ClientStub client, ServerSideSocketHandler socketHandler)
             throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, NoMatchException,  WrongNumberOfPlayersException,
             IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
             InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
@@ -136,11 +141,11 @@ public class Server extends UnicastRemoteObject implements ServerStub {
         }
 
         VirtualView v;
-        if(connectionType.equals(ConnectionType.RMI)) {
-            v = new VirtualView(nickname, connectionType, registry, null);
+        if(client != null) {
+            v = new VirtualViewRMI(nickname, client);
             registry.bind(nickname+"VirtualView", v);
         } else {
-            v = new VirtualView(nickname, connectionType, null, socketHandler);
+            v = new VirtualViewSocket(nickname, socketHandler);
         }
 
         linkClientViews.put(nickname, v);
@@ -167,10 +172,12 @@ public class Server extends UnicastRemoteObject implements ServerStub {
 
         String match = nicknamesToMatch.get(nickName);
         VirtualView v = linkClientViews.get(nickName);
-        if(v.getConnectionType() == ConnectionType.RMI)
-            registry.unbind(nickName+"VirtualView");
-
+        try {
+            registry.unbind(nickName + "VirtualView");
+        }catch(NotBoundException ignored){
+        }
         v.removeListener();
+
         GameModel gm = matches.get(match).getModel();
         int allPlayerExit = gm.removeListener(v);
 

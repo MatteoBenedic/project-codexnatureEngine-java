@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
+import it.polimi.ingsw.am12.ServerSideSocketHandler;
 import it.polimi.ingsw.am12.Utils.Coordinate;
 import it.polimi.ingsw.am12.View.UpdateListener;
 import it.polimi.ingsw.am12.View.Updates.*;
@@ -91,12 +92,16 @@ public class GameModel{
     }
 
     /**
-     * Notify an Update of the state, that will be listened by the subscribed listeners
+     * Notify an Update of the state, that will be listened by the subscribed listeners.
+     * It creates a thread for every listener, to stop the previous task and start another one to update the players
      * @param u the Update to notify
      */
     private void notifyUpdate(Update u) {
         for(UpdateListener listener : listeners) {
-            listener.sendUpdate(u);
+            new Thread(()->
+            {
+                listener.sendUpdate(u);
+            }).start();
         }
     }
 

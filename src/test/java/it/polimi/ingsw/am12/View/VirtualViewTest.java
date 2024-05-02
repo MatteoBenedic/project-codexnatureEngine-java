@@ -1,11 +1,13 @@
 package it.polimi.ingsw.am12.View;
 
+import it.polimi.ingsw.am12.Client;
 import it.polimi.ingsw.am12.ConnectionType;
 import it.polimi.ingsw.am12.Controller.Controller;
 import it.polimi.ingsw.am12.Controller.Events.DistributeCardsEvent;
 import it.polimi.ingsw.am12.Controller.Events.JoinMatchEvent;
 import it.polimi.ingsw.am12.Controller.Events.StartMatchEvent;
 import it.polimi.ingsw.am12.Model.Logic.*;
+import it.polimi.ingsw.am12.RMISimulator;
 import org.junit.jupiter.api.Test;
 
 import java.rmi.NotBoundException;
@@ -24,12 +26,14 @@ class VirtualViewTest {
 
         Controller c = new Controller(2);
         GameModel gm = c.getModel();
-
+        //Client and RMISimulator set because it's needed to do not throw exception from the threads created in the model
+        RMISimulator rm = new RMISimulator();
+        Client client = new Client(rm);
         //VirtualView v1 = new VirtualView("p1", ConnectionType.SOCKET, LocateRegistry.getRegistry(1600));
-        VirtualView v1 = new VirtualView("p1", null, null, null);
+        VirtualView v1 = new VirtualViewRMI("p1", client);
 
         c.addView(v1);
-        //The type of connection is not important for the test, neither the registry
+
         JoinMatchEvent e = new JoinMatchEvent("p1", v1);
 
         assertDoesNotThrow(() -> {v1.performEvent(e);});
@@ -45,7 +49,7 @@ class VirtualViewTest {
         assertThrows(IllegalStateException.class, () -> v1.performEvent(e2));
 
         //Created second player
-        VirtualView v2 = new VirtualView("p2", null, null, null);
+        VirtualView v2 = new VirtualViewRMI("p2", client);
         c.addView(v2);
         JoinMatchEvent e3 = new JoinMatchEvent("p2", v2);
         v2.performEvent(e3);

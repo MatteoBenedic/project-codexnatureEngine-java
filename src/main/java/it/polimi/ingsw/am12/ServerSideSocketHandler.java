@@ -77,7 +77,7 @@ public class ServerSideSocketHandler implements Runnable {
         if(inObj instanceof CreateMatchMessage) {
             CreateMatchMessage message = (CreateMatchMessage) inObj;
             try {
-                server.createMatch(message.getMatchName(), message.getNumPlayers(), message.getNickname(), message.getConnectionType(), this);
+                server.createMatch(message.getMatchName(), message.getNumPlayers(), message.getNickname(), null, this);
                 this.view = server.getVirtuaView(message.getNickname());
             } catch (AlreadyBoundException | DuplicateNicknameException | WrongNumberOfPlayersException |
                      DuplicateMatchException | NotBoundException | IOException | WrongInformationException |
@@ -89,7 +89,7 @@ public class ServerSideSocketHandler implements Runnable {
         if(inObj instanceof JoinMatchMessage) {
             JoinMatchMessage message = (JoinMatchMessage) inObj;
             try {
-                server.joinMatch(message.getMatchName(), message.getNickname(), message.getConnectionType(), this);
+                server.joinMatch(message.getMatchName(), message.getNickname(), null, this);
                 this.view = server.getVirtuaView(message.getNickname());
             } catch (AlreadyBoundException | DuplicateNicknameException | WrongNumberOfPlayersException |
                      NotBoundException | IOException | WrongInformationException |

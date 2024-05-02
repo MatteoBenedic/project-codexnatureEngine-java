@@ -6,12 +6,10 @@ public class JoinMatchMessage implements Serializable {
 
     String nickname;
     String matchName;
-    ConnectionType connectionType;
 
-    public JoinMatchMessage(String nickname, String matchName, ConnectionType connectionType) {
+    public JoinMatchMessage(String nickname, String matchName) {
         this.nickname = nickname;
         this.matchName = matchName;
-        this.connectionType = connectionType;
     }
 
     public String getNickname() {
@@ -20,9 +18,5 @@ public class JoinMatchMessage implements Serializable {
 
     public String getMatchName() {
         return matchName;
-    }
-
-    public ConnectionType getConnectionType() {
-        return connectionType;
     }
 }

@@ -7,13 +7,12 @@ public class CreateMatchMessage implements Serializable {
     String nickname;
     int numPlayers;
     String matchName;
-    ConnectionType connectionType;
 
-    public CreateMatchMessage(String nickname, int numPlayers, String matchName, ConnectionType connectionType) {
+
+    public CreateMatchMessage(String nickname, int numPlayers, String matchName) {
         this.nickname = nickname;
         this.numPlayers = numPlayers;
         this.matchName = matchName;
-        this.connectionType = connectionType;
     }
 
 
@@ -27,9 +26,5 @@ public class CreateMatchMessage implements Serializable {
 
     public String getMatchName() {
         return matchName;
-    }
-
-    public ConnectionType getConnectionType() {
-        return connectionType;
     }
 }
