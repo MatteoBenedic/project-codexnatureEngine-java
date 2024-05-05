@@ -4,14 +4,31 @@ import it.polimi.ingsw.am12.Model.Logic.State;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Update to handle the card distribution when the match starts
+ */
 public class CardsDistributedUpdate implements Update {
 
+
     String turn;
+
     Map<String, List<Integer>> cardsDistributed;
+
     Map<String, int[]> secretObjectives;
+
     int[] publicObjectives;
+
     State state;
 
+    /**
+     * Instantiates a new Cards distributed update.
+     *
+     * @param cardsDistributed the cards distributed
+     * @param secretObjectives the secret objectives
+     * @param publicObjectives the public objectives
+     * @param turn             the turn
+     * @param state            the state
+     */
     public CardsDistributedUpdate(Map<String, List<Integer>> cardsDistributed, Map<String, int[]> secretObjectives, int[] publicObjectives, String turn, State state) {
         this.cardsDistributed=cardsDistributed;
         this.secretObjectives=secretObjectives;
@@ -24,18 +41,38 @@ public class CardsDistributedUpdate implements Update {
         return turn;
     }
 
+    /**
+     * Gets cards distributed.
+     *
+     * @return the cards distributed
+     */
     public Map<String, List<Integer>> getCardsDistributed() {
         return cardsDistributed;
     }
 
+    /**
+     * Gets secret objectives.
+     *
+     * @return the secret objectives
+     */
     public Map<String, int[]> getSecretObjectives() {
         return secretObjectives;
     }
 
+    /**
+     * Get public objectives int [ ].
+     *
+     * @return the int [ ]
+     */
     public int[] getPublicObjectives() {
         return publicObjectives;
     }
 
+    /**
+     * Gets state.
+     *
+     * @return the state
+     */
     public State getState() {
         return state;
     }

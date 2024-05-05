@@ -5,12 +5,27 @@ import it.polimi.ingsw.am12.Model.Logic.State;
 
 import java.util.List;
 
+/**
+ * Update to handle when a player chooses the colour at the beginning of the match.
+ */
 public class ColourSelectedUpdate implements Update{
+
     String nickname;
+
     PlayerColour colour;
+
     String turn;
+
     State state;
 
+    /**
+     * Instantiates a new Colour selected update.
+     *
+     * @param nickname the nickname of player
+     * @param colour   the colour he has choosen
+     * @param turn     the turn
+     * @param state    the state
+     */
     public ColourSelectedUpdate(String nickname, PlayerColour colour, String turn, State state) {
         this.nickname = nickname;
         this.colour = colour;
@@ -18,10 +33,20 @@ public class ColourSelectedUpdate implements Update{
         this.state = state;
     }
 
+    /**
+     * Get nickname string.
+     *
+     * @return the string
+     */
     public String getNickname(){
         return nickname;
     }
 
+    /**
+     * Get player colour player colour.
+     *
+     * @return the player colour
+     */
     public PlayerColour getPlayerColour(){
         return colour;
     }
@@ -30,6 +55,11 @@ public class ColourSelectedUpdate implements Update{
         return turn;
     }
 
+    /**
+     * Gets state.
+     *
+     * @return the state
+     */
     public State getState() {
         return state;
     }
