@@ -26,7 +26,7 @@ class VirtualViewTest {
         Controller c = new Controller(2);
         GameModel gm = c.getModel();
         //Client and RMISimulator set because it's needed to do not throw exception from the threads created in the model
-        RMISimulator rm = new RMISimulator();
+        RMISimulator rm = new RMISimulator("127.0.0.1");
         ClientController client = new ClientController(rm);
         //VirtualView v1 = new VirtualView("p1", ConnectionType.SOCKET, LocateRegistry.getRegistry(1600));
         VirtualView v1 = new VirtualViewRMI("p1", client);

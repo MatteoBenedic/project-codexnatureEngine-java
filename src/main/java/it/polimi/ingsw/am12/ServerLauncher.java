@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am12;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.rmi.AlreadyBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -20,6 +21,7 @@ public class ServerLauncher {
         }
         int portSocket = Integer.parseInt(args[0]);
         Registry registry = LocateRegistry.createRegistry(1600);
+        System.setProperty("java.rmi.server.hostname", "127.0.0.1");
         Server server = new Server(portSocket, registry);
         registry.bind("CodexServer", server);
 

@@ -32,6 +32,11 @@ public class RMISimulator implements Runnable, Remote, Serializable {
     Boolean selectedSide = null;
     ClientController client = null;
     ServerStub server;
+    String host;
+
+    public RMISimulator(String host) {
+        this.host = host;
+    }
 
     public void run() {
         JSONParser parser = new JSONParser();
@@ -40,9 +45,9 @@ public class RMISimulator implements Runnable, Remote, Serializable {
         List<GameCard> golds = parser.parseGoldCards();
         List<ObjectiveCard> objectives = parser.parseObjectiveCards();
 
-        Registry registry = null;
+        Registry registry;
         try {
-            registry = LocateRegistry.getRegistry(1600);
+            registry = LocateRegistry.getRegistry(host, 1600);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

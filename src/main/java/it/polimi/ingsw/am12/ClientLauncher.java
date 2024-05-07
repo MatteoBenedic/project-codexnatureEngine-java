@@ -34,7 +34,7 @@ public class ClientLauncher {
         }
 
         if(connectionType.equals("rmi")) {
-            RMISimulator sim = new RMISimulator();
+            RMISimulator sim = new RMISimulator(ip);
             new Thread(sim).start();
         }
     }
