@@ -1,7 +1,6 @@
 package it.polimi.ingsw.am12.View;
 
-import it.polimi.ingsw.am12.Client;
-import it.polimi.ingsw.am12.ConnectionType;
+import it.polimi.ingsw.am12.ClientController;
 import it.polimi.ingsw.am12.Controller.Controller;
 import it.polimi.ingsw.am12.Controller.Events.DistributeCardsEvent;
 import it.polimi.ingsw.am12.Controller.Events.JoinMatchEvent;
@@ -28,7 +27,7 @@ class VirtualViewTest {
         GameModel gm = c.getModel();
         //Client and RMISimulator set because it's needed to do not throw exception from the threads created in the model
         RMISimulator rm = new RMISimulator();
-        Client client = new Client(rm);
+        ClientController client = new ClientController(rm);
         //VirtualView v1 = new VirtualView("p1", ConnectionType.SOCKET, LocateRegistry.getRegistry(1600));
         VirtualView v1 = new VirtualViewRMI("p1", client);
 

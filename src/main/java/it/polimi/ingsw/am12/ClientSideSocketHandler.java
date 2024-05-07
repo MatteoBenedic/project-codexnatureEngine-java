@@ -12,7 +12,7 @@ import static java.lang.System.out;
  * This class handles a socket connection on client side
  */
 public class ClientSideSocketHandler implements Runnable{
-
+    ClientStub controller;
     private Socket socket;
     private String ip;
     private int port;

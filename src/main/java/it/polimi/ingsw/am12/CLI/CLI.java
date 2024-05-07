@@ -8,6 +8,7 @@ import it.polimi.ingsw.am12.Controller.Events.StartMatchEvent;
 import it.polimi.ingsw.am12.CreateMatchMessage;
 import it.polimi.ingsw.am12.JoinMatchMessage;
 import it.polimi.ingsw.am12.Model.Logic.PlayerColour;
+import it.polimi.ingsw.am12.UserInterface;
 import it.polimi.ingsw.am12.View.Updates.Update;
 
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.Objects;
  * This class elaborates the commands from a CLI and created the corresponding message to send
  * to the server.
  */
-public class CLI {
+public class CLI implements UserInterface{
 
     String nickname;
 
@@ -71,5 +72,9 @@ public class CLI {
             return Objects.equals(((Update) o).getTurn(), nickname);
         }
         return true;
+    }
+
+    @Override
+    public void updateInterface() {
     }
 }

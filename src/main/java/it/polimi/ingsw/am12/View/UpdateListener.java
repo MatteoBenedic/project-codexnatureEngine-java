@@ -15,4 +15,10 @@ public interface UpdateListener {
      */
     void sendUpdate(Update u);
 
+    /**
+     * Get the nickname that identifies this listener
+     * @return the nickname
+     */
+    String getNickname();
+
 }

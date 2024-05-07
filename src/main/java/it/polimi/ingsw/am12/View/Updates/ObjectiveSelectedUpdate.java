@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.View.Updates;
 
+import it.polimi.ingsw.am12.MemoryUpdater;
 import it.polimi.ingsw.am12.Model.Logic.State;
 
 /**
@@ -50,6 +51,11 @@ public class ObjectiveSelectedUpdate implements Update {
 
     public String getTurn(){
         return turn;
+    }
+
+    @Override
+    public void executeUpdate(MemoryUpdater memoryUpdater) {
+
     }
 
     /**

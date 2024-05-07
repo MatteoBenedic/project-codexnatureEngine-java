@@ -1,6 +1,8 @@
 package it.polimi.ingsw.am12.View.Updates;
 
 import java.util.List;
+
+import it.polimi.ingsw.am12.MemoryUpdater;
 import it.polimi.ingsw.am12.Model.Logic.State;
 
 /**
@@ -59,5 +61,10 @@ public class PlayersAddedUpdate implements Update{
         if(state == State.INITIALIZATION)
             return nicknames.getFirst();
         else return "";
+    }
+
+    @Override
+    public void executeUpdate(MemoryUpdater memoryUpdater) {
+
     }
 }

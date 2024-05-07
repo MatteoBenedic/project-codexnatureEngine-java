@@ -30,7 +30,8 @@ public class RMISimulator implements Runnable, Remote, Serializable {
     String colour;
     PlayerColour colPlayer;
     Boolean selectedSide = null;
-    Client client = null;
+    ClientController client = null;
+    ServerStub server;
 
     public void run() {
         JSONParser parser = new JSONParser();
@@ -52,16 +53,15 @@ public class RMISimulator implements Runnable, Remote, Serializable {
             System.out.println("Enter username: ");
             nickname = myObj.nextLine();
             try {
-                client = new Client(this);
+                client = new ClientController(this);
+                userCreated = true;
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
 
-            userCreated = true;
-
         } while(!userCreated);
 
-        ServerStub server;
+
         try {
             server = (ServerStub) registry.lookup("CodexServer");
         } catch (Exception e) {
@@ -83,6 +83,7 @@ public class RMISimulator implements Runnable, Remote, Serializable {
             System.out.println(" - 9 per draw;");
             System.out.println(" - 10 per endgame;");
             System.out.println(" - 11 per close;");
+            System.out.println(" - 12 per chat;");
 
             choice = Integer.parseInt(myObj.nextLine());
             switch(choice){
@@ -93,6 +94,12 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                     int numPlayer = Integer.parseInt(myObj.nextLine());
                     try {
                         server.createMatch(matchname, numPlayer, nickname, client, null);
+
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
 
                         PlayersAddedUpdate up = (PlayersAddedUpdate) update;
                         List<String> nm = up.getNicknames();
@@ -117,6 +124,12 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                     String matchname1 = myObj.nextLine();
                     try {
                         server.joinMatch(matchname1, nickname, client, null);
+
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
 
                         PlayersAddedUpdate up1 = (PlayersAddedUpdate) update;
                         List<String> nm1 = up1.getNicknames();
@@ -521,6 +534,56 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                 case 10:
                     break;
                 case 11:
+                    break;
+                case 12:
+                    System.out.println("Scrivi il destinatario o all se vuoi scrivere a tutti: ");
+                    String addressee = myObj.nextLine();
+                    boolean publicMess = false;
+                    if(addressee.equals("all"))
+                        publicMess = true;
+
+                    System.out.println("Scrivi il tuo messaggio: ");
+                    String message = myObj.nextLine();
+
+                    ChatEvent ev12 = new ChatEvent(nickname, addressee, publicMess, message);
+                    try {
+                        vv.performEvent(ev12);
+
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        ChatUpdate up12 = (ChatUpdate) update;
+
+                        System.out.println("Messaggio di " + up12.getSender() + ": " + up12.getChatMessage());
+
+                    } catch (WrongNumberOfPlayersException e) {
+                        throw new RuntimeException(e);
+                    } catch (DuplicateNicknameException e) {
+                        throw new RuntimeException(e);
+                    } catch (InvalidPlacementException e) {
+                        throw new RuntimeException(e);
+                    } catch (WrongInformationException e) {
+                        throw new RuntimeException(e);
+                    } catch (NotYourTurnException e) {
+                        throw new RuntimeException(e);
+                    } catch (EmptyDeckException e) {
+                        throw new RuntimeException(e);
+                    } catch (InvalidSearchPositionException e) {
+                        throw new RuntimeException(e);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 13:
+                    ChatUpdate up12 = (ChatUpdate) update;
+                    if(!up12.isPublicMess())
+                        System.out.println("Private message below");
+
+                    System.out.println("Messaggio di " + up12.getSender() + ": " + up12.getChatMessage());
                     break;
                 default:
                     return;

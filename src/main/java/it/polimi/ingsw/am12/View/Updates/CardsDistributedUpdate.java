@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.View.Updates;
 
+import it.polimi.ingsw.am12.MemoryUpdater;
 import it.polimi.ingsw.am12.Model.Logic.State;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,11 @@ public class CardsDistributedUpdate implements Update {
 
     public String getTurn() {
         return turn;
+    }
+
+    @Override
+    public void executeUpdate(MemoryUpdater memoryUpdater) {
+
     }
 
     /**

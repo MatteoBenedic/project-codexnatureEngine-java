@@ -1,12 +1,9 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
-import it.polimi.ingsw.am12.ServerSideSocketHandler;
 import it.polimi.ingsw.am12.Utils.Coordinate;
 import it.polimi.ingsw.am12.View.UpdateListener;
 import it.polimi.ingsw.am12.View.Updates.*;
 import it.polimi.ingsw.am12.View.VirtualView;
-
-import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
 import java.util.*;
 
@@ -72,8 +69,9 @@ public class GameModel{
      */
     public int removeListener(UpdateListener listener){
         listeners.remove(listener);
-        if(listeners.isEmpty())
+        if(listeners.isEmpty()) {
             return 0;
+        }
         return 1;
     }
 
@@ -102,6 +100,23 @@ public class GameModel{
             {
                 listener.sendUpdate(u);
             }).start();
+        }
+    }
+
+    /**
+     * Notify an Update of the state, that will be listened by the chosen listener, used for private chat messages.
+     * It creates a thread for the listener, to stop the previous task and start another one to update the players
+     * @param u the Update to notify
+     * @param addressees a List with the names of the addressees of the message
+     */
+    private void notifyPrivateUpdate(Update u, List<String> addressees){
+        for(UpdateListener listener : listeners){
+            if(addressees.contains(listener.getNickname())) {
+                new Thread(()->
+                        {
+                            listener.sendUpdate(u);
+                        }).start();
+            }
         }
     }
 
@@ -510,5 +525,61 @@ public class GameModel{
 
         GameEndedUpdate u = new GameEndedUpdate(winners, classification, state);
         notifyUpdate(u);
+    }
+
+    /**
+     * It manages the chat between the players
+     * @param nickname name of the sender
+     * @param addressee name of the addressee
+     * @param chatMessage message to send
+     * @throws WrongInformationException  if the sender or the addressee is not part of this match
+     */
+    public void manageChat(String nickname, String addressee, boolean publicMess, String chatMessage) throws WrongInformationException {
+        if(nickname == null) {
+            throw new InvalidParameterException("The nickname is null");
+        }
+        if(addressee == null) {
+            throw new InvalidParameterException("The addressee is null");
+        }
+        if(chatMessage == null) {
+            throw new InvalidParameterException("There isn't any message given");
+        }
+        if(chatMessage.trim().isEmpty()) {
+            throw new InvalidParameterException("Invalid blank message");
+        }
+        if(state == State.LOBBY || state == State.INITIALIZATION) {
+            if (!lobby.contains(nickname)) {
+                throw new WrongInformationException("There isn't any player with this name!");
+            }
+
+            if (!publicMess) {
+                if (!lobby.contains(addressee))
+                    throw new WrongInformationException("There isn't any player with this name to send the message!");
+
+                ChatUpdate u = new ChatUpdate(nickname, publicMess, chatMessage);
+                List<String> addressees = Arrays.asList(addressee, nickname);
+                notifyPrivateUpdate(u, addressees);
+            } else {
+                ChatUpdate u = new ChatUpdate(nickname, publicMess, chatMessage);
+                notifyUpdate(u);
+            }
+        }else{
+            if(!match.getPlayerNames().contains(nickname)) {
+                throw new WrongInformationException("There isn't any player with this name!");
+            }
+
+            if(!publicMess) {
+                if(!match.getPlayerNames().contains(addressee))
+                    throw new WrongInformationException("There isn't any player with this name to send the message!");
+
+                ChatUpdate u = new ChatUpdate(nickname, publicMess, chatMessage);
+                List<String> addressees = Arrays.asList(addressee, nickname);
+                notifyPrivateUpdate(u, addressees);
+            }
+            else{
+                ChatUpdate u = new ChatUpdate(nickname, publicMess, chatMessage);
+                notifyUpdate(u);
+            }
+        }
     }
 }

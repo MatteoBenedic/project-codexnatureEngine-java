@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am12.View.Updates;
 
+import it.polimi.ingsw.am12.MemoryUpdater;
+
 import java.io.Serializable;
 
 /**
@@ -11,4 +13,6 @@ public interface Update extends Serializable {
     public String toString(String receiver);
 
     public String getTurn();
+
+    public void executeUpdate(MemoryUpdater memoryUpdater);
 }
