@@ -101,7 +101,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * @param nickname
      * @throws NoNicknameException
      */
-    public synchronized void getIncompleteLobbies(String nickname) throws NoNicknameException {
+    public synchronized void getIncompleteLobbies(String nickname) throws NoNicknameException, RemoteException{
         if(!nicknames.contains(nickname))
             throw new NoNicknameException("This nickname hasn't been set");
 

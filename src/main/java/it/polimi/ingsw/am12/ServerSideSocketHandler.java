@@ -95,7 +95,7 @@ public class ServerSideSocketHandler implements Runnable {
             else{
                 try {
                     server.getIncompleteLobbies(nickClient);
-                } catch (NoNicknameException e) {
+                } catch (NoNicknameException | RemoteException e) {
                     sendMessage(e);
                 }
             }

@@ -14,7 +14,7 @@ public interface ServerStub extends Remote, Serializable {
     void setNickname(String nickName, ClientStub client, ServerSideSocketHandler socketHandler)
             throws RemoteException, NotBoundException, AlreadyBoundException, DuplicateNicknameException;
 
-    void getIncompleteLobbies(String nickname) throws NoNicknameException;
+    void getIncompleteLobbies(String nickname) throws NoNicknameException, RemoteException;
 
     void createMatch(String matchName, int numPlayers, String nickname)
             throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, WrongNumberOfPlayersException,
