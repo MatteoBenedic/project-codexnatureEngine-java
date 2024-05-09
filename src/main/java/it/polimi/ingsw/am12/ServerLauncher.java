@@ -13,15 +13,20 @@ import static java.lang.Thread.sleep;
  */
 public class ServerLauncher {
 
+    private static int PORT_REGISTRY;
+    private static String HOST_ID;
+
     public static void main(String[] args) throws IOException, AlreadyBoundException, InterruptedException {
 
-        if (args.length != 1) {
+        if (args.length != 3) {
             System.err.println("Server cannot start without specifying a port!");
             exit(1); //Status 1: port number not provided
         }
         int portSocket = Integer.parseInt(args[0]);
-        Registry registry = LocateRegistry.createRegistry(1600);
-        System.setProperty("java.rmi.server.hostname", "127.0.0.1");
+        PORT_REGISTRY = Integer.parseInt(args[1]);
+        HOST_ID = args[2];
+        Registry registry = LocateRegistry.createRegistry(PORT_REGISTRY);
+        System.setProperty("java.rmi.server.hostname", HOST_ID);
         Server server = new Server(portSocket, registry);
         registry.bind("CodexServer", server);
 

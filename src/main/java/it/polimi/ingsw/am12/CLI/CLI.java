@@ -34,9 +34,9 @@ public class CLI implements UserInterface{
     public Object parseCommandSocket(String cmd){
         switch(cmd){
             case "create match":
-                return new CreateMatchMessage(nickname, 2, "match1");
+                return new CreateMatchMessage(2, "match1");
             case "join match":
-                return new JoinMatchMessage(nickname, "match1");
+                return new JoinMatchMessage("match1");
             case "start match":
                 return new StartMatchEvent();
             case "place start card":

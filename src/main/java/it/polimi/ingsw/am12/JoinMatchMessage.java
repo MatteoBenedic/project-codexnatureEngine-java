@@ -1,21 +1,22 @@
 package it.polimi.ingsw.am12;
 
-import java.io.Serializable;
-
-public class JoinMatchMessage implements Serializable {
-
-    String nickname;
+/**
+ * This class defines the messages with the client request to join an existing match in the server.
+ */
+public class JoinMatchMessage implements Message {
     String matchName;
 
-    public JoinMatchMessage(String nickname, String matchName) {
-        this.nickname = nickname;
+    /**
+     * Class Constructor
+     * @param matchName the name of the match that the player wants to join
+     */
+    public JoinMatchMessage(String matchName) {
         this.matchName = matchName;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
+    /**
+     * @return the name of the match to be joined
+     */
     public String getMatchName() {
         return matchName;
     }

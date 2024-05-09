@@ -98,7 +98,7 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                     System.out.println("inserire numero giocatori: ");
                     int numPlayer = Integer.parseInt(myObj.nextLine());
                     try {
-                        server.createMatch(matchname, numPlayer, nickname, client, null);
+                        server.createMatch(matchname, numPlayer, nickname);
 
                         try {
                             sleep(1000);
@@ -128,7 +128,7 @@ public class RMISimulator implements Runnable, Remote, Serializable {
                     System.out.println("Vuoi inserirti in un match già creato! Inserire nomeMatch: ");
                     String matchname1 = myObj.nextLine();
                     try {
-                        server.joinMatch(matchname1, nickname, client, null);
+                        server.joinMatch(matchname1, nickname);
 
                         try {
                             sleep(1000);

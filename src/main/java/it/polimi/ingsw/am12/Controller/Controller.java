@@ -4,6 +4,7 @@ import it.polimi.ingsw.am12.Controller.Events.Event;
 import it.polimi.ingsw.am12.Model.Logic.*;
 import it.polimi.ingsw.am12.View.VirtualView;
 import java.security.InvalidParameterException;
+import java.util.List;
 
 /**
  * This class is the controller of the game: its function is to coordinate

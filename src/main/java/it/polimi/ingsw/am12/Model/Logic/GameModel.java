@@ -139,7 +139,7 @@ public class GameModel{
             throw new InvalidParameterException("The nickname is null");
         }
         if (lobby.contains(nickname)) {
-            throw new DuplicateNicknameException();
+            throw new DuplicateNicknameException("There's already a player with this nickname in this match");
         }
         if (lobby.size() == match.getNumPlayers()) {
             throw new WrongNumberOfPlayersException("The lobby is already full");

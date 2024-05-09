@@ -11,12 +11,17 @@ import java.security.InvalidParameterException;
 
 public interface ServerStub extends Remote, Serializable {
 
-    void createMatch(String matchName, int numPlayers, String nickname, ClientStub client, ServerSideSocketHandler socketHandler)
+    void setNickname(String nickName, ClientStub client, ServerSideSocketHandler socketHandler)
+            throws RemoteException, NotBoundException, AlreadyBoundException, DuplicateNicknameException;
+
+    void getIncompleteLobbies(String nickname) throws NoNicknameException;
+
+    void createMatch(String matchName, int numPlayers, String nickname)
             throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, WrongNumberOfPlayersException,
             DuplicateMatchException, IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
-            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException;
+            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException, NoNicknameException;
 
-    void joinMatch(String matchName, String nickname, ClientStub client, ServerSideSocketHandler socketHandler)
+    void joinMatch(String matchName, String nickname)
             throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, WrongNumberOfPlayersException,
             NoMatchException, IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
             InvalidParameterException, EmptyDeckException, InvalidSearchPositionException;

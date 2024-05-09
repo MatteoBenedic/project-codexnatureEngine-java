@@ -22,6 +22,7 @@ public class ServerSideSocketHandler implements Runnable {
     private ObjectInputStream input;
     private Server server;
     private VirtualView view;
+    private String nickClient;
 
     /**
      * Constructor of a socket connection handler
@@ -31,6 +32,7 @@ public class ServerSideSocketHandler implements Runnable {
     public ServerSideSocketHandler(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
+        nickClient = null;
     }
 
     /**
@@ -72,39 +74,81 @@ public class ServerSideSocketHandler implements Runnable {
             } catch(IOException e) {
                 throw new RuntimeException();
             }
-
+        }
+        if(inObj instanceof NicknameMessage){
+            NicknameMessage message = (NicknameMessage) inObj;
+            if(nickClient != null)
+                sendMessage(new IllegalStateException("You've already defined the nickname"));
+            else{
+                try {
+                    server.setNickname(message.getNickname(), null, this);
+                    nickClient = message.getNickname();
+                    this.view = server.getVirtuaView(nickClient);
+                } catch (RemoteException | NotBoundException | AlreadyBoundException | DuplicateNicknameException e) {
+                    sendMessage(e);
+                }
+            }
+        }
+        if(inObj instanceof LobbiesRequestMessage){
+            if(nickClient == null)
+                sendMessage(new NoNicknameException("You aren't logged"));
+            else{
+                try {
+                    server.getIncompleteLobbies(nickClient);
+                } catch (NoNicknameException e) {
+                    sendMessage(e);
+                }
+            }
         }
         if(inObj instanceof CreateMatchMessage) {
             CreateMatchMessage message = (CreateMatchMessage) inObj;
-            try {
-                server.createMatch(message.getMatchName(), message.getNumPlayers(), message.getNickname(), null, this);
-                this.view = server.getVirtuaView(message.getNickname());
-            } catch (AlreadyBoundException | DuplicateNicknameException | WrongNumberOfPlayersException |
-                     DuplicateMatchException | NotBoundException | IOException | WrongInformationException |
-                     InvalidSearchPositionException | NotYourTurnException | EmptyDeckException |
-                     InvalidPlacementException e) {
-                sendMessage(e);
+            if(nickClient == null){
+                sendMessage(new NoNicknameException("You aren't logged"));
+            }else {
+                try {
+                    server.createMatch(message.getMatchName(), message.getNumPlayers(), nickClient);
+                } catch (DuplicateNicknameException | WrongNumberOfPlayersException |
+                         DuplicateMatchException | IOException | WrongInformationException |
+                         InvalidSearchPositionException | NotYourTurnException | EmptyDeckException |
+                         InvalidPlacementException | NoNicknameException e) {
+                    sendMessage(e);
+                }
             }
         }
         if(inObj instanceof JoinMatchMessage) {
             JoinMatchMessage message = (JoinMatchMessage) inObj;
-            try {
-                server.joinMatch(message.getMatchName(), message.getNickname(), null, this);
-                this.view = server.getVirtuaView(message.getNickname());
-            } catch (AlreadyBoundException | DuplicateNicknameException | WrongNumberOfPlayersException |
-                     NotBoundException | IOException | WrongInformationException |
-                     InvalidSearchPositionException | NotYourTurnException | EmptyDeckException |
-                     InvalidPlacementException | NoMatchException e) {
-                sendMessage(e);
+            if(nickClient == null) {
+                sendMessage(new NoNicknameException("You aren't logged"));
+            }else{
+                try {
+                    server.joinMatch(message.getMatchName(), nickClient);
+                } catch (DuplicateNicknameException | WrongNumberOfPlayersException |
+                         IOException | WrongInformationException |
+                         InvalidSearchPositionException | NotYourTurnException | EmptyDeckException |
+                         InvalidPlacementException | NoMatchException e) {
+                    sendMessage(e);
+                }
             }
         }
         if(inObj instanceof Event){
             Event event = (Event) inObj;
+            if(nickClient == null){
+                sendMessage(new NoNicknameException("You aren't logged"));
+            }else{
+                try {
+                    view.performEvent(event);
+                } catch (WrongInformationException | InvalidSearchPositionException | NotYourTurnException |
+                         WrongNumberOfPlayersException | EmptyDeckException | DuplicateNicknameException |
+                         InvalidPlacementException | IllegalStateException | InvalidParameterException |
+                         NullPointerException e) {
+                    sendMessage(e);
+                }
+            }
+        }
+        if(inObj instanceof CloseMatchConnectionMessage){
             try {
-                view.performEvent(event);
-            } catch (WrongInformationException | InvalidSearchPositionException | NotYourTurnException |
-                     WrongNumberOfPlayersException | EmptyDeckException | DuplicateNicknameException |
-                     InvalidPlacementException | IllegalStateException | InvalidParameterException e) {
+                close();
+            } catch (NoMatchException | NotBoundException | RemoteException e) {
                 sendMessage(e);
             }
         }

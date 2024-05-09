@@ -37,5 +37,7 @@ public class ClientLauncher {
             RMISimulator sim = new RMISimulator(ip);
             new Thread(sim).start();
         }
+        
+       // '█'
     }
 }

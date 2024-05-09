@@ -3,6 +3,8 @@ package it.polimi.ingsw.am12;
 import it.polimi.ingsw.am12.Controller.Controller;
 import it.polimi.ingsw.am12.Controller.Events.JoinMatchEvent;
 import it.polimi.ingsw.am12.Model.Logic.*;
+import it.polimi.ingsw.am12.View.Updates.LobbiesNonCompletedUpdate;
+import it.polimi.ingsw.am12.View.Updates.NicknameEstablishedUpdate;
 import it.polimi.ingsw.am12.View.VirtualViewSocket;
 import it.polimi.ingsw.am12.View.VirtualView;
 import it.polimi.ingsw.am12.View.VirtualViewRMI;
@@ -27,6 +29,8 @@ public class Server extends UnicastRemoteObject implements ServerStub {
     private final Map<String, Controller> matches;
     private final Map<String, String> nicknamesToMatch;
     private final Map<String, VirtualView> linkClientViews;
+    private final List<String> nicknames;
+    private final Map<String, Integer> lobbiesToComplete;
     private ServerSocket serverSocket;
     private int portServerSocket;
 
@@ -40,6 +44,8 @@ public class Server extends UnicastRemoteObject implements ServerStub {
         this.matches = new HashMap<>();
         this.nicknamesToMatch = new HashMap<>();
         this.linkClientViews = new HashMap<>();
+        nicknames = new ArrayList<>();
+        lobbiesToComplete = new HashMap<>();
         this.portServerSocket = portServerSocket;
         this.registry = registry;
     }
@@ -54,90 +60,22 @@ public class Server extends UnicastRemoteObject implements ServerStub {
     }
 
     /**
-     * Create a match in the Server
-     * @param matchName A String that identifies the match
-     * @param numPlayers the number of the players of the match
-     * @param nickname A String that identifies the player who wants to create the match
+     * Sets the nickname of the client that calls this remote method or by the socket handler connected to it
+     * @param nickname the nickname with whom wants to be identified
      * @param client An interface that identifies the client in case of an RMI connection
      * @param socketHandler the server side socket handler of the player with a socket connection
-     *                      who wants to create the match
+     *                   who wants to create the match
+     * @throws RemoteException if remote communication with the RMI registry failed
      * @throws NotBoundException if an attempt is made to look for a name that is not currently
      *                           bound in the RMI registry
-     * @throws RemoteException if remote communication with the RMI registry failed
-     * @throws DuplicateNicknameException if there's already a player with that nickname
-     * @throws WrongNumberOfPlayersException if numPlayers < 2 or numPlayers > 4
-     * @throws DuplicateMatchException if there's already a match with that name
      * @throws AlreadyBoundException if an attempt is made to bind an object to a name
-     *                               that already has an associated binding in the RMI registry.
-     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
-     * @throws InvalidParameterException if the nickname is null
-     */
-    public synchronized void createMatch(String matchName, int numPlayers, String nickname, ClientStub client, ServerSideSocketHandler socketHandler)
-            throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, WrongNumberOfPlayersException,
-            DuplicateMatchException, IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
-            InvalidParameterException, InvalidSearchPositionException, EmptyDeckException {
-
-        if(matches.containsKey(matchName)) {
-            throw new DuplicateMatchException("There's already a match with this name!");
-        }
-
-        //moved here in order to guarantee ATOMICITY
-        if(nicknamesToMatch.containsKey(nickname)) {
-            throw new DuplicateNicknameException();
-        }
-
-        Controller c = new Controller(numPlayers);
-        matches.put(matchName, c);
-
-        VirtualView v;
-        if(client != null) {
-           v = new VirtualViewRMI(nickname, client);
-            registry.bind(nickname+"VirtualView", v);
-        } else {
-            v = new VirtualViewSocket(nickname, socketHandler);
-        }
-        linkClientViews.put(nickname, v);
-        matches.get(matchName).addView(v);
-        nicknamesToMatch.put(nickname, matchName);
-        JoinMatchEvent e = new JoinMatchEvent(nickname, v);
-        v.performEvent(e);
-    }
-
-    /**
-     * Get a list of the matches
-     * @return a List of match names
-     */
-    public synchronized List<String> getMatches() {
-        return matches.keySet().stream().toList();
-    }
-
-    /**
-     * Join a match
-     * @param matchName The name of the match to join
-     * @param nickname A String that identifies the player who wants to join the match
-     * @param client An interface that identifies the client in case of an RMI connection
-     * @param socketHandler the server side socket handler of the player with a socket connection
-     *      *                      who wants to join the match
-     * @throws NotBoundException if an attempt is made to look for a name that is not currently
-     *                           bound in the RMI registry
-     * @throws RemoteException if remote communication with the RMI registry failed
+     *                          that already has an associated binding in the RMI registry.
      * @throws DuplicateNicknameException if there's already a player with that nickname
-     * @throws NoMatchException if there is not a match with that name
-     * @throws AlreadyBoundException if an attempt is made to bind an object to a name
-     *                               that already has an associated binding in the RMI registry.
-     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
-     * @throws InvalidParameterException if the nickname is null
-     * @throws WrongNumberOfPlayersException if there is already the maximum number of players in the lobby.
      */
-    public synchronized void joinMatch(String matchName, String nickname, ClientStub client, ServerSideSocketHandler socketHandler)
-            throws NotBoundException, RemoteException, AlreadyBoundException, DuplicateNicknameException, NoMatchException,  WrongNumberOfPlayersException,
-            IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
-            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
-        if(!matches.containsKey(matchName)) {
-            throw new NoMatchException("There isn't any match with this name!");
-        }
-        if(nicknamesToMatch.containsKey(nickname)) {
-            throw new DuplicateNicknameException();
+    public synchronized void setNickname(String nickname, ClientStub client, ServerSideSocketHandler socketHandler) throws RemoteException,
+            NotBoundException, AlreadyBoundException, DuplicateNicknameException {
+        if(nicknames.contains(nickname)) {
+            throw new DuplicateNicknameException("Nickname already in use");
         }
 
         VirtualView v;
@@ -149,11 +87,123 @@ public class Server extends UnicastRemoteObject implements ServerStub {
         }
 
         linkClientViews.put(nickname, v);
+
+        NicknameEstablishedUpdate u = new NicknameEstablishedUpdate(nickname);
+        new Thread(() ->
+        {
+            v.sendUpdate(u);
+        }).start();
+
+    }
+
+    /**
+     * Gives to the client the incomplete lobbies that it could join
+     * @param nickname
+     * @throws NoNicknameException
+     */
+    public synchronized void getIncompleteLobbies(String nickname) throws NoNicknameException {
+        if(!nicknames.contains(nickname))
+            throw new NoNicknameException("This nickname hasn't been set");
+
+        VirtualView v = linkClientViews.get(nickname);
+        LobbiesNonCompletedUpdate u = new LobbiesNonCompletedUpdate(lobbiesToComplete);
+        new Thread(() ->
+        {
+            v.sendUpdate(u);
+        }).start();
+    }
+
+    /**
+     * Create a match in the Server
+     * @param matchName A String that identifies the match
+     * @param numPlayers the number of the players of the match
+     * @param nickname A String that identifies the player who wants to create the match
+     * @throws RemoteException if remote communication with the RMI registry failed
+     * @throws DuplicateNicknameException if there's already a player with that nickname
+     * @throws WrongNumberOfPlayersException if numPlayers < 2 or numPlayers > 4
+     * @throws DuplicateMatchException if there's already a match with that name
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
+     * @throws InvalidParameterException if the nickname is null
+     */
+    public synchronized void createMatch(String matchName, int numPlayers, String nickname)
+            throws RemoteException, DuplicateNicknameException, WrongNumberOfPlayersException,
+            DuplicateMatchException, IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
+            InvalidParameterException, InvalidSearchPositionException, NoNicknameException, EmptyDeckException {
+
+        if(matches.containsKey(matchName)) {
+            throw new DuplicateMatchException("There's already a match with this name!");
+        }
+        if(nicknames.contains(nickname)) {
+            throw new NoNicknameException("This nickname hasn't been set");
+        }
+        if(nicknamesToMatch.containsKey(nickname)) {
+            throw new DuplicateNicknameException("There's already someone playing in a match with this nickname");
+        }
+
+        Controller c = new Controller(numPlayers);
+
+        matches.put(matchName, c);
+
+        lobbiesToComplete.put(matchName, numPlayers);
+
+        VirtualView v = linkClientViews.get(nickname);
         matches.get(matchName).addView(v);
-        nicknamesToMatch.put(nickname, matchName);
 
         JoinMatchEvent e = new JoinMatchEvent(nickname, v);
         v.performEvent(e);
+
+        nicknamesToMatch.put(nickname, matchName);
+    }
+
+    /**
+     * Join a match
+     * @param matchName The name of the match to join
+     * @param nickname A String that identifies the player who wants to join the match
+     * @throws NotBoundException if an attempt is made to look for a name that is not currently
+     *                           bound in the RMI registry
+     * @throws RemoteException if remote communication with the RMI registry failed
+     * @throws DuplicateNicknameException if there's already a player with that nickname
+     * @throws NoMatchException if there is not a match with that name
+     * @throws AlreadyBoundException if an attempt is made to bind an object to a name
+     *                               that already has an associated binding in the RMI registry.
+     * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
+     * @throws InvalidParameterException if the nickname is null
+     * @throws WrongNumberOfPlayersException if there is already the maximum number of players in the lobby.
+     */
+    public synchronized void joinMatch(String matchName, String nickname)
+            throws RemoteException, DuplicateNicknameException, NoMatchException,  WrongNumberOfPlayersException,
+            IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
+            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
+        if(!matches.containsKey(matchName)) {
+            throw new NoMatchException("There isn't any match with this name!");
+        }
+        if(nicknamesToMatch.containsKey(nickname)) {
+            throw new DuplicateNicknameException("There's already someone playing in a match with this nickname");
+        }
+
+
+        VirtualView v = linkClientViews.get(nickname);
+        try {
+            matches.get(matchName).addView(v);
+            JoinMatchEvent e = new JoinMatchEvent(nickname, v);
+            v.performEvent(e);
+        }catch(DuplicateNicknameException e){
+            matches.get(matchName).getModel().removeListener(v);
+            throw new DuplicateNicknameException(e.getMessage());
+        }catch(WrongNumberOfPlayersException e){
+            matches.get(matchName).getModel().removeListener(v);
+            throw new WrongNumberOfPlayersException(e.getMessage());
+        }
+        nicknamesToMatch.put(nickname, matchName);
+
+        if(lobbiesToComplete.get(matchName) < 2)
+            lobbiesToComplete.remove(matchName);
+        else {
+            int value = lobbiesToComplete.get(matchName);
+            value--;
+            lobbiesToComplete.remove(matchName);
+            lobbiesToComplete.put(matchName, value);
+        }
     }
 
     /**
@@ -166,28 +216,32 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * @throws RemoteException if remote communication with the RMI registry failed
      */
     public synchronized void closeMatchForPlayer(String nickName) throws NoMatchException, NotBoundException, RemoteException {
-        if(!(nicknamesToMatch.containsKey(nickName))){
-            throw new NoMatchException("There isn't any match where you were playing to close!");
+        try{
+            if(!(nicknamesToMatch.containsKey(nickName))){
+                throw new NoMatchException("There isn't any match where you were playing to close!");
+            }
+
+            String match = nicknamesToMatch.get(nickName);
+            VirtualView v = linkClientViews.get(nickName);
+            try {
+                registry.unbind(nickName + "VirtualView");
+            }catch(NotBoundException ignored){
+            }
+            v.removeListener();
+
+            GameModel gm = matches.get(match).getModel();
+            int allPlayerExit = gm.removeListener(v);
+
+            linkClientViews.remove(nickName, v);
+            nicknamesToMatch.remove(nickName, match);
+
+            if(allPlayerExit == 0) {
+                matches.get(match).closeModel();
+                matches.remove(match);
+            }
+        }catch(NullPointerException ignored){
         }
 
-        String match = nicknamesToMatch.get(nickName);
-        VirtualView v = linkClientViews.get(nickName);
-        try {
-            registry.unbind(nickName + "VirtualView");
-        }catch(NotBoundException ignored){
-        }
-        v.removeListener();
-
-        GameModel gm = matches.get(match).getModel();
-        int allPlayerExit = gm.removeListener(v);
-
-        linkClientViews.remove(nickName, v);
-        nicknamesToMatch.remove(nickName, match);
-
-        if(allPlayerExit == 0) {
-            matches.get(match).closeModel();
-            matches.remove(match);
-        }
     }
 
 

@@ -7,7 +7,7 @@ public class DuplicateNicknameException extends Exception{
     /**
      * Class constructor
      */
-    public DuplicateNicknameException() {
-        super("This nickname is already in use.");
+    public DuplicateNicknameException(String message) {
+        super(message);
     }
 }
