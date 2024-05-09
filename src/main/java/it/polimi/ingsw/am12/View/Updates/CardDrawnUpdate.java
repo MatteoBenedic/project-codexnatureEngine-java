@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am12.View.Updates;
 
 import it.polimi.ingsw.am12.MemoryUpdater;
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.Logic.State;
 
 
@@ -18,9 +19,9 @@ public class CardDrawnUpdate implements Update {
 
     int newPublicCard;
 
-    String newGoldDeckColour;
+    CardColour newGoldDeckColour;
 
-    String newResDeckColour;
+    CardColour newResDeckColour;
 
     String turn;
 
@@ -46,13 +47,13 @@ public class CardDrawnUpdate implements Update {
      * @param remaningRounds    the remaning rounds
      * @param state             the state
      */
-    public CardDrawnUpdate(String nickname, int indexDrawnCard, int deckIndex, int newPublicCard, String newGoldDeckColour, String newResDeckColour, String turn, int remaningRounds, State state){
+    public CardDrawnUpdate(String nickname, int indexDrawnCard, int deckIndex, int newPublicCard, CardColour newGoldDeckColour, CardColour newResDeckColour, String turn, int remaningRounds, State state){
         this.nickname = nickname;
         this.indexDrawnCard=indexDrawnCard;
         this.deckIndex=deckIndex;
         this.newPublicCard=newPublicCard;
-        this.newGoldDeckColour=newGoldDeckColour;
-        this.newResDeckColour=newResDeckColour;
+        this.newGoldDeckColour = newGoldDeckColour;
+        this.newResDeckColour = newResDeckColour;
         this.turn=turn;
         this.remaningRounds = remaningRounds;
         this.state = state;
@@ -99,7 +100,7 @@ public class CardDrawnUpdate implements Update {
      *
      * @return the string
      */
-    public String getNewGoldDeckColour(){
+    public CardColour getNewGoldDeckColour(){
         return newGoldDeckColour;
     }
 
@@ -108,7 +109,7 @@ public class CardDrawnUpdate implements Update {
      *
      * @return the string
      */
-    public String getNewResDeckColour(){
+    public CardColour getNewResDeckColour(){
         return newResDeckColour;
     }
 

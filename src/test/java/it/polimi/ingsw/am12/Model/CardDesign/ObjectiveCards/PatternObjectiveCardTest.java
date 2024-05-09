@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards;
 
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
 import it.polimi.ingsw.am12.Model.Logic.InvalidPlacementException;
 import it.polimi.ingsw.am12.Model.Logic.PlayingGrid;
@@ -16,9 +17,9 @@ class PatternObjectiveCardTest {
     public void PatternObjectiveCard() throws IllegalRequirementsException {
         //Constructor test: a valid pattern objective card
         CoordinateSubmatrix[] coordObj86 = new CoordinateSubmatrix[3];
-        coordObj86[0]= new CoordinateSubmatrix(2,0, "red");
-        coordObj86[1]= new CoordinateSubmatrix(1,1, "red");
-        coordObj86[2]= new CoordinateSubmatrix(0,2, "red");
+        coordObj86[0]= new CoordinateSubmatrix(2,0, CardColour.RED);
+        coordObj86[1]= new CoordinateSubmatrix(1,1, CardColour.RED);
+        coordObj86[2]= new CoordinateSubmatrix(0,2, CardColour.RED);
         PatternObjectiveCard objCard86 = new PatternObjectiveCard(coordObj86, 86, 2);
         objCard86.calculateDeltas();
         //Checking coordinate values for this valid pattern objective card
@@ -30,24 +31,25 @@ class PatternObjectiveCardTest {
         assertEquals(2, objCard86.getCoordReqPattern(2).getY());
         //Constructor test: invalid pattern objective card (wrong number of coordinates)
         CoordinateSubmatrix[] obj1coord = new CoordinateSubmatrix[4];
-        obj1coord[0]= new CoordinateSubmatrix(2,0, "red");
-        obj1coord[1]= new CoordinateSubmatrix(1,1, "red");
-        obj1coord[2]= new CoordinateSubmatrix(0,2, "red");
-        obj1coord[3]= new CoordinateSubmatrix(2,2,"blue");
+        obj1coord[0]= new CoordinateSubmatrix(2,0, CardColour.RED);
+        obj1coord[1]= new CoordinateSubmatrix(1,1, CardColour.RED);
+        obj1coord[2]= new CoordinateSubmatrix(0,2, CardColour.RED);
+        obj1coord[3]= new CoordinateSubmatrix(2,2,CardColour.BLUE);
         assertThrows(IllegalRequirementsException.class, ()-> new PatternObjectiveCard(obj1coord, 0, 2));
     }
+
 
     @Test
     void getCoordReqPattern() throws IllegalRequirementsException {
         CoordinateSubmatrix[] coordObj86 = new CoordinateSubmatrix[3];
-        coordObj86[0]= new CoordinateSubmatrix(2,0, "blue");
-        coordObj86[1]= new CoordinateSubmatrix(1,1, "blue");
-        coordObj86[2]= new CoordinateSubmatrix(0,2, "blue");
+        coordObj86[0]= new CoordinateSubmatrix(2,0, CardColour.BLUE);
+        coordObj86[1]= new CoordinateSubmatrix(1,1, CardColour.BLUE);
+        coordObj86[2]= new CoordinateSubmatrix(0,2, CardColour.BLUE);
         PatternObjectiveCard objCard88 = new PatternObjectiveCard(coordObj86, 88, 2);
         objCard88.calculateDeltas();
-        CoordinateSubmatrix coord88First = new CoordinateSubmatrix(2,0,"blue");
-        CoordinateSubmatrix coord88Second = new CoordinateSubmatrix(1,1,"blue");
-        CoordinateSubmatrix coord88Third = new CoordinateSubmatrix(0,2,"blue");
+        CoordinateSubmatrix coord88First = new CoordinateSubmatrix(2,0,CardColour.BLUE);
+        CoordinateSubmatrix coord88Second = new CoordinateSubmatrix(1,1,CardColour.BLUE);
+        CoordinateSubmatrix coord88Third = new CoordinateSubmatrix(0,2,CardColour.BLUE);
 
         assertEquals(coord88First.getX(), objCard88.getCoordReqPattern(0).getX());
         assertEquals(coord88First.getY(), objCard88.getCoordReqPattern(0).getY());
@@ -67,9 +69,9 @@ class PatternObjectiveCardTest {
     void calculatePointsConstr0() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor for the objective card
         CoordinateSubmatrix[] coordObj86 = new CoordinateSubmatrix[3];
-        coordObj86[0]= new CoordinateSubmatrix(2,0, "red");
-        coordObj86[1]= new CoordinateSubmatrix(1,1, "red");
-        coordObj86[2]= new CoordinateSubmatrix(0,2, "red");
+        coordObj86[0]= new CoordinateSubmatrix(2,0, CardColour.RED);
+        coordObj86[1]= new CoordinateSubmatrix(1,1, CardColour.RED);
+        coordObj86[2]= new CoordinateSubmatrix(0,2, CardColour.RED);
         ObjectiveCard objCard86 = new PatternObjectiveCard(coordObj86, 86, 2);
         objCard86.calculateDeltas();
 
@@ -97,9 +99,9 @@ class PatternObjectiveCardTest {
     void calculatePointsConstr1() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor for the objective card
         CoordinateSubmatrix[] coordObj86 = new CoordinateSubmatrix[3];
-        coordObj86[0]= new CoordinateSubmatrix(2,0, "red");
-        coordObj86[1]= new CoordinateSubmatrix(1,1, "red");
-        coordObj86[2]= new CoordinateSubmatrix(0,2, "red");
+        coordObj86[0]= new CoordinateSubmatrix(2,0, CardColour.RED);
+        coordObj86[1]= new CoordinateSubmatrix(1,1, CardColour.RED);
+        coordObj86[2]= new CoordinateSubmatrix(0,2, CardColour.RED);
         ObjectiveCard objCard86 = new PatternObjectiveCard(coordObj86, 86, 2);
         objCard86.calculateDeltas();
 
@@ -130,9 +132,9 @@ class PatternObjectiveCardTest {
     void calculatePointsConstr2() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor for the objective card
         CoordinateSubmatrix[] coordObj86 = new CoordinateSubmatrix[3];
-        coordObj86[0]= new CoordinateSubmatrix(2,0, "red");
-        coordObj86[1]= new CoordinateSubmatrix(1,1, "red");
-        coordObj86[2]= new CoordinateSubmatrix(0,2, "red");
+        coordObj86[0]= new CoordinateSubmatrix(2,0, CardColour.RED);
+        coordObj86[1]= new CoordinateSubmatrix(1,1, CardColour.RED);
+        coordObj86[2]= new CoordinateSubmatrix(0,2, CardColour.RED);
         ObjectiveCard objCard86 = new PatternObjectiveCard(coordObj86, 86, 2);
         objCard86.calculateDeltas();
 
@@ -170,9 +172,9 @@ class PatternObjectiveCardTest {
     void calculatePointsConstr3() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor for the objective card
         CoordinateSubmatrix[] coordObj91 = new CoordinateSubmatrix[3];
-        coordObj91[0]= new CoordinateSubmatrix(1,0, "green");
-        coordObj91[1]= new CoordinateSubmatrix(1,2, "green");
-        coordObj91[2]= new CoordinateSubmatrix(0,3,"purple");
+        coordObj91[0]= new CoordinateSubmatrix(1,0, CardColour.GREEN);
+        coordObj91[1]= new CoordinateSubmatrix(1,2, CardColour.GREEN);
+        coordObj91[2]= new CoordinateSubmatrix(0,3,CardColour.PURPLE);
         ObjectiveCard objCard91 = new PatternObjectiveCard(coordObj91, 91, 3);
         objCard91.calculateDeltas();
 
@@ -202,9 +204,9 @@ class PatternObjectiveCardTest {
     void calculatePointsConstr4() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor for the objective card
         CoordinateSubmatrix[] coordObj86 = new CoordinateSubmatrix[3];
-        coordObj86[0]= new CoordinateSubmatrix(2,0, "red");
-        coordObj86[1]= new CoordinateSubmatrix(1,1, "red");
-        coordObj86[2]= new CoordinateSubmatrix(0,2, "red");
+        coordObj86[0]= new CoordinateSubmatrix(2,0, CardColour.RED);
+        coordObj86[1]= new CoordinateSubmatrix(1,1, CardColour.RED);
+        coordObj86[2]= new CoordinateSubmatrix(0,2, CardColour.RED);
         ObjectiveCard objCard86 = new PatternObjectiveCard(coordObj86, 86, 2);
         objCard86.calculateDeltas();
 
@@ -246,16 +248,16 @@ class PatternObjectiveCardTest {
     void calculatePointsConstr5() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor for the objective card
         CoordinateSubmatrix[] coordObj86 = new CoordinateSubmatrix[3];
-        coordObj86[0] = new CoordinateSubmatrix(2,0,"red");
-        coordObj86[1] = new CoordinateSubmatrix(1,1, "red");
-        coordObj86[2] = new CoordinateSubmatrix(0,2, "red");
+        coordObj86[0] = new CoordinateSubmatrix(2,0,CardColour.RED);
+        coordObj86[1] = new CoordinateSubmatrix(1,1, CardColour.RED);
+        coordObj86[2] = new CoordinateSubmatrix(0,2, CardColour.RED);
         ObjectiveCard objCard86 = new PatternObjectiveCard(coordObj86, 86, 2);
         objCard86.calculateDeltas();
 
         CoordinateSubmatrix[] coordObj90 = new CoordinateSubmatrix[3];
-        coordObj90[0] = new CoordinateSubmatrix(0,0,"red");
-        coordObj90[1] = new CoordinateSubmatrix(0,2,"red");
-        coordObj90[2] = new CoordinateSubmatrix(1,3, "green");
+        coordObj90[0] = new CoordinateSubmatrix(0,0,CardColour.RED);
+        coordObj90[1] = new CoordinateSubmatrix(0,2,CardColour.RED);
+        coordObj90[2] = new CoordinateSubmatrix(1,3, CardColour.GREEN);
         PatternObjectiveCard objCard90 = new PatternObjectiveCard(coordObj90, 90, 3);
         objCard90.calculateDeltas();
 
@@ -305,16 +307,16 @@ class PatternObjectiveCardTest {
     void calculatePointsConstr6() throws IllegalRequirementsException, InvalidPlacementException {
         //Constructor for the objective card
         CoordinateSubmatrix[] coordObj86 = new CoordinateSubmatrix[3];
-        coordObj86[0] = new CoordinateSubmatrix(2,0,"red");
-        coordObj86[1] = new CoordinateSubmatrix(1,1, "red");
-        coordObj86[2] = new CoordinateSubmatrix(0,2, "red");
+        coordObj86[0] = new CoordinateSubmatrix(2,0,CardColour.RED);
+        coordObj86[1] = new CoordinateSubmatrix(1,1, CardColour.RED);
+        coordObj86[2] = new CoordinateSubmatrix(0,2, CardColour.RED);
         ObjectiveCard objCard86 = new PatternObjectiveCard(coordObj86, 86, 2);
         objCard86.calculateDeltas();
 
         CoordinateSubmatrix[] coordObj90 = new CoordinateSubmatrix[3];
-        coordObj90[0] = new CoordinateSubmatrix(0,0,"red");
-        coordObj90[1] = new CoordinateSubmatrix(0,2,"red");
-        coordObj90[2] = new CoordinateSubmatrix(1,3, "green");
+        coordObj90[0] = new CoordinateSubmatrix(0,0,CardColour.RED);
+        coordObj90[1] = new CoordinateSubmatrix(0,2,CardColour.RED);
+        coordObj90[2] = new CoordinateSubmatrix(1,3, CardColour.GREEN);
         PatternObjectiveCard objCard90 = new PatternObjectiveCard(coordObj90, 90, 3);
         objCard90.calculateDeltas();
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards;
 
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
+
 /**
  * This class represents a coordinate in the submatrix to search for calculating the completions of a PatternObjectiveCard
  */
@@ -10,7 +12,7 @@ public class CoordinateSubmatrix {
 
     int x;
     int y;
-    String colour;
+    CardColour colour;
 
     /**
      * constructor method for a submatrix coordinate
@@ -19,7 +21,7 @@ public class CoordinateSubmatrix {
      * @param colour the colour required by the pattern
      * @throws IllegalRequirementsException if an attempt to instatiate a new CoordinateSubmatrix object with invalid values is made
      */
-    public CoordinateSubmatrix(int x, int y, String colour) throws IllegalRequirementsException {
+    public CoordinateSubmatrix(int x, int y, CardColour colour) throws IllegalRequirementsException {
 
         if(x >= 0 && x < MAX_NUMBER_OF_COL && y>=0 && y < MAX_NUMBER_OF_ROWS) {
             this.x = x;
@@ -29,12 +31,8 @@ public class CoordinateSubmatrix {
             throw new IllegalRequirementsException("Cannot support coordinates outside the assigned PlayingGrid boundaries ("+MAX_NUMBER_OF_ROWS+"x"+MAX_NUMBER_OF_COL+")");
         }
 
-        if(colour.equals("red") || colour.equals("green") || colour.equals("blue") || colour.equals("purple")) {
-            this.colour = colour;
-        }
-        else{
-            throw new IllegalRequirementsException("colour should be either red, green, blue or purple for the submatrix coordinate");
-        }
+        this.colour = colour;
+
     }
 
     /**
@@ -59,7 +57,7 @@ public class CoordinateSubmatrix {
      * getter method for the colour of the card in the submatrix
      * @return a string representing the colour
      */
-    public String getColour() {
+    public CardColour getColour() {
         return colour;
     }
 

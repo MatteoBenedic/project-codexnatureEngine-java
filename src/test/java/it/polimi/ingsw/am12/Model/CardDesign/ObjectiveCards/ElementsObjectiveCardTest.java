@@ -9,6 +9,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ElementsObjectiveCardTest {
+
     @Test
     void calculatePointsConstr100() throws IllegalRequirementsException {
         //Case Objective Card index 100

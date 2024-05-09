@@ -69,7 +69,7 @@ public class DrawTable {
      * @return the color of the top card of the gold deck
      * (null if the deck is empty)
      */
-    public String getColorTopGoldDeck(){
+    public CardColour getColorTopGoldDeck(){
         if(goldDeck.isEmpty()) {
             return null;
         }
@@ -80,7 +80,7 @@ public class DrawTable {
      * @return the color of the top ca of the resource deck
      * (null if the deck is empty)
      */
-    public String getColorTopResDeck(){
+    public CardColour getColorTopResDeck(){
         if(resDeck.isEmpty()) {
             return null;
         }

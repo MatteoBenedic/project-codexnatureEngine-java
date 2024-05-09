@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Utils.Coordinate;
 import it.polimi.ingsw.am12.View.UpdateListener;
 import it.polimi.ingsw.am12.View.Updates.*;
@@ -463,11 +464,11 @@ public class GameModel{
         if(index<=3) {
             newPublicCard = match.getPublicCards()[index];
         }
-        String newGoldDeckColour = null;
+        CardColour newGoldDeckColour = null;
         if(index <= 1 || index ==4) {
             newGoldDeckColour = match.getDeckColours()[0];
         }
-        String newResDeckColour = null;
+        CardColour newResDeckColour = null;
         if(index ==2 || index ==3 || index == 5) {
             newResDeckColour = match.getDeckColours()[1];
         }

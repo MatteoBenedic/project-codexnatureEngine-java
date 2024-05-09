@@ -43,13 +43,13 @@ class JSONParserTest {
             GameCard card = cards.get(i);
             assertEquals(i, card.getIndex());
             if(i<10)
-                assertEquals("red", card.getColour());
+                assertEquals(CardColour.RED, card.getColour());
             if(i>=10 && i<20)
-                assertEquals("green", card.getColour());
+                assertEquals(CardColour.GREEN, card.getColour());
             if(i>=20 && i<30)
-                assertEquals("blue", card.getColour());
+                assertEquals(CardColour.BLUE, card.getColour());
             if(i>=30)
-                assertEquals("purple", card.getColour());
+                assertEquals(CardColour.PURPLE, card.getColour());
 
             //Resource card front
             card.setValidSide(true);
@@ -149,13 +149,13 @@ class JSONParserTest {
             GameCard card = cards.get(i);
             assertEquals(40+i, card.getIndex());
             if(i<10)
-                assertEquals("red", card.getColour());
+                assertEquals(CardColour.RED, card.getColour());
             if(i>=10 && i<20)
-                assertEquals("green", card.getColour());
+                assertEquals(CardColour.GREEN, card.getColour());
             if(i>=20 && i<30)
-                assertEquals("blue", card.getColour());
+                assertEquals(CardColour.BLUE, card.getColour());
             if(i>=30)
-                assertEquals("purple", card.getColour());
+                assertEquals(CardColour.PURPLE, card.getColour());
 
             //Gold card front
             card.setValidSide(true);

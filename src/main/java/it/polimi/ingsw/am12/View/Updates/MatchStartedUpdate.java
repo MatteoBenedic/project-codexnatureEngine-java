@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am12.View.Updates;
 
 import it.polimi.ingsw.am12.MemoryUpdater;
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.Logic.State;
 import java.util.Map;
 import java.util.List;
@@ -9,14 +10,14 @@ public class MatchStartedUpdate implements Update {
 
     List<String> nicknames;
     Map<String, Integer> startCards;
-    String goldDeckColour;
-    String resDeckColour;
+    CardColour goldDeckColour;
+    CardColour resDeckColour;
     int[] publicCards;
     String turn;
     State state;
 
 
-    public MatchStartedUpdate(List<String> nicknames, Map<String, Integer> startCards, String goldDeckColour, String resDeckColour, int[] publicCards, String turn, State state) {
+    public MatchStartedUpdate(List<String> nicknames, Map<String, Integer> startCards, CardColour goldDeckColour, CardColour resDeckColour, int[] publicCards, String turn, State state) {
         this.nicknames = nicknames;
         this.startCards = startCards;
         this.goldDeckColour = goldDeckColour;
@@ -56,11 +57,11 @@ public class MatchStartedUpdate implements Update {
         return startCards;
     }
 
-    public String getGoldDeckColour() {
+    public CardColour getGoldDeckColour() {
         return goldDeckColour;
     }
 
-    public String getResDeckColour() {
+    public CardColour getResDeckColour() {
         return resDeckColour;
     }
 

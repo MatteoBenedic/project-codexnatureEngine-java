@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards;
 
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
 import it.polimi.ingsw.am12.Model.Logic.InvalidPlacementException;
 import it.polimi.ingsw.am12.Model.Logic.PlayingGrid;
@@ -12,13 +13,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ObjectiveCardTest {
 
-
+    
     @Test
     void getObjIndexC() throws IllegalRequirementsException {
         CoordinateSubmatrix[] obj86Coord = new CoordinateSubmatrix[3];
-        obj86Coord[0]= new CoordinateSubmatrix(2,0, "red");
-        obj86Coord[1]= new CoordinateSubmatrix(1,1, "red");
-        obj86Coord[2]= new CoordinateSubmatrix(0,2, "red");
+        obj86Coord[0]= new CoordinateSubmatrix(2,0, CardColour.RED);
+        obj86Coord[1]= new CoordinateSubmatrix(1,1, CardColour.RED);
+        obj86Coord[2]= new CoordinateSubmatrix(0,2, CardColour.RED);
         PatternObjectiveCard objcard86 = new PatternObjectiveCard(obj86Coord, 86, 2);
         objcard86.calculateDeltas();
 
@@ -38,9 +39,9 @@ class ObjectiveCardTest {
     void getPointsC() throws IllegalRequirementsException {
 
         CoordinateSubmatrix[] obj86Coord = new CoordinateSubmatrix[3];
-        obj86Coord[0]= new CoordinateSubmatrix(2,0, "red");
-        obj86Coord[1]= new CoordinateSubmatrix(1,1, "red");
-        obj86Coord[2]= new CoordinateSubmatrix(0,2, "red");
+        obj86Coord[0]= new CoordinateSubmatrix(2,0, CardColour.RED);
+        obj86Coord[1]= new CoordinateSubmatrix(1,1, CardColour.RED);
+        obj86Coord[2]= new CoordinateSubmatrix(0,2, CardColour.RED);
         PatternObjectiveCard objcard86 = new PatternObjectiveCard(obj86Coord, 86, 2);
         objcard86.calculateDeltas();
 
@@ -60,9 +61,9 @@ class ObjectiveCardTest {
     void calculatePointsC() throws IllegalRequirementsException, InvalidPlacementException {
 
         CoordinateSubmatrix[] obj91Coord = new CoordinateSubmatrix[3];
-        obj91Coord[0]= new CoordinateSubmatrix(1,0, "green");
-        obj91Coord[1]= new CoordinateSubmatrix(1,2, "green");
-        obj91Coord[2]= new CoordinateSubmatrix(0,3,"purple");
+        obj91Coord[0]= new CoordinateSubmatrix(1,0, CardColour.GREEN);
+        obj91Coord[1]= new CoordinateSubmatrix(1,2, CardColour.GREEN);
+        obj91Coord[2]= new CoordinateSubmatrix(0,3,CardColour.PURPLE);
         PatternObjectiveCard objcard91 = new PatternObjectiveCard(obj91Coord, 91, 3);
         objcard91.calculateDeltas();
 
@@ -119,6 +120,6 @@ class ObjectiveCardTest {
 
     }
 
-
+    
 
 }

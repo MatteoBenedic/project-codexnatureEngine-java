@@ -84,8 +84,8 @@ public class Match {
      * 0 = gold deck
      * 1 = resource deck
      */
-    public String[] getDeckColours() {
-        String [] colours = new String[2];
+    public CardColour[] getDeckColours() {
+        CardColour[] colours = new CardColour[2];
         colours[0] = drawTable.getColorTopGoldDeck();
         colours[1] = drawTable.getColorTopResDeck();
         return colours;

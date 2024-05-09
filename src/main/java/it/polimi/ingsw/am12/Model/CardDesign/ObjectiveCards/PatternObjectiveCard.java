@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards;
 
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.Logic.PlayingGrid;
 
 /**
@@ -72,11 +73,11 @@ public class PatternObjectiveCard extends ObjectiveCard{
      * @return int value representing the number of completions
      */
     private int checkPatterns(PlayingGrid grid){
-        //v.1.0
+        //v.1.2
         int objCompletions = 0;
         for(int i=0; i<grid.getPlcards().length; i++){
             for(int j=0; j<grid.getPlcards()[i].length; j++){
-                if(!grid.cellIsEmpty(i,j) && grid.getPlcards()[i][j].getColour()!=null){
+                if(!grid.cellIsEmpty(i,j) && grid.getPlcards()[i][j].getColour()!= null){
                     if(grid.checkColourMatch(i,j,this,0)
                             && !(grid.cardWasAlreadyUsedForThisObjective(i,j,this))){
                         //From here: working starting from the master cell

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class GameCard{
     private int index;
-    private String colour;
+    private CardColour colour;
     private Side front = null;
     private Side back = null;
     private Side validSide = null;
@@ -56,9 +56,9 @@ public class GameCard{
     }
 
     /**
-     * @return the colour of the card if there's one, null otherwise
+     * @return the card suit
      */
-    public String getColour() {
+    public CardColour getColour() {
         return colour;
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
 import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.CoordinateSubmatrix;
@@ -328,15 +329,15 @@ class PlayingGridTest {
         }
 
         CoordinateSubmatrix[] obj86Coord = new CoordinateSubmatrix[3];
-        obj86Coord[0]= new CoordinateSubmatrix(2,0, "red");
-        obj86Coord[1]= new CoordinateSubmatrix(1,1, "red");
-        obj86Coord[2]= new CoordinateSubmatrix(0,2, "red");
+        obj86Coord[0]= new CoordinateSubmatrix(2,0, CardColour.RED);
+        obj86Coord[1]= new CoordinateSubmatrix(1,1, CardColour.RED);
+        obj86Coord[2]= new CoordinateSubmatrix(0,2, CardColour.RED);
         PatternObjectiveCard objcard86 = new PatternObjectiveCard(obj86Coord, 86, 2);
         objcard86.calculateDeltas();
         CoordinateSubmatrix[] obj88Coord = new CoordinateSubmatrix[3];
-        obj88Coord[0]= new CoordinateSubmatrix(2,0, "blue");
-        obj88Coord[1]= new CoordinateSubmatrix(1,1, "blue");
-        obj88Coord[2]= new CoordinateSubmatrix(0,2, "blue");
+        obj88Coord[0]= new CoordinateSubmatrix(2,0, CardColour.BLUE);
+        obj88Coord[1]= new CoordinateSubmatrix(1,1, CardColour.BLUE);
+        obj88Coord[2]= new CoordinateSubmatrix(0,2, CardColour.BLUE);
         PatternObjectiveCard objcard88 = new PatternObjectiveCard(obj88Coord, 88, 2);
         objcard88.calculateDeltas();
         PlayingGrid plcards = new PlayingGrid();
@@ -359,9 +360,9 @@ class PlayingGridTest {
             goldCard.setValidSide(false);
         }
         CoordinateSubmatrix[] obj86Coord = new CoordinateSubmatrix[3];
-        obj86Coord[0]= new CoordinateSubmatrix(2,0, "red");
-        obj86Coord[1]= new CoordinateSubmatrix(1,1, "red");
-        obj86Coord[2]= new CoordinateSubmatrix(0,2, "red");
+        obj86Coord[0]= new CoordinateSubmatrix(2,0, CardColour.RED);
+        obj86Coord[1]= new CoordinateSubmatrix(1,1, CardColour.RED);
+        obj86Coord[2]= new CoordinateSubmatrix(0,2, CardColour.RED);
         PatternObjectiveCard objcard86 = new PatternObjectiveCard(obj86Coord, 86, 2);
         objcard86.calculateDeltas();
         PlayingGrid plcards = new PlayingGrid();
@@ -387,9 +388,9 @@ class PlayingGridTest {
         GameCard goldcard0 = goldcards.get(0);
         plcards.placeStartCard(3,3, goldcard0);
         CoordinateSubmatrix[] obj87Coord = new CoordinateSubmatrix[3];
-        obj87Coord[0]= new CoordinateSubmatrix(0,0, "green");
-        obj87Coord[1]= new CoordinateSubmatrix(1,1, "green");
-        obj87Coord[2]= new CoordinateSubmatrix(2,2, "green");
+        obj87Coord[0]= new CoordinateSubmatrix(0,0, CardColour.GREEN);
+        obj87Coord[1]= new CoordinateSubmatrix(1,1, CardColour.GREEN);
+        obj87Coord[2]= new CoordinateSubmatrix(2,2, CardColour.GREEN);
         PatternObjectiveCard objcard87 = new PatternObjectiveCard(obj87Coord, 87, 2);
         objcard87.calculateDeltas();
         //marking the card as completed for an objective card
@@ -413,6 +414,5 @@ class PlayingGridTest {
         assertEquals(4, plcards.getNumElements(Element.QUILL));
 
     }
-
 
 }
