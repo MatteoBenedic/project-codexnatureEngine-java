@@ -52,7 +52,6 @@ public abstract class VirtualView extends UnicastRemoteObject implements UpdateL
 
     /**
      * Perform an Event, that will be listened by the subscribed listener
-     *
      * @param e the Event to perform
      */
     public void performEvent(Event e) throws WrongNumberOfPlayersException, DuplicateNicknameException,

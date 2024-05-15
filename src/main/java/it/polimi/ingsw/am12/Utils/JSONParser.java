@@ -2,6 +2,7 @@ package it.polimi.ingsw.am12.Utils;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.am12.CLI.CliCard;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.Side;
 import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ObjectiveCard;
@@ -72,6 +73,15 @@ public class JSONParser {
      */
     public List<GameCard> parseStartCards() {
         return parseGameCards("startCards.json");
+    }
+
+
+    public List<CliCard> parseCLICards(){
+        InputStream is = getClass().getClassLoader().getResourceAsStream("cliCards.json");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        Type listofCLIcards = new TypeToken<List<CliCard>>() {
+        }.getType();
+        return gson.fromJson(reader, listofCLIcards);
     }
 }
 

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.am12.Utils;
 
+import java.io.Serializable;
+
 /**
  * This class represents the position in the matrix, it's used to compress the 2 coordinates
  */
-public class Coordinate {
+public class Coordinate implements Serializable {
 
     private int x;
     private int y;

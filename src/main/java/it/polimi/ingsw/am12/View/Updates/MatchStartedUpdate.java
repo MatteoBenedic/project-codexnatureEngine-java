@@ -1,8 +1,8 @@
 package it.polimi.ingsw.am12.View.Updates;
 
-import it.polimi.ingsw.am12.MemoryUpdater;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.Logic.State;
+import it.polimi.ingsw.am12.ViewModelUpdater;
 import java.util.Map;
 import java.util.List;
 
@@ -17,6 +17,20 @@ public class MatchStartedUpdate implements Update {
     State state;
 
 
+    /**
+     * Class constructor
+     * @param nicknames the nicknames of the players in the game
+     * @param startCards the start card assigned to each player
+     * @param goldDeckColour the colour of the gold deck
+     * @param resDeckColour the colour of the resource deck
+     * @param publicCards the four public cards
+     *                    0 --> first gold
+     *                    1 --> second gold
+     *                    2 --> first resource
+     *                    3 --> second resource
+     * @param turn the nickname of the player whose turn is now
+     * @param state the state of the game (STARTCARD)
+     */
     public MatchStartedUpdate(List<String> nicknames, Map<String, Integer> startCards, CardColour goldDeckColour, CardColour resDeckColour, int[] publicCards, String turn, State state) {
         this.nicknames = nicknames;
         this.startCards = startCards;
@@ -27,58 +41,13 @@ public class MatchStartedUpdate implements Update {
         this.state = state;
     }
 
-    public String toString(String receiver) {
-        if(receiver==null || !nicknames.contains(receiver))
-            return "";
-
-        String message = "\nMatch has started.";
-        message += "\nThe colour of the gold deck is "+goldDeckColour;
-        message += "\nThe colour of the resource deck is "+resDeckColour;
-        message += "\nThe public cards are:";
-        for(int card: publicCards) {
-            message += " "+card;
-        }
-        message += "\nYour start card is: " + startCards.get(receiver);
-        if(turn.equals(receiver)) {
-            message += "\nIt's your turn: place your start card";
-        }
-        else {
-            message += "\nIt's " + turn + "'s turn. Please wait.";
-        }
-
-        return message;
-    }
-
-    public List<String> getNicknames() {
-        return nicknames;
-    }
-
-    public Map<String, Integer> getStartCards() {
-        return startCards;
-    }
-
-    public CardColour getGoldDeckColour() {
-        return goldDeckColour;
-    }
-
-    public CardColour getResDeckColour() {
-        return resDeckColour;
-    }
-
-    public int[] getPublicCards() {
-        return publicCards;
-    }
-
-    public String getTurn() {
-        return turn;
-    }
-
+    /**
+     * Update the ViewModel
+     * @param viewModelUpdater the ViewModel to update
+     */
     @Override
-    public void executeUpdate(MemoryUpdater memoryUpdater) {
-
+    public void executeUpdate(ViewModelUpdater viewModelUpdater) {
+        viewModelUpdater.matchStartedUpdate(nicknames, turn, state, startCards, goldDeckColour, resDeckColour, publicCards);
     }
 
-    public State getState() {
-        return state;
-    }
 }

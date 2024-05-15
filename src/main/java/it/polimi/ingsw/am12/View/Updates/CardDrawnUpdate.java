@@ -1,51 +1,41 @@
 package it.polimi.ingsw.am12.View.Updates;
 
-import it.polimi.ingsw.am12.MemoryUpdater;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.Logic.State;
-
+import it.polimi.ingsw.am12.ViewModelUpdater;
 
 /**
  * Update to handle when a card is drawn
  */
 public class CardDrawnUpdate implements Update {
 
-
     String nickname;
-
     int indexDrawnCard;
-
     int deckIndex;
-
     int newPublicCard;
-
     CardColour newGoldDeckColour;
-
     CardColour newResDeckColour;
-
     String turn;
-
     int remaningRounds;
-
     State state;
 
     /**
-     * Instantiates a new Card drawn update.
-     *
+     * Class constructor
      * @param nickname          the nickname of player
-     * @param indexDrawnCard    the index drawn card from json
-     * @param deckIndex         the deck idx index = 0  : public gold 1;
-     *               - index = 1  : public gold 2;
-     *               - index = 2  : public resource 1;
-     *               - index = 3  : public resource 2;
-     *               - index = 4  : hidden gold;
-     *               - index = 5  : hidden resource;
-     * @param newPublicCard     the new public card
-     * @param newGoldDeckColour the new gold deck colour on the grid
-     * @param newResDeckColour  the new res deck colour on the grid
-     * @param turn              the turn
-     * @param remaningRounds    the remaning rounds
-     * @param state             the state
+     * @param indexDrawnCard    the index of the drawn card
+     * @param deckIndex         the deck idx
+     *                          index = 0  : public gold 1;
+     *                          index = 1  : public gold 2;
+     *                          index = 2  : public resource 1;
+     *                          index = 3  : public resource 2;
+     *                          index = 4  : hidden gold;
+     *                          index = 5  : hidden resource;
+     * @param newPublicCard     the index of the new public card
+     * @param newGoldDeckColour the new gold deck colour
+     * @param newResDeckColour  the new res deck colour
+     * @param turn              the nickname of the player whose turn is now
+     * @param remaningRounds    the remaining rounds
+     * @param state             the state of the game (PLACING or END)
      */
     public CardDrawnUpdate(String nickname, int indexDrawnCard, int deckIndex, int newPublicCard, CardColour newGoldDeckColour, CardColour newResDeckColour, String turn, int remaningRounds, State state){
         this.nickname = nickname;
@@ -60,87 +50,11 @@ public class CardDrawnUpdate implements Update {
     }
 
     /**
-     * Get nickname string.
-     *
-     * @return the string
+     * Update the ViewModel
+     * @param viewModelUpdater the ViewModel to update
      */
-    public String getNickname(){
-        return nickname;
-    }
-
-    /**
-     * Get index drawn card int.
-     *
-     * @return the int
-     */
-    public int getIndexDrawnCard(){
-        return indexDrawnCard;
-    }
-
-    /**
-     * Get deck index int.
-     *
-     * @return the int
-     */
-    public int getDeckIndex(){
-        return deckIndex;
-    }
-
-    /**
-     * Get new public card int.
-     *
-     * @return the int
-     */
-    public int getNewPublicCard(){
-        return newPublicCard;
-    }
-
-    /**
-     * Get new gold deck colour string.
-     *
-     * @return the string
-     */
-    public CardColour getNewGoldDeckColour(){
-        return newGoldDeckColour;
-    }
-
-    /**
-     * Get new res deck colour string.
-     *
-     * @return the string
-     */
-    public CardColour getNewResDeckColour(){
-        return newResDeckColour;
-    }
-
-    public String getTurn(){
-        return turn;
-    }
-
     @Override
-    public void executeUpdate(MemoryUpdater memoryUpdater) {
-
-    }
-
-    /**
-     * Get remaning rounds int.
-     *
-     * @return the int
-     */
-    public int getRemaningRounds(){
-        return remaningRounds;
-    }
-
-    /**
-     * Gets state.
-     *
-     * @return the state
-     */
-    public State getState() {
-        return state;
-    }
-
-    public String toString(String receiver) {
-        return receiver;
+    public void executeUpdate(ViewModelUpdater viewModelUpdater) {
+        viewModelUpdater.cardDrawnUpdate(nickname, indexDrawnCard, deckIndex, newPublicCard, newGoldDeckColour, newResDeckColour, turn, remaningRounds, state);
     }
 }

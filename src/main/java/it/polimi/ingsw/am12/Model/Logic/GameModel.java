@@ -375,8 +375,7 @@ public class GameModel{
         List<Coordinate> availablePositions = match.getPlaceablePositions(xpos, ypos);
         PlaceablePositionsReturnedUpdate u = new PlaceablePositionsReturnedUpdate(
                 nickname,
-                availablePositions,
-                match.getPlayerTurn());
+                availablePositions);
         notifyUpdate(u);
     }
 
@@ -414,6 +413,7 @@ public class GameModel{
             throw new InvalidParameterException("Position out of bounds");
         }
         int points = match.placeCard(index, side, xpos, ypos);
+        Coordinate coordinate = new Coordinate(xpos, ypos);
 
         state = State.DRAWING;
         CardPlacedUpdate u = new CardPlacedUpdate(
@@ -421,8 +421,8 @@ public class GameModel{
                 match.getLastPlacedCard(nickname),
                 match.getLastPlacedCardSide(nickname),
                 points,
-                match.getPlayerTurn(),
-                state
+                state,
+                coordinate
         );
         notifyUpdate(u);
     }

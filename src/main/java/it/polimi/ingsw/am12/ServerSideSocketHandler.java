@@ -48,6 +48,9 @@ public class ServerSideSocketHandler implements Runnable {
             while(true){
                 System.out.println("Server listening...");
                 Object inObject = input.readObject();
+                //Stampa dell'evento creato nel server per verificare corretta ricezione
+                System.out.println(inObject.toString());
+
                 handleMessage(inObject);
             }
 
@@ -123,9 +126,9 @@ public class ServerSideSocketHandler implements Runnable {
                 try {
                     server.joinMatch(message.getMatchName(), nickClient);
                 } catch (DuplicateNicknameException | WrongNumberOfPlayersException |
-                         IOException | WrongInformationException |
+                         IOException | WrongInformationException | IllegalStateException |
                          InvalidSearchPositionException | NotYourTurnException | EmptyDeckException |
-                         InvalidPlacementException | NoMatchException e) {
+                         InvalidPlacementException | NoMatchException | NoNicknameException e) {
                     sendMessage(e);
                 }
             }

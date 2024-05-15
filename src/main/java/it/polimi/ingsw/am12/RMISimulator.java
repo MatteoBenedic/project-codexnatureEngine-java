@@ -20,8 +20,8 @@ import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
-
-public class RMISimulator implements Runnable, Remote, Serializable {
+/*
+ public class RMISimulator implements Runnable, Remote, Serializable {
     Update update;
     String nickname;
     int indStartCard;
@@ -33,9 +33,11 @@ public class RMISimulator implements Runnable, Remote, Serializable {
     ClientController client = null;
     ServerStub server;
     String host;
+    int port;
 
-    public RMISimulator(String host) {
+    public RMISimulator(String host, int port) {
         this.host = host;
+        this.port = port;
     }
 
     public void run() {
@@ -57,12 +59,12 @@ public class RMISimulator implements Runnable, Remote, Serializable {
         do {
             System.out.println("Enter username: ");
             nickname = myObj.nextLine();
-            try {
-                client = new ClientController(this);
+            //try {
+                //client = new ClientControllerRMI(this);
                 userCreated = true;
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+           // } catch (RemoteException e) {
+                //throw new RuntimeException(e);
+            //}
 
         } while(!userCreated);
 
@@ -70,6 +72,12 @@ public class RMISimulator implements Runnable, Remote, Serializable {
         try {
             server = (ServerStub) registry.lookup("CodexServer");
         } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            client = new ClientControllerRMI(host, port);
+        } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
 
@@ -601,3 +609,4 @@ public class RMISimulator implements Runnable, Remote, Serializable {
         this.update = update;
     }
 }
+*/

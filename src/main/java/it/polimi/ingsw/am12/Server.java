@@ -77,6 +77,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
         if(nicknames.contains(nickname)) {
             throw new DuplicateNicknameException("Nickname already in use");
         }
+        nicknames.add(nickname);
 
         VirtualView v;
         if(client != null) {
@@ -97,11 +98,11 @@ public class Server extends UnicastRemoteObject implements ServerStub {
     }
 
     /**
-     * Gives to the client the incomplete lobbies that it could join
-     * @param nickname
-     * @throws NoNicknameException
+     * Gives to the client the incomplete lobbies that he could join
+     * @param nickname the nickname of the user
+     * @throws NoNicknameException if there is no such user with that nickname
      */
-    public synchronized void getIncompleteLobbies(String nickname) throws NoNicknameException, RemoteException{
+    public synchronized void getIncompleteLobbies(String nickname) throws NoNicknameException, RemoteException {
         if(!nicknames.contains(nickname))
             throw new NoNicknameException("This nickname hasn't been set");
 
@@ -124,6 +125,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * @throws DuplicateMatchException if there's already a match with that name
      * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      * @throws InvalidParameterException if the nickname is null
+     * @throws NoNicknameException if there is no such user with that nickname
      */
     public synchronized void createMatch(String matchName, int numPlayers, String nickname)
             throws RemoteException, DuplicateNicknameException, WrongNumberOfPlayersException,
@@ -133,7 +135,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
         if(matches.containsKey(matchName)) {
             throw new DuplicateMatchException("There's already a match with this name!");
         }
-        if(nicknames.contains(nickname)) {
+        if(!nicknames.contains(nickname)) {
             throw new NoNicknameException("This nickname hasn't been set");
         }
         if(nicknamesToMatch.containsKey(nickname)) {
@@ -144,7 +146,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
 
         matches.put(matchName, c);
 
-        lobbiesToComplete.put(matchName, numPlayers);
+        lobbiesToComplete.put(matchName, numPlayers-1);
 
         VirtualView v = linkClientViews.get(nickname);
         matches.get(matchName).addView(v);
@@ -159,23 +161,23 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * Join a match
      * @param matchName The name of the match to join
      * @param nickname A String that identifies the player who wants to join the match
-     * @throws NotBoundException if an attempt is made to look for a name that is not currently
-     *                           bound in the RMI registry
      * @throws RemoteException if remote communication with the RMI registry failed
      * @throws DuplicateNicknameException if there's already a player with that nickname
      * @throws NoMatchException if there is not a match with that name
-     * @throws AlreadyBoundException if an attempt is made to bind an object to a name
-     *                               that already has an associated binding in the RMI registry.
      * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      * @throws InvalidParameterException if the nickname is null
      * @throws WrongNumberOfPlayersException if there is already the maximum number of players in the lobby.
+     * @throws NoNicknameException if there is no such user with that nickname
      */
     public synchronized void joinMatch(String matchName, String nickname)
-            throws RemoteException, DuplicateNicknameException, NoMatchException,  WrongNumberOfPlayersException,
+            throws RemoteException, DuplicateNicknameException, NoMatchException, WrongNumberOfPlayersException,
             IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
-            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
+            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException, NoNicknameException {
         if(!matches.containsKey(matchName)) {
             throw new NoMatchException("There isn't any match with this name!");
+        }
+        if(!nicknames.contains(nickname)) {
+            throw new NoNicknameException("This nickname hasn't been set");
         }
         if(nicknamesToMatch.containsKey(nickname)) {
             throw new DuplicateNicknameException("There's already someone playing in a match with this nickname");
@@ -211,11 +213,9 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * eliminated from the map containing that match, and all the links in the match itself are destroyed
      * @param nickName A String that identifies the player who wants to leave the match
      * @throws NoMatchException is the player is not part of a match
-     * @throws NotBoundException if an attempt is made to look for a name that is not currently
-     *                           bound in the RMI registry
      * @throws RemoteException if remote communication with the RMI registry failed
      */
-    public synchronized void closeMatchForPlayer(String nickName) throws NoMatchException, NotBoundException, RemoteException {
+    public synchronized void closeMatchForPlayer(String nickName) throws NoMatchException, RemoteException {
         try{
             if(!(nicknamesToMatch.containsKey(nickName))){
                 throw new NoMatchException("There isn't any match where you were playing to close!");
@@ -225,7 +225,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
             VirtualView v = linkClientViews.get(nickName);
             try {
                 registry.unbind(nickName + "VirtualView");
-            }catch(NotBoundException ignored){
+            } catch(NotBoundException ignored){
             }
             v.removeListener();
 

@@ -1,12 +1,12 @@
 package it.polimi.ingsw.am12.View;
 
 import it.polimi.ingsw.am12.ClientController;
+import it.polimi.ingsw.am12.ClientControllerRMI;
 import it.polimi.ingsw.am12.Controller.Controller;
 import it.polimi.ingsw.am12.Controller.Events.DistributeCardsEvent;
 import it.polimi.ingsw.am12.Controller.Events.JoinMatchEvent;
 import it.polimi.ingsw.am12.Controller.Events.StartMatchEvent;
 import it.polimi.ingsw.am12.Model.Logic.*;
-import it.polimi.ingsw.am12.RMISimulator;
 import org.junit.jupiter.api.Test;
 
 import java.rmi.NotBoundException;
@@ -26,8 +26,8 @@ class VirtualViewTest {
         Controller c = new Controller(2);
         GameModel gm = c.getModel();
         //Client and RMISimulator set because it's needed to do not throw exception from the threads created in the model
-        RMISimulator rm = new RMISimulator("127.0.0.1");
-        ClientController client = new ClientController(rm);
+        //RMISimulator rm = new RMISimulator();
+        ClientController client = new ClientController("127.0.0.1", 1600);
         //VirtualView v1 = new VirtualView("p1", ConnectionType.SOCKET, LocateRegistry.getRegistry(1600));
         VirtualView v1 = new VirtualViewRMI("p1", client);
 

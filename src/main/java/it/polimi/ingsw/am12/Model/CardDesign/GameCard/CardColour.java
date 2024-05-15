@@ -11,7 +11,6 @@ public enum CardColour {
 
     @SerializedName("red")
     RED("red"),
-
     @SerializedName("purple")
     PURPLE("purple");
 

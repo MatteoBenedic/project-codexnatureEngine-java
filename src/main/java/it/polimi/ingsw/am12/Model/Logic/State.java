@@ -6,13 +6,9 @@ package it.polimi.ingsw.am12.Model.Logic;
 public enum State {
     LOBBY,
     INITIALIZATION,
-
     STARTCARD,
-
     COLOUR,
-
     DISTRIBUTION,
-
     OBJECTIVE,
     PLACING,
     DRAWING,
