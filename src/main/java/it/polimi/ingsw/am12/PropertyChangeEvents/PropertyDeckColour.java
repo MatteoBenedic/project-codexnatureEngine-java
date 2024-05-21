@@ -36,8 +36,10 @@ public class PropertyDeckColour implements PropertyChange{
     public void updateCLI(CLI cli) {
         CLIDrawBufferTable drawtable = cli.getDrawtable();
         drawtable.insertCardInDeck(deckIndex, colour);
-        if(print)
+        if(print) {
+            System.out.println("Draw table:");
             drawtable.printBuffer();
+        }
     }
 
     /**

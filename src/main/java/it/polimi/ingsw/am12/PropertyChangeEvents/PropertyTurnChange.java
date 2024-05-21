@@ -2,6 +2,7 @@ package it.polimi.ingsw.am12.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.CLI.CLI;
 import it.polimi.ingsw.am12.GUI;
+import it.polimi.ingsw.am12.Model.Logic.State;
 
 /**
  * The turn changed and it's another player's turn
@@ -9,13 +10,16 @@ import it.polimi.ingsw.am12.GUI;
 public class PropertyTurnChange implements PropertyChange{
 
     String nickname;
+    State newState;
 
     /**
      * Class constructor
      * @param nickname the nickname of the player whose turn is now
+     * @param newState the new state of the game
      */
-    public PropertyTurnChange(String nickname) {
+    public PropertyTurnChange(String nickname, State newState) {
         this.nickname = nickname;
+        this.newState = newState;
     }
 
     /**
@@ -24,7 +28,8 @@ public class PropertyTurnChange implements PropertyChange{
      */
     @Override
     public void updateCLI(CLI cli) {
-        System.out.println("It's "+ nickname + "'s turn");
+        if(!newState.equals(State.DISTRIBUTION))
+            System.out.println("It's "+ nickname + "'s turn");
     }
 
     /**

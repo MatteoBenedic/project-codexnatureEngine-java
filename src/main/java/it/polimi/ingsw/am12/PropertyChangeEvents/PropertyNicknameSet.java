@@ -25,6 +25,10 @@ public class PropertyNicknameSet implements PropertyChange {
     @Override
     public void updateCLI(CLI cli) {
         System.out.println("You've set your nickname: " + nickname);
+        System.out.println("Commands available are:" +
+                "\n creatematch [num players] [name of the match]" +
+                "\n joinmatch [name of the match]" +
+                "\n getlobbies");
         cli.setNickname(nickname);
     }
 

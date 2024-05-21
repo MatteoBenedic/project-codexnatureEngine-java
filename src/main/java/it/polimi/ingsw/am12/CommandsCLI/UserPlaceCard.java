@@ -97,6 +97,6 @@ public class UserPlaceCard implements UserAction{
      * @param y the column of position where to place the card
      */
     public void commandParametersSent(int index, String side, int x, int y) {
-        System.out.println("Asked to place card: " + index + " on its " + side +" in x = " + x + " y = " +y);
+        System.out.println("Asked to place card " + index + " on its " + side +" in x = " + x + " y = " +y);
     }
 }

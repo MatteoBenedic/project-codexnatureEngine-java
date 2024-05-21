@@ -1,7 +1,6 @@
 package it.polimi.ingsw.am12;
 
 import it.polimi.ingsw.am12.PropertyChangeEvents.PropertyChange;
-import java.util.List;
 
 /**
  * Interface implemented by the GUI and CLI. It's used to notify the user interface chosen by the client of
@@ -14,10 +13,4 @@ public interface UserInterface {
      * @param p an instance of PropertyChange that describes with property has changed
      */
     void propertyChange(PropertyChange p);
-
-    /**
-     * Show the current playing grid of the player
-     * @param playingGrid the playing grid of the player
-     */
-    void printPlayingGrid(List<ClientCard> playingGrid);
 }

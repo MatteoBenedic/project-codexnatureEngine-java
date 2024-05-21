@@ -11,6 +11,7 @@ import it.polimi.ingsw.am12.Utils.Coordinate;
 public class PropertyCardPlaced implements PropertyChange {
 
     String nickname;
+    boolean isYourPlayingGrid;
     int cardIndex;
     boolean side;
     Coordinate position;
@@ -18,12 +19,16 @@ public class PropertyCardPlaced implements PropertyChange {
     /**
      * Class constructor
      * @param nickname the player who placed a card
+     * @param isYourPlayingGrid a boolean:
+     *                          TRUE if the card was placed by the player to whom the update is displayed
+     *                          FALSE if the card was placed by another player
      * @param cardIndex the index of the placed card
      * @param side the side on which it was placed (TRUE = front, FALSE = back)
      * @param position the position on the playing grid
      */
-    public PropertyCardPlaced(String nickname, int cardIndex, boolean side, Coordinate position) {
+    public PropertyCardPlaced(String nickname, boolean isYourPlayingGrid, int cardIndex, boolean side, Coordinate position) {
         this.nickname = nickname;
+        this.isYourPlayingGrid = isYourPlayingGrid;
         this.cardIndex = cardIndex;
         this.side = side;
         this.position = position;
@@ -37,7 +42,10 @@ public class PropertyCardPlaced implements PropertyChange {
     public void updateCLI(CLI cli) {
         CLIDrawBufferGrid grid = cli.getPlayingGrids().get(nickname);
         grid.insertCardInBuffer(cardIndex, side, position);
-        System.out.println(nickname + "'s playing area updated: ");
+        if(isYourPlayingGrid)
+            System.out.println("Your new playing grid:");
+        else
+            System.out.println(nickname + "'s new playing grid:");
         grid.printBuffer();
     }
 

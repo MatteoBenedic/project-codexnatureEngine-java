@@ -18,11 +18,12 @@ public class CLI implements UserInterface {
 
     ClientController controller;
     private HashMap<CommandInstruction, UserAction> useractions = new HashMap<>();
+    private HashMap<RequestInstruction, UserRequest> userrequests = new HashMap<>();
     private CLIState currentState;
     private boolean isActive;
     private boolean isNicknameSet;
-    private static final String MSG_INVALID_PARAMS = "Invalid parameters for command: ";
     private static final String MSG_MISSING_PARAMS = "Missing parameters for command: ";
+    private static final String MSG_TOO_MANY_PARAMS = "Too many parameters for command: ";
     private static final String MSG_COMMAND_NOT_RECOGNIZED = "Command not recognized!";
     private HashMap<String, CLIDrawBufferGrid> playingGrids;
     private CLIDrawBufferTable drawtable;
@@ -63,74 +64,88 @@ public class CLI implements UserInterface {
     private void readUserInput() {
         Scanner cliScanner = new Scanner(System.in);
         while(isActive) {
-            if(currentState == CLIState.WAITING_NICKNAME){
+            if (currentState == CLIState.WAITING_NICKNAME) {
                 System.out.println("Enter nickname: ");
                 String nickname = cliScanner.nextLine();
                 NicknameMessage nicknameMessage = new NicknameMessage(nickname);
                 currentState = CLIState.WAIT_FOR_UPDATE;
                 controller.sendMessage(nicknameMessage);
-            }
-            else if(currentState == CLIState.WAITING_COMMAND) {
-                System.out.println("Enter command: ");
-                //CommandInstruction = instruction + params
-
+            } else if (currentState == CLIState.WAITING_COMMAND) {
                 String command = cliScanner.nextLine().trim();
-                //String[] parts = command.split(" ", 2);
                 String trimmedCommand = command.replaceAll("\\s+", " ");
                 String[] parts = trimmedCommand.split(" ", 2);
                 String instruction = parts[0];
 
                 CommandInstruction validCommandInstruction = null;
-                for(CommandInstruction allowedCommandInstruction : CommandInstruction.values()){
-                    if(allowedCommandInstruction.getInstruction().equals(instruction)){
+                for (CommandInstruction allowedCommandInstruction : CommandInstruction.values()) {
+                    if (allowedCommandInstruction.getInstruction().equals(instruction)) {
                         validCommandInstruction = allowedCommandInstruction;
                         break;
                     }
                 }
 
-                if(validCommandInstruction != null){
+                RequestInstruction validRequestInstruction = null;
+                for (RequestInstruction allowedRequestInstruction : RequestInstruction.values()) {
+                    if (allowedRequestInstruction.getInstruction().equals(instruction)) {
+                        validRequestInstruction = allowedRequestInstruction;
+                        break;
+                    }
+                }
+
+                if (validCommandInstruction != null) {
                     int expectedParams = validCommandInstruction.getNumParams();
-                    System.out.println("Expected " + expectedParams + " parameters");
+
                     String[] parameters = {};
-                    if(parts.length > 1){
+                    if (parts.length > 1) {
                         String trimmedParams = parts[1].replaceAll("\\s+", " ");
                         trimmedParams = trimmedParams.trim();
                         parameters = trimmedParams.split(" ");
                     }
                     int actualParams = parameters.length;
-                    System.out.println("Actual parameters: " + actualParams);
+
+                    if(validCommandInstruction.equals(CommandInstruction.CHAT)) {
+                        if (actualParams > expectedParams)
+                            actualParams = expectedParams;
+                    }
 
                     if (actualParams == expectedParams) {
                         String param = (actualParams > 0) ? parts[1] : null;
                         Message message = useractions.get(validCommandInstruction).createMessage(param);
                         if (message != null) {
                             controller.sendMessage(message);
-                            if(validCommandInstruction == CommandInstruction.END_GAME){
+                            if (validCommandInstruction == CommandInstruction.END_GAME) {
                                 currentState = CLIState.CLOSING_PHASE;
                             }
                         }
-                        else {
-                            System.out.println(MSG_INVALID_PARAMS + instruction);
-                        }
                     } else {
+                        System.out.println("Expected " + expectedParams + " parameters");
                         if (actualParams < expectedParams) {
                             System.out.println(MSG_MISSING_PARAMS + instruction);
                         } else {
-                            System.out.println("Too many parameters for command: " + instruction);
+                            System.out.println(MSG_TOO_MANY_PARAMS + instruction);
                         }
+                    }
+                } else if (validRequestInstruction != null) {
+                    int expectedParams = 0;
+                    int actualParams = parts.length - 1;
+
+                    if (actualParams == expectedParams) {
+                        userrequests.get(validRequestInstruction).showRequest(this);
+                    } else {
+                        System.out.println("Expected " + expectedParams + " parameters");
+                        System.out.println(MSG_TOO_MANY_PARAMS + instruction);
                     }
                 } else {
                     System.out.println(MSG_COMMAND_NOT_RECOGNIZED);
                 }
-
-            } else if (currentState == CLIState.CLOSING_PHASE) {
-                System.out.println("Type q to quit...");
+            }
+            else if (currentState == CLIState.CLOSING_PHASE) {
                 CloseMatchConnectionMessage closeConnectionMessage = new CloseMatchConnectionMessage();
                 controller.sendMessage(closeConnectionMessage);
                 isActive = false;
             } else if(currentState == CLIState.WAIT_FOR_UPDATE) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -145,6 +160,9 @@ public class CLI implements UserInterface {
     private void setNicknameOnUserActions(String nickname) {
         for(UserAction userAction : useractions.values()){
             userAction.setNickname(nickname);
+        }
+        for(UserRequest userRequest : userrequests.values()){
+            userRequest.setNickname(nickname);
         }
     }
 
@@ -165,6 +183,11 @@ public class CLI implements UserInterface {
         useractions.put(CommandInstruction.PLACE_CARD, new UserPlaceCard());
         useractions.put(CommandInstruction.DRAW_CARD, new UserDrawCard());
         useractions.put(CommandInstruction.END_GAME, new UserEndGame());
+        useractions.put(CommandInstruction.CHAT, new UserChat());
+
+        userrequests.put(RequestInstruction.GET_MY_HAND, new UserRequestHand());
+        userrequests.put(RequestInstruction.GET_MY_PLAYING_GRID, new UserRequestPlayingGrid());
+        userrequests.put(RequestInstruction.GET_MY_DRAW_TABLE, new UserRequestDrawTable());
     }
 
     /**
@@ -174,23 +197,6 @@ public class CLI implements UserInterface {
     @Override
     public void propertyChange(PropertyChange p) {
         p.updateCLI(this);
-    }
-
-    /**
-     * Show the current playing grid of the player with all cards already placed
-     * @param playingGrid the playing grid of the player
-     */
-    public void printPlayingGrid(List<ClientCard> playingGrid) {
-        System.out.println("Your playing grid: ");
-        for(ClientCard c : playingGrid) {
-            String s = "Card " + c.getIndex() + " on ";
-            if(c.getSide())
-                s+="front";
-            else
-                s+="back";
-            s+= " in position (" + c.getCoordinates().getX() + ", " + c.getCoordinates().getY() + ") ";
-            System.out.println(s);
-        }
     }
 
     /**

@@ -43,6 +43,7 @@ public class ClientController extends UnicastRemoteObject implements ClientStub 
      * @param update the received update
      */
     public void catchMessage(Update update){
+        update.executeUpdate(viewModel);
     };
 
     /**

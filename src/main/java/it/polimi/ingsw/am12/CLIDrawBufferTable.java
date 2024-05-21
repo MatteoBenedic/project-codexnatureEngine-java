@@ -108,7 +108,7 @@ public class CLIDrawBufferTable implements CLIDrawBuffer{
         List<String> newCard = extractCardfromIndex(index, true);
         switch(position){
             case 0:
-                replaceFirstGold(newCard);
+                 replaceFirstGold(newCard);
                 break;
             case 1:
                 replaceSecondGold(newCard);

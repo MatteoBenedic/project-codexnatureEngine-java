@@ -27,11 +27,15 @@ public class PropertyStateChange implements PropertyChange{
     public void updateCLI(CLI cli) {
         switch (newState) {
             case INITIALIZATION -> System.out.println("All the players have joined: type 'startmatch' in order to start the match");
-            case STARTCARD -> System.out.println("Place your start card (type 'placestartcard front' or 'placestartcard back'");
-            case COLOUR -> System.out.println("Select you colour (type 'selectmycolour red/yellow/green/blue' ");
-            case DISTRIBUTION -> System.out.println("Type 'distributecards' to distribute the cards");
-            case OBJECTIVE -> System.out.println("Select you secret objective: type 'selectobjective first' or 'selectobjective second'");
-            case PLACING -> System.out.println("Place a card: type 'getpos x y' to get the placable positions; type 'placecard index front/back x y' to place");
+            case DISTRIBUTION ->
+            {
+                System.out.println("Commands available at any time:" +
+                        "\n showmycardsinhand" +
+                        "\n showmygrid" +
+                        "\n showdrawtable" +
+                        "\n chat ['public'/'private'] [name of the recipient] [text of the message]");
+                System.out.println("Type 'distributecards' to distribute the cards");
+            }
             case DRAWING -> System.out.println("Draw a card: type 'drawcard 0/1/2/3/4/5'");
             case END -> System.out.println("Type 'endgame' to get the results");
             case CLOSED -> System.out.println("The game has ended: type q to quit");

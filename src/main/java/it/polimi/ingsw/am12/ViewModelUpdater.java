@@ -71,12 +71,14 @@ public interface ViewModelUpdater {
     /**
      * Update the ViewModel when the cards have been distributed
      * @param cardsDistributed the cards that have been distributed to each player
+     * @param newGoldDeckColour the new colour of the gold deck
+     * @param newResDeckColour the new colour of the res deck
      * @param secretObjectives the two secret objectives for each player
      * @param publicObjectives the two public objectives
      * @param turn the nickname of the player whose turn is now
      * @param state the new state of the game
      */
-    void cardsDistributedUpdate(Map<String, List<Integer>> cardsDistributed, Map<String, int[]> secretObjectives, int[] publicObjectives, String turn, State state);
+    public void cardsDistributedUpdate(Map<String, List<Integer>> cardsDistributed, CardColour newGoldDeckColour, CardColour newResDeckColour, Map<String, int[]> secretObjectives, int[] publicObjectives, String turn, State state);
 
     /**
      * Update the ViewModel when a player has selected his secret objective

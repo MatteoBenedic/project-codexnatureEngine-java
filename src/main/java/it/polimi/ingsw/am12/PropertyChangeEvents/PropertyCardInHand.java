@@ -28,6 +28,7 @@ public class PropertyCardInHand implements PropertyChange{
     public void updateCLI(CLI cli) {
         CLIDrawBufferHand hand = cli.getHand();
         hand.insertCardsInBuffer(cards);
+        System.out.println("Your hand:");
         hand.printBuffer();
     }
 

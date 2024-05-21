@@ -61,8 +61,7 @@ public class UserCreateMatch implements UserAction{
      * @param matchName the name of the match
      */
     private static void commandParametersSent(int numPlayers, String matchName) {
-        System.out.println("Create match with: ");
-        System.out.println("num of players : " + numPlayers +" match name: " + matchName + "\n");
+        System.out.println("Asked to create a match named " + matchName + " with " + numPlayers + " players");
     }
 
 }

@@ -8,14 +8,22 @@ import it.polimi.ingsw.am12.GUI;
  */
 public class PropertySecretObjective implements PropertyChange{
 
+    String nickname;
     int index;
+    boolean isYourObjective;
 
     /**
      * Class constructor
+     * @param nickname the player who selected his objective
      * @param index the index of the secret objective
+     * @param isYourObjective a boolean:
+     *                        TRUE if the colour belongs to the player to whom the update is displayed
+     *                        FALSE if the colour belongs to another player
      */
-    public PropertySecretObjective(int index) {
+    public PropertySecretObjective(String nickname, int index, boolean isYourObjective) {
+        this.nickname = nickname;
         this.index = index;
+        this.isYourObjective = isYourObjective;
     }
 
     /**
@@ -24,7 +32,10 @@ public class PropertySecretObjective implements PropertyChange{
      */
     @Override
     public void updateCLI(CLI cli) {
-        System.out.println("Your secret objective is: " + index);
+        if(isYourObjective)
+            System.out.println("Your secret objective is: " + index);
+        else
+            System.out.println(nickname + " has selected his secret objective");
     }
 
     /**

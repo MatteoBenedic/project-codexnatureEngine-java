@@ -376,8 +376,9 @@ public class Match {
         Player currentPlayer = playerOrder.get(playerTurn);
         GameCard card = currentPlayer.getCardsInHand().get(index);
         card.setValidSide(side);
+        int points = currentPlayer.placePlayingGrid(xpos, ypos, card);
         currentPlayer.removeCardFromHand(card);
-        return currentPlayer.placePlayingGrid(xpos, ypos, card);
+        return points;
     }
 
     /**

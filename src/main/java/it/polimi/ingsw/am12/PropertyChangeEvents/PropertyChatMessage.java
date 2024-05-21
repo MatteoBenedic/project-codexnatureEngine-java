@@ -49,7 +49,7 @@ public class PropertyChatMessage implements PropertyChange {
             s+=" to Everyone";
         }
         s+="]: " + message;
-
+        System.out.println(s);
     }
 
     /**

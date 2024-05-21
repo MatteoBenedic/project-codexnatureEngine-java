@@ -143,10 +143,10 @@ public class ViewModel implements ViewModelUpdater {
 
         notifyPropertyChange(new PropertyStateChange(state));
         if(turn.equals(myNickname)) {
-            notifyPropertyChange(new PropertyYourTurn());
+            notifyPropertyChange(new PropertyYourTurn(state));
         }
         else {
-            notifyPropertyChange(new PropertyTurnChange(turn));
+            notifyPropertyChange(new PropertyTurnChange(turn, state));
         }
     }
 
@@ -172,7 +172,9 @@ public class ViewModel implements ViewModelUpdater {
             }
 
         playingGrids.get(nickname).add(c);
-        notifyPropertyChange(new PropertyCardPlaced(nickname, startCard, side, c1 ));
+
+        boolean isMyPlayingGrid = nickname.equals(myNickname);
+        notifyPropertyChange(new PropertyCardPlaced(nickname, isMyPlayingGrid, startCard, side, c1 ));
 
         if(this.state!=state) {
             this.state = state;
@@ -181,10 +183,10 @@ public class ViewModel implements ViewModelUpdater {
 
         this.turn = turn;
         if(turn.equals(myNickname)) {
-            notifyPropertyChange(new PropertyYourTurn());
+            notifyPropertyChange(new PropertyYourTurn(state));
         }
         else {
-            notifyPropertyChange(new PropertyTurnChange(turn));
+            notifyPropertyChange(new PropertyTurnChange(turn, state));
         }
     }
 
@@ -206,29 +208,37 @@ public class ViewModel implements ViewModelUpdater {
 
         this.turn = turn;
         if(turn.equals(myNickname)) {
-            notifyPropertyChange(new PropertyYourTurn());
+            notifyPropertyChange(new PropertyYourTurn(state));
         }
         else {
-            notifyPropertyChange(new PropertyTurnChange(turn));
+            notifyPropertyChange(new PropertyTurnChange(turn, state));
         }
     }
 
     /**
      * Update the ViewModel when the cards have been distributed
      * @param cardsDistributed the cards that have been distributed to each player
+     * @param newGoldDeckColour the new colour of the gold deck
+     * @param newResDeckColour the new colour of the res deck
      * @param secretObjectives the two secret objectives for each player
      * @param publicObjectives the two public objectives
      * @param turn the nickname of the player whose turn is now
      * @param state the new state of the game
      */
-    public void cardsDistributedUpdate(Map<String, List<Integer>> cardsDistributed, Map<String, int[]> secretObjectives, int[] publicObjectives, String turn, State state) {
+    public void cardsDistributedUpdate(Map<String, List<Integer>> cardsDistributed, CardColour newGoldDeckColour, CardColour newResDeckColour, Map<String, int[]> secretObjectives, int[] publicObjectives, String turn, State state) {
 
         for (int j = 0; j < N_OBJECTIVES; j++) {
             this.objectives[j] = publicObjectives[j];
             notifyPropertyChange(new PropertyPublicObjective(this.objectives[j]));
-            this.objectivesToChoose[j] = secretObjectives.get(myNickname)[j];
-            notifyPropertyChange(new PropertySecretObjective(this.objectivesToChoose[j]));
         }
+        for (int j = 0; j < N_OBJECTIVES; j++) {
+            this.objectivesToChoose[j] = secretObjectives.get(myNickname)[j];
+        }
+        notifyPropertyChange(new PropertyObjectivesToChoose(objectivesToChoose));
+
+        notifyPropertyChange(new PropertyDeckColour(newGoldDeckColour, 4, false));
+        notifyPropertyChange(new PropertyDeckColour(newResDeckColour, 5, true));
+
         for(int c : cardsDistributed.get(myNickname)) {
             cardsInHand.add(c);
         }
@@ -239,10 +249,10 @@ public class ViewModel implements ViewModelUpdater {
 
         this.turn = turn;
         if(turn.equals(myNickname)) {
-            notifyPropertyChange(new PropertyYourTurn());
+            notifyPropertyChange(new PropertyYourTurn(state));
         }
         else {
-            notifyPropertyChange(new PropertyTurnChange(turn));
+            notifyPropertyChange(new PropertyTurnChange(turn, state));
         }
     }
 
@@ -254,10 +264,12 @@ public class ViewModel implements ViewModelUpdater {
      * @param state the new state of the game
      */
     public void objectiveSelectedUpdate(String nickname, int secretObjective, String turn, State state){
+        boolean isYourObjective = false;
         if(myNickname.equals(nickname)) {
             this.secretObjective = secretObjective;
-            notifyPropertyChange(new PropertySecretObjective(secretObjective));
+            isYourObjective = true;
         }
+        notifyPropertyChange(new PropertySecretObjective(nickname, secretObjective, isYourObjective));
 
         if(this.state!=state) {
             this.state = state;
@@ -266,10 +278,10 @@ public class ViewModel implements ViewModelUpdater {
 
         this.turn = turn;
         if(turn.equals(myNickname)) {
-            notifyPropertyChange(new PropertyYourTurn());
+            notifyPropertyChange(new PropertyYourTurn(state));
         }
         else {
-            notifyPropertyChange(new PropertyTurnChange(turn));
+            notifyPropertyChange(new PropertyTurnChange(turn, state));
         }
     }
 
@@ -305,12 +317,15 @@ public class ViewModel implements ViewModelUpdater {
                 }
             }
         playingGrids.get(nickname).add(c);
-        notifyPropertyChange(new PropertyCardPlaced(nickname, index, side, coordinates));
+
+        boolean isMyUpdate = nickname.equals(myNickname);
+        notifyPropertyChange(new PropertyCardPlaced(nickname, isMyUpdate, index, side, coordinates));
 
         int oldPoints = this.points.get(nickname);
         this.points.put(nickname, oldPoints+points);
+
         if(points>0) {
-            notifyPropertyChange(new PropertyPoints(nickname, oldPoints+points));
+            notifyPropertyChange(new PropertyPoints(nickname, isMyUpdate, oldPoints+points));
         }
 
         if(nickname.equals(myNickname))
@@ -380,11 +395,10 @@ public class ViewModel implements ViewModelUpdater {
 
         this.turn = turn;
         if(turn.equals(myNickname)) {
-            ui.printPlayingGrid(playingGrids.get(myNickname));
-            notifyPropertyChange(new PropertyYourTurn());
+            notifyPropertyChange(new PropertyYourTurn(state));
         }
         else {
-            notifyPropertyChange(new PropertyTurnChange(turn));
+            notifyPropertyChange(new PropertyTurnChange(turn, state));
         }
     }
 

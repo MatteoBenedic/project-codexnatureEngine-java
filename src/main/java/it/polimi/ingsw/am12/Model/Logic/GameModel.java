@@ -300,6 +300,8 @@ public class GameModel{
 
         CardsDistributedUpdate u = new CardsDistributedUpdate(
                 cardsDistributed,
+                match.getDeckColours()[0],
+                match.getDeckColours()[1],
                 secretObjectives,
                 match.getPublicObjectives(),
                 match.getPlayerTurn(),

@@ -18,9 +18,9 @@ public enum CommandInstruction {
     PLACE_CARD("placecard", 4),
     DRAW_CARD("drawcard", 1),
     END_GAME("endgame", 0),
+    CHAT("chat", 3),
     //close connection
     QUIT("q", 0);
-
     private final String instruction;
     private final int numParams;
 
