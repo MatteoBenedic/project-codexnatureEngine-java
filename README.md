@@ -16,8 +16,8 @@ Il progetto consiste nello sviluppo di una versione software del gioco da tavolo
 |  Controller   |     ✔️        |
 |  Networking   |     ✔️        |
 |    View       |     🕙        |
-|    TUI        |     🕙        |
-|    GUI        |     ❌        |
+|    TUI        |     ✔️        |
+|    GUI        |     🕙        |
 
 
 ## Funzionalità avanzate
@@ -30,8 +30,8 @@ Il progetto consiste nello sviluppo di una versione software del gioco da tavolo
 ## Tabella voto
 | Requisiti                                         | Voto massimo   | Realizzazione   |
 | ------------------------------------------------- | -------------  | ----------------|
-|Regole semplificate + TUI + RMI o Socket 	        |     18	       |    ❌          |
-|Regole complete + TUI + RMI o Socket               |     20	       |    ❌          |
+|Regole semplificate + TUI + RMI o Socket 	        |     18	       |    ✔️          |
+|Regole complete + TUI + RMI o Socket               |     20	       |    ✔️          |
 |Regole complete + TUI + GUI + RMI o Socket + 1FA	  |     24	       |    ❌          |
 |Regole complete + TUI + GUI + RMI + Socket + 1FA   |	    27	       |    ❌          |
 |Regole complete + TUI + GUI + RMI + Socket + 2FA   |     30	       |    ❌          |
