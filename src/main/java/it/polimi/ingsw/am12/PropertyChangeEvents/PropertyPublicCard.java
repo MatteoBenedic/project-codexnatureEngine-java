@@ -2,7 +2,7 @@ package it.polimi.ingsw.am12.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.CLI.CLI;
 import it.polimi.ingsw.am12.CLIDrawBufferTable;
-import it.polimi.ingsw.am12.GUI;
+import it.polimi.ingsw.am12.Gui.GUI;
 
 /**
  * There is a new public card on the table

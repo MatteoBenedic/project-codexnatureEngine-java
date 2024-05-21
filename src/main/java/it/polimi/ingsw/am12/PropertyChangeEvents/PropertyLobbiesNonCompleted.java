@@ -1,7 +1,13 @@
 package it.polimi.ingsw.am12.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.CLI.CLI;
-import it.polimi.ingsw.am12.GUI;
+import it.polimi.ingsw.am12.Gui.GUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import java.util.Map;
 
 /**
@@ -36,6 +42,19 @@ public class PropertyLobbiesNonCompleted implements PropertyChange{
      */
     @Override
     public void updateGUI(GUI gui) {
+        Stage stage = gui.getStage();
+        Scene scene = stage.getScene();
+        VBox content = (VBox) scene.lookup("#content");
+        content.getChildren().clear();
 
+        ObservableList<String> lobbiesAsStrings = FXCollections.observableArrayList();
+        for(String lobby : lobbies.keySet()) {
+            lobbiesAsStrings.add(lobby +" ("+lobbies.get(lobby)+" spots)");
+        }
+
+        ListView<String> listView = new ListView<>(lobbiesAsStrings);
+        content.getChildren().add(listView);
+        stage.setScene(scene);
+        stage.show();
     }
 }

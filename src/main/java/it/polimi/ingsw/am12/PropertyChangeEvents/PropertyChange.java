@@ -1,7 +1,9 @@
 package it.polimi.ingsw.am12.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.CLI.CLI;
-import it.polimi.ingsw.am12.GUI;
+import it.polimi.ingsw.am12.Gui.GUI;
+
+import java.io.IOException;
 
 /**
  * The purpose of this interface is to notify the user interface that a change happened
@@ -19,5 +21,5 @@ public interface PropertyChange {
      * Update the GUI with the changes in the viewModel
      * @param gui the GUI
      */
-    void updateGUI(GUI gui);
+    void updateGUI(GUI gui) throws IOException;
 }

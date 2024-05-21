@@ -13,5 +13,4 @@ module it.polimi.ingsw.am12 {
     opens it.polimi.ingsw.am12.Utils to com.google.gson;
     opens it.polimi.ingsw.am12.CLI to com.google.gson;
     exports it.polimi.ingsw.am12;
-
 }

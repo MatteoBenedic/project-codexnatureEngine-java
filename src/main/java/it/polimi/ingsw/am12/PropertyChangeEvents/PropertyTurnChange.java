@@ -1,8 +1,8 @@
 package it.polimi.ingsw.am12.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.CLI.CLI;
-import it.polimi.ingsw.am12.GUI;
 import it.polimi.ingsw.am12.Model.Logic.State;
+import it.polimi.ingsw.am12.Gui.GUI;
 
 /**
  * The turn changed and it's another player's turn

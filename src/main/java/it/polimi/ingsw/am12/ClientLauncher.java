@@ -1,9 +1,9 @@
 package it.polimi.ingsw.am12;
 
 import it.polimi.ingsw.am12.CLI.CLI;
-
 import java.io.IOException;
 import static java.lang.System.exit;
+import static javafx.application.Application.launch;
 
 
 /**
@@ -24,20 +24,19 @@ public class ClientLauncher {
         String interfaceType = args[2];
         String connectionType = args[3];
 
-        ClientController c = null;
-        if(connectionType.equals("socket")) {
-            c = new ClientControllerSocket(ip, port);
-        }
-        if(connectionType.equals("rmi")) {
-            c = new ClientControllerRMI(ip, port);
-        }
-
-        UserInterface userInterface;
         if(interfaceType.equals("cli")) {
-            userInterface = new CLI(c);
+            ClientController controller = null;
+            if(connectionType.equals("socket")) {
+                controller = new ClientControllerSocket(ip, port);
+            }
+            if(connectionType.equals("rmi")) {
+                controller = new ClientControllerRMI(ip, port);
+            }
+            new CLI(controller);
         }
-        if(interfaceType.equals("gui"))
-            userInterface = new GUI();
+        if(interfaceType.equals("gui")) {
+            launch(LaunchGUI.class, args);
+        }
     }
 }
 
