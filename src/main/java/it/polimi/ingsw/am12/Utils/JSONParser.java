@@ -11,6 +11,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.List;
 
+
 /**
  * This utility class is used for parsing ObjectiveCards and GameCards from .json files
  */
@@ -75,7 +76,10 @@ public class JSONParser {
         return parseGameCards("startCards.json");
     }
 
-
+    /**
+     * Parse a list of CliCards from a clicards.json
+     * @return a list of CliCards
+     */
     public List<CliCard> parseCLICards(){
         InputStream is = getClass().getClassLoader().getResourceAsStream("cliCards.json");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));

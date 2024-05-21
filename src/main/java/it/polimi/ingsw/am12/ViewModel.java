@@ -7,6 +7,7 @@ import it.polimi.ingsw.am12.PropertyChangeEvents.*;
 import it.polimi.ingsw.am12.Utils.Coordinate;
 import java.util.*;
 
+
 /**
  * This class contains the client side state of the application, to be rendered by the user interface
  */

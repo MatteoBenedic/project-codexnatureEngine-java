@@ -9,9 +9,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.List;
 
+
 /**
  * This class elaborates the commands from a CLI and creates the corresponding message to send
- * to the Client controller.
+ * to the Client controller. It also saves the graphic objects to print.
  */
 public class CLI implements UserInterface {
 
@@ -214,19 +215,31 @@ public class CLI implements UserInterface {
         }
     }
 
+    /**
+     * Adds a new playing grid denominated in the playinggrids map by the nickname of the owner
+     * @param nickname the name of the new player
+     */
     public void addPlayer(String nickname) {
         playingGrids.put(nickname, new CLIDrawBufferGrid(repCards));
     }
 
-
+    /**
+     * @return a map that contains all the playing areas
+     */
     public HashMap<String, CLIDrawBufferGrid> getPlayingGrids() {
         return playingGrids;
     }
 
+    /**
+     * @return the buffer that prints the drawtable with the drawable cards
+     */
     public CLIDrawBufferTable getDrawtable() {
         return drawtable;
     }
 
+    /**
+     * @return the buffer that prints the cards in the hand of this player
+     */
     public CLIDrawBufferHand getHand() {
         return hand;
     }

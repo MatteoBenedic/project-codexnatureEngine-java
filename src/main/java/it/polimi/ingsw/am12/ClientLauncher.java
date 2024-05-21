@@ -5,6 +5,7 @@ import it.polimi.ingsw.am12.CLI.CLI;
 import java.io.IOException;
 import static java.lang.System.exit;
 
+
 /**
  * Launch the client
  */
@@ -40,4 +41,3 @@ public class ClientLauncher {
     }
 }
 
-// '█'

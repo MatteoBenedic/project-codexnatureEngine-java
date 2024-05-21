@@ -2,6 +2,9 @@ package it.polimi.ingsw.am12;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The enumerations that contains the codes to colour the cards representation for the CLI
+ */
 public enum ColourCLI {
     @SerializedName("reset")
     RESET("\u001B[0m"),
@@ -27,6 +30,9 @@ public enum ColourCLI {
         this.s = s;
     }
 
+    /**
+     * @return the code for the colour representation
+     */
     @Override
     public String toString() {
         return super.toString();
