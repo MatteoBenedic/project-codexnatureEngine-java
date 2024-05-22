@@ -1,6 +1,10 @@
 package it.polimi.ingsw.am12.Network;
 
 import it.polimi.ingsw.am12.Network.Messages.Events.Event;
+import it.polimi.ingsw.am12.Exceptions.NoNicknameException;
+import it.polimi.ingsw.am12.Exceptions.NoMatchException;
+import it.polimi.ingsw.am12.Exceptions.DuplicateNicknameException;
+import it.polimi.ingsw.am12.Exceptions.DuplicateMatchException;
 import it.polimi.ingsw.am12.Exceptions.*;
 import it.polimi.ingsw.am12.Network.Messages.*;
 import it.polimi.ingsw.am12.Network.Messages.CreateMatchMessage;
