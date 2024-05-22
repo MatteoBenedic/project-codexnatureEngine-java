@@ -3,6 +3,11 @@ package it.polimi.ingsw.am12;
 import it.polimi.ingsw.am12.Exceptions.*;
 import it.polimi.ingsw.am12.Network.ServerSideSocketHandler;
 
+import it.polimi.ingsw.am12.Exceptions.NoNicknameException;
+import it.polimi.ingsw.am12.Exceptions.NoMatchException;
+import it.polimi.ingsw.am12.Exceptions.DuplicateNicknameException;
+import it.polimi.ingsw.am12.Exceptions.DuplicateMatchException;
+
 import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
