@@ -2,6 +2,7 @@ package it.polimi.ingsw.am12;
 
 import it.polimi.ingsw.am12.Controller.Controller;
 import it.polimi.ingsw.am12.Network.Messages.Events.JoinMatchEvent;
+import it.polimi.ingsw.am12.Exceptions.NoNicknameException;
 import it.polimi.ingsw.am12.Exceptions.NoMatchException;
 import it.polimi.ingsw.am12.Exceptions.DuplicateNicknameException;
 import it.polimi.ingsw.am12.Exceptions.DuplicateMatchException;
