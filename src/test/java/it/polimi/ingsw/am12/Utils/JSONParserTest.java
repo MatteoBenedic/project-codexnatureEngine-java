@@ -1,7 +1,9 @@
 package it.polimi.ingsw.am12.Utils;
 
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.*;
-import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.*;
+import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ElementsObjectiveCard;
+import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ObjectiveCard;
+import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

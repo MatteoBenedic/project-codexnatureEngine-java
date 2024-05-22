@@ -2,8 +2,12 @@ package it.polimi.ingsw.am12.Model.Logic;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import it.polimi.ingsw.am12.Exceptions.WrongInformationException;
+import it.polimi.ingsw.am12.Exceptions.IllegalRequirementsException;
+import it.polimi.ingsw.am12.Exceptions.EmptyDeckException;
+import it.polimi.ingsw.am12.Exceptions.InvalidSearchPositionException;
+import it.polimi.ingsw.am12.Exceptions.InvalidPlacementException;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
-import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.IllegalRequirementsException;
 import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ObjectiveCard;
 import it.polimi.ingsw.am12.Utils.Coordinate;
 import it.polimi.ingsw.am12.Utils.JSONParser;

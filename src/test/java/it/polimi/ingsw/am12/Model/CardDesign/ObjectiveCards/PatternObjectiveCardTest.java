@@ -1,8 +1,9 @@
 package it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards;
 
+import it.polimi.ingsw.am12.Exceptions.IllegalRequirementsException;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
-import it.polimi.ingsw.am12.Model.Logic.InvalidPlacementException;
+import it.polimi.ingsw.am12.Exceptions.InvalidPlacementException;
 import it.polimi.ingsw.am12.Model.Logic.PlayingGrid;
 import it.polimi.ingsw.am12.Utils.JSONParser;
 import org.junit.jupiter.api.Test;

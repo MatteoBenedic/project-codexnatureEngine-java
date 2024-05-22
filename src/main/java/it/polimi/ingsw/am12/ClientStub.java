@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am12;
 
-import it.polimi.ingsw.am12.View.Updates.Update;
+import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
 
 import java.io.Serializable;
 import java.rmi.Remote;

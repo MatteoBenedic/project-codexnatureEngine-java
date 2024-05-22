@@ -1,10 +1,11 @@
 package it.polimi.ingsw.am12;
 
-import it.polimi.ingsw.am12.CLI.CLI;
+import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
+import it.polimi.ingsw.am12.Client.ClientController.ClientController;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.Logic.PlayerColour;
 import it.polimi.ingsw.am12.Model.Logic.State;
-import it.polimi.ingsw.am12.View.Updates.*;
+import it.polimi.ingsw.am12.Network.Messages.Updates.*;
 import org.junit.jupiter.api.Test;
 import java.rmi.RemoteException;
 import java.util.ArrayList;

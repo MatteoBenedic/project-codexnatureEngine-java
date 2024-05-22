@@ -1,7 +1,9 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
-import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.*;
-import it.polimi.ingsw.am12.Model.CardDesign.GameCard.*;
+import it.polimi.ingsw.am12.Exceptions.InvalidSearchPositionException;
+import it.polimi.ingsw.am12.Exceptions.InvalidPlacementException;
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
+import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ObjectiveCard;
 import it.polimi.ingsw.am12.Utils.Coordinate;
 
 import java.util.ArrayList;
@@ -154,7 +156,7 @@ public class Player {
      * @param j the column of the selected position
      * @return a List of Coordinates, that are the available positions
      */
-    public List<Coordinate> getPlaceablePositions(int i, int j) throws InvalidSearchPositionException{
+    public List<Coordinate> getPlaceablePositions(int i, int j) throws InvalidSearchPositionException {
             return this.playingGrid.getPlaceablePosition(i, j);
     }
 

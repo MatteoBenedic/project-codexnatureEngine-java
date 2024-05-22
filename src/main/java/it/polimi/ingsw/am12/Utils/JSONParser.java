@@ -2,7 +2,7 @@ package it.polimi.ingsw.am12.Utils;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.am12.CLI.CliCard;
+import it.polimi.ingsw.am12.Client.UI.CLI.CliCard;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.Side;
 import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ObjectiveCard;

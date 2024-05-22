@@ -1,22 +1,5 @@
 package it.polimi.ingsw.am12;
 
-import it.polimi.ingsw.am12.Controller.Events.*;
-import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
-import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ObjectiveCard;
-import it.polimi.ingsw.am12.Utils.Coordinate;
-import it.polimi.ingsw.am12.Utils.JSONParser;
-import it.polimi.ingsw.am12.View.Updates.*;
-
-import java.io.Serializable;
-import java.rmi.NotBoundException;
-import java.util.*;
-import it.polimi.ingsw.am12.Model.Logic.*;
-
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 

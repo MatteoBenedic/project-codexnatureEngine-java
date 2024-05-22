@@ -1,10 +1,17 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
+import it.polimi.ingsw.am12.Exceptions.WrongInformationException;
+import it.polimi.ingsw.am12.Exceptions.NotYourTurnException;
+import it.polimi.ingsw.am12.Exceptions.DuplicateNicknameException;
+import it.polimi.ingsw.am12.Exceptions.EmptyDeckException;
+import it.polimi.ingsw.am12.Exceptions.InvalidSearchPositionException;
+import it.polimi.ingsw.am12.Exceptions.WrongNumberOfPlayersException;
+import it.polimi.ingsw.am12.Exceptions.InvalidPlacementException;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
+import it.polimi.ingsw.am12.Network.Messages.Updates.*;
 import it.polimi.ingsw.am12.Utils.Coordinate;
-import it.polimi.ingsw.am12.View.UpdateListener;
-import it.polimi.ingsw.am12.View.Updates.*;
-import it.polimi.ingsw.am12.View.VirtualView;
+import it.polimi.ingsw.am12.VirtualView.UpdateListener;
+import it.polimi.ingsw.am12.VirtualView.VirtualView;
 import java.security.InvalidParameterException;
 import java.util.*;
 
@@ -205,7 +212,8 @@ public class GameModel{
      * @throws InvalidPlacementException  if a start card has already been placed for the player
      */
     public void placeStartCard(String nickname, boolean selectedSide)
-            throws InvalidPlacementException, NotYourTurnException, InvalidParameterException, IllegalStateException, WrongInformationException {
+            throws WrongInformationException, NotYourTurnException, IllegalStateException,
+            InvalidParameterException, InvalidPlacementException {
 
         if(!(this.state == State.STARTCARD)){
             throw new IllegalStateException("The state is not correct");

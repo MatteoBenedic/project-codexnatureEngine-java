@@ -1,10 +1,10 @@
 package it.polimi.ingsw.am12.Controller;
 
-import it.polimi.ingsw.am12.Controller.Events.Event;
-import it.polimi.ingsw.am12.Model.Logic.*;
-import it.polimi.ingsw.am12.View.VirtualView;
+import it.polimi.ingsw.am12.Network.Messages.Events.Event;
+import it.polimi.ingsw.am12.Exceptions.*;
+import it.polimi.ingsw.am12.Model.Logic.GameModel;
+import it.polimi.ingsw.am12.VirtualView.VirtualView;
 import java.security.InvalidParameterException;
-import java.util.List;
 
 /**
  * This class is the controller of the game: its function is to coordinate

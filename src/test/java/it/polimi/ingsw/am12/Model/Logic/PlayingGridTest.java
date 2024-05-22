@@ -1,11 +1,12 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
+import it.polimi.ingsw.am12.Exceptions.InvalidPlacementException;
+import it.polimi.ingsw.am12.Exceptions.InvalidSearchPositionException;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
 import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.CoordinateSubmatrix;
-import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.IllegalRequirementsException;
-import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ObjectiveCard;
+import it.polimi.ingsw.am12.Exceptions.IllegalRequirementsException;
 import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard;
 import it.polimi.ingsw.am12.Utils.Coordinate;
 import it.polimi.ingsw.am12.Utils.JSONParser;
@@ -68,7 +69,7 @@ class PlayingGridTest {
         //                  check Points returned correctly
         //                  check that this has become lastPlacedCard
 
-        assertEquals(1,playingGrid.getNumElements(it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element.FUNGUS));
+        assertEquals(1,playingGrid.getNumElements(Element.FUNGUS));
         assertEquals(1,place_points);
         assertEquals(rs8,playingGrid.getLastPlacedCard());
 
@@ -87,7 +88,7 @@ class PlayingGridTest {
 
 
     @Test
-    public void getPlaceablePosition() throws InvalidSearchPositionException{
+    public void getPlaceablePosition() throws InvalidSearchPositionException {
         PlayingGrid playingGrid = new PlayingGrid();
         GameCard[][] grid = playingGrid.getPlcards();
 
@@ -212,13 +213,13 @@ class PlayingGridTest {
 
         // Verifica il numero di elementi per ciascun tipo di Element
 
-        assertEquals(10, playingGrid.getNumElements(it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element.ANIMAL));
-        assertEquals(15, playingGrid.getNumElements(it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element.FUNGUS));
-        assertEquals(200, playingGrid.getNumElements(it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element.INKWELL));
-        assertEquals(30, playingGrid.getNumElements(it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element.INSECT));
-        assertEquals(1, playingGrid.getNumElements(it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element.MANUSCRIPT));
-        assertEquals(50, playingGrid.getNumElements(it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element.PLANT));
-        assertEquals(60, playingGrid.getNumElements(it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element.QUILL));
+        assertEquals(10, playingGrid.getNumElements(Element.ANIMAL));
+        assertEquals(15, playingGrid.getNumElements(Element.FUNGUS));
+        assertEquals(200, playingGrid.getNumElements(Element.INKWELL));
+        assertEquals(30, playingGrid.getNumElements(Element.INSECT));
+        assertEquals(1, playingGrid.getNumElements(Element.MANUSCRIPT));
+        assertEquals(50, playingGrid.getNumElements(Element.PLANT));
+        assertEquals(60, playingGrid.getNumElements(Element.QUILL));
 
     }
 

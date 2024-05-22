@@ -1,4 +1,5 @@
 package it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards;
+import it.polimi.ingsw.am12.Exceptions.IllegalRequirementsException;
 import it.polimi.ingsw.am12.Model.Logic.PlayingGrid;
 
 /**

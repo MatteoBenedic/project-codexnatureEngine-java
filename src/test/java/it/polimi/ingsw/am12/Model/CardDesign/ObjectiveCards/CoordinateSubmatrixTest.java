@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards;
 
+import it.polimi.ingsw.am12.Exceptions.IllegalRequirementsException;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

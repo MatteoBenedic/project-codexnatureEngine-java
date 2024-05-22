@@ -1,10 +1,7 @@
 package it.polimi.ingsw.am12.Controller;
 
-import it.polimi.ingsw.am12.Controller.Events.JoinMatchEvent;
-import it.polimi.ingsw.am12.Model.Logic.WrongNumberOfPlayersException;
+import it.polimi.ingsw.am12.Exceptions.WrongNumberOfPlayersException;
 import org.junit.jupiter.api.Test;
-
-import java.rmi.AlreadyBoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

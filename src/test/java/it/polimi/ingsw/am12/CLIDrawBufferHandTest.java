@@ -1,13 +1,12 @@
 package it.polimi.ingsw.am12;
 
-import it.polimi.ingsw.am12.CLI.CliCard;
+import it.polimi.ingsw.am12.Client.UI.CLI.CLIDrawBufferHand;
+import it.polimi.ingsw.am12.Client.UI.CLI.CliCard;
 import it.polimi.ingsw.am12.Utils.JSONParser;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CLIDrawBufferHandTest {
 

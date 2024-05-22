@@ -1,7 +1,8 @@
 package it.polimi.ingsw.am12.Controller;
 
-import it.polimi.ingsw.am12.Controller.Events.Event;
-import it.polimi.ingsw.am12.Model.Logic.*;
+import it.polimi.ingsw.am12.Network.Messages.Events.Event;
+import it.polimi.ingsw.am12.Exceptions.*;
+
 import java.security.InvalidParameterException;
 
 /**

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
+import it.polimi.ingsw.am12.Exceptions.InvalidPlacementException;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
-import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.IllegalRequirementsException;
+import it.polimi.ingsw.am12.Exceptions.IllegalRequirementsException;
 import it.polimi.ingsw.am12.Utils.JSONParser;
 import org.junit.jupiter.api.Test;
 
@@ -150,7 +151,7 @@ class PlayerTest {
     }
 
     @Test
-    public void placePlayingGrid() throws IllegalRequirementsException,InvalidPlacementException {
+    public void placePlayingGrid() throws IllegalRequirementsException, InvalidPlacementException {
         //place startcard creando la startcard e facendo grid[40][40] = st;
         JSONParser parser = new JSONParser();
         List<GameCard> golds = parser.parseGoldCards();

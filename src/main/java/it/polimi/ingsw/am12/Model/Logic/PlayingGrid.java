@@ -1,8 +1,14 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
-import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.*;
+
+import it.polimi.ingsw.am12.Exceptions.InvalidSearchPositionException;
+import it.polimi.ingsw.am12.Exceptions.InvalidPlacementException;
+import it.polimi.ingsw.am12.Exceptions.IllegalRequirementsException;
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.Condition;
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.Element;
+import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
+import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.PatternObjectiveCard;
 import it.polimi.ingsw.am12.Utils.Coordinate;
-import it.polimi.ingsw.am12.Model.CardDesign.GameCard.*;
 import java.util.ArrayList;
 import java.util.List;
 
