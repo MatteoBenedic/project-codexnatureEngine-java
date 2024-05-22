@@ -5,7 +5,6 @@ import it.polimi.ingsw.am12.Client.ClientController.ClientControllerRMI;
 import it.polimi.ingsw.am12.Client.ClientController.ClientControllerSocket;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.LaunchGUI;
-import it.polimi.ingsw.am12.Server.Server;
 
 import java.io.IOException;
 import java.rmi.AlreadyBoundException;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.am12.Server;
+package it.polimi.ingsw.am12;
 
 import it.polimi.ingsw.am12.ClientStub;
 import it.polimi.ingsw.am12.Controller.Controller;

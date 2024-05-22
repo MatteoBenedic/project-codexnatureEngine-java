@@ -26,10 +26,6 @@ module it.polimi.ingsw.am12 {
     opens it.polimi.ingsw.am12.Client.ClientController to javafx.fxml;
     exports it.polimi.ingsw.am12.Client.UI;
     opens it.polimi.ingsw.am12.Client.UI to javafx.fxml;
-    exports it.polimi.ingsw.am12.Server;
-    opens it.polimi.ingsw.am12.Server to javafx.fxml;
     exports it.polimi.ingsw.am12.Client.UI.Gui;
     opens it.polimi.ingsw.am12.Client.UI.Gui to javafx.fxml;
-    //exports it.polimi.ingsw.am12.Client;
-    //opens it.polimi.ingsw.am12.Client to javafx.fxml;
 }

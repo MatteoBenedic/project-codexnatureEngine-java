@@ -5,7 +5,7 @@ import it.polimi.ingsw.am12.Exceptions.*;
 import it.polimi.ingsw.am12.Network.Messages.*;
 import it.polimi.ingsw.am12.Network.Messages.CreateMatchMessage;
 import it.polimi.ingsw.am12.Network.Messages.JoinMatchMessage;
-import it.polimi.ingsw.am12.Server.Server;
+import it.polimi.ingsw.am12.Server;
 import it.polimi.ingsw.am12.VirtualView.VirtualView;
 
 import java.io.IOException;
