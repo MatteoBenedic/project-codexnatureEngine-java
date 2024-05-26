@@ -593,4 +593,21 @@ public class GameModel{
             }
         }
     }
+
+    /**
+     * When called, forces the game to end
+     */
+    public void forceEndGame() {
+        state = State.CLOSED;
+        GameStoppedUpdate u = new GameStoppedUpdate();
+        notifyUpdate(u);
+    }
+
+    /**
+     * Get the current state of the game
+     * @return a State with the current game state
+     */
+    public State getState() {
+        return state;
+    }
 }

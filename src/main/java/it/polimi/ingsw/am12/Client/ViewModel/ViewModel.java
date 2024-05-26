@@ -453,4 +453,13 @@ public class ViewModel implements ViewModelUpdater {
     public String getNickname() {
         return myNickname;
     }
+
+    /**
+     * Creates a string with an error message to notify that the game has been stopped,
+     * then notifies the user interface with this error message
+     */
+    @Override
+    public void gameStoppedUpdate() {
+        ui.propertyChange(new PropertyGameStopped());
+    }
 }

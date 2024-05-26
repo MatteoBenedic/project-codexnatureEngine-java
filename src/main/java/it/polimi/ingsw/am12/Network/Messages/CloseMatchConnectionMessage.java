@@ -7,4 +7,22 @@ import it.polimi.ingsw.am12.Message;
  * by sockets
  */
 public class CloseMatchConnectionMessage implements Message {
+
+    private MatchCloseMode mode;
+
+    /**
+     * Constructor method for a CloseMatchMessage
+     * @param mode a MatchCloseMode
+     */
+    public CloseMatchConnectionMessage(MatchCloseMode mode) {
+        this.mode = mode;
+    }
+
+    /**
+     * Getter method for the match closing mode
+     * @return a MatchCloseMode
+     */
+    public MatchCloseMode getMode() {
+        return mode;
+    }
 }

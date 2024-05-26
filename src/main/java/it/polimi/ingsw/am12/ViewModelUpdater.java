@@ -148,4 +148,9 @@ public interface ViewModelUpdater {
      * @param errorMessage the error message
      */
     void setErrorMessage(String errorMessage);
+
+    /**
+     * Stops the game when a player has lost connection
+     */
+    void gameStoppedUpdate();
 }

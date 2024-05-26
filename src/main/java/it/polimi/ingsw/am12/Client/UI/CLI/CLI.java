@@ -5,10 +5,14 @@ import it.polimi.ingsw.am12.Client.UI.CLI.CommandsCLI.*;
 import it.polimi.ingsw.am12.Client.UI.UserInterface;
 import it.polimi.ingsw.am12.Network.Messages.CloseMatchConnectionMessage;
 import it.polimi.ingsw.am12.Message;
+import it.polimi.ingsw.am12.Network.Messages.MatchCloseMode;
 import it.polimi.ingsw.am12.Network.Messages.NicknameMessage;
 import it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents.PropertyChange;
+import it.polimi.ingsw.am12.Network.Messages.Updates.GameStoppedUpdate;
 import it.polimi.ingsw.am12.Utils.JSONParser;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.List;
@@ -19,12 +23,11 @@ import java.util.List;
  * to the Client controller. It also saves the graphic objects to print.
  */
 public class CLI implements UserInterface {
-
     ClientController controller;
     private HashMap<CommandInstruction, UserAction> useractions = new HashMap<>();
     private HashMap<RequestInstruction, UserRequest> userrequests = new HashMap<>();
     private CLIState currentState;
-    private boolean isActive;
+    private volatile boolean isActive;
     private boolean isNicknameSet;
     private static final String MSG_MISSING_PARAMS = "Missing parameters for command: ";
     private static final String MSG_TOO_MANY_PARAMS = "Too many parameters for command: ";
@@ -33,6 +36,7 @@ public class CLI implements UserInterface {
     private CLIDrawBufferTable drawtable;
     private CLIDrawBufferHand hand;
     private final List<CliCard> repCards;
+    private Thread inputThread;
 
     /**
      * Class constructor
@@ -44,9 +48,9 @@ public class CLI implements UserInterface {
         this.controller = controller;
         controller.addViewModelListener(this);
         this.currentState = CLIState.WAITING_NICKNAME;
-        this.isActive = true;
+        //this.isActive = true;
         this.isNicknameSet = false;
-
+        this.isActive = true;
         JSONParser jsonParser = new JSONParser();
         repCards = jsonParser.parseCLICards();
         for(CliCard c : repCards)
@@ -55,7 +59,9 @@ public class CLI implements UserInterface {
         drawtable = new CLIDrawBufferTable(repCards);
         hand = new CLIDrawBufferHand(repCards);
 
-        new Thread(this::readUserInput).start();
+        this.inputThread = new Thread(this::readUserInput);
+        inputThread.start();
+        //new Thread(this::readUserInput).start();
         inizializeUserActions();
 
     }
@@ -68,6 +74,7 @@ public class CLI implements UserInterface {
     private void readUserInput() {
         Scanner cliScanner = new Scanner(System.in);
         while(isActive) {
+            //System.out.println("isActive " + isActive);
             if (currentState == CLIState.WAITING_NICKNAME) {
                 System.out.println("Enter nickname: ");
                 String nickname = cliScanner.nextLine();
@@ -120,6 +127,9 @@ public class CLI implements UserInterface {
                             if (validCommandInstruction == CommandInstruction.END_GAME) {
                                 currentState = CLIState.CLOSING_PHASE;
                             }
+                            if( validCommandInstruction == CommandInstruction.QUIT) {
+                                currentState = CLIState.MATCH_STOPPED;
+                            }
                         }
                     } else {
                         System.out.println("Expected " + expectedParams + " parameters");
@@ -144,15 +154,21 @@ public class CLI implements UserInterface {
                 }
             }
             else if (currentState == CLIState.CLOSING_PHASE) {
-                CloseMatchConnectionMessage closeConnectionMessage = new CloseMatchConnectionMessage();
+                CloseMatchConnectionMessage closeConnectionMessage = new CloseMatchConnectionMessage(MatchCloseMode.ENDGAME);
                 controller.sendMessage(closeConnectionMessage);
-                isActive = false;
+                //isActive = false;
             } else if(currentState == CLIState.WAIT_FOR_UPDATE) {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+            }
+            else if(currentState == CLIState.MATCH_STOPPED) {
+                System.out.println("Disabling command interface...");
+                CloseMatchConnectionMessage closeConnectionMessage = new CloseMatchConnectionMessage(MatchCloseMode.QUIT);
+                controller.sendMessage(closeConnectionMessage);
+                isActive = false;
             }
         }
     }
@@ -173,6 +189,7 @@ public class CLI implements UserInterface {
 
     /**
      * Fills the useractions map with the corresponding UserAction class
+     * Fills the userrequests map with the corresponding UserRequest class
      */
     private void inizializeUserActions(){
         useractions.put(CommandInstruction.CREATE_MATCH, new UserCreateMatch());
@@ -188,6 +205,7 @@ public class CLI implements UserInterface {
         useractions.put(CommandInstruction.DRAW_CARD, new UserDrawCard());
         useractions.put(CommandInstruction.END_GAME, new UserEndGame());
         useractions.put(CommandInstruction.CHAT, new UserChat());
+        useractions.put(CommandInstruction.QUIT, new UserStopGame());
 
         userrequests.put(RequestInstruction.GET_MY_HAND, new UserRequestHand());
         userrequests.put(RequestInstruction.GET_MY_PLAYING_GRID, new UserRequestPlayingGrid());
@@ -224,6 +242,18 @@ public class CLI implements UserInterface {
             currentState = CLIState.WAITING_NICKNAME;
         }
     }
+
+    /**
+     * Disables the possibility for the user to enter commands
+     * when the match is stopped
+     */
+    public void disableCommand(){
+        currentState = CLIState.MATCH_STOPPED;
+        isActive = false;
+        //System.out.println("Current state = "+ currentState + " isActive = " + isActive);
+        inputThread.interrupt(); //Da rivedere. Il thread readUserInput è bloccato dalla System.in
+    }
+
 
     /**
      * Adds a new playing grid denominated in the playinggrids map by the nickname of the owner
