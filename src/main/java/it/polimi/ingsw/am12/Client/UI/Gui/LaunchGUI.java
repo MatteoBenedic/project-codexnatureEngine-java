@@ -3,8 +3,6 @@ package it.polimi.ingsw.am12.Client.UI.Gui;
 import it.polimi.ingsw.am12.Client.ClientController.ClientController;
 import it.polimi.ingsw.am12.Client.ClientController.ClientControllerRMI;
 import it.polimi.ingsw.am12.Client.ClientController.ClientControllerSocket;
-import it.polimi.ingsw.am12.Client.UI.Gui.ControllerNickname;
-import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,6 +15,9 @@ import java.util.List;
  * Launch the JavaFx application, with the args from ClientLauncher
  */
 public class LaunchGUI extends Application {
+
+    private static int WINDOW_WIDTH = 1800;
+    private static int WINDOW_HEIGHT = 1000;
 
     /**
      * Launch the JavaFx application, with the args from ClientLauncher
@@ -42,7 +43,7 @@ public class LaunchGUI extends Application {
         }
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Nickname.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 500);
+        Scene scene = new Scene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
         ControllerNickname cn = fxmlLoader.getController();
         cn.setClientController(controller);
 

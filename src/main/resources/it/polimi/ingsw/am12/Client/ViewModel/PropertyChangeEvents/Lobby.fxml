@@ -3,13 +3,20 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
-<?import com.sun.javafx.scene.control.IntegerField?>
+<?import javafx.scene.text.Text?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="it.polimi.ingsw.am12.Client.UI.Gui.ControllerCreateOrJoinMatch">
+      fx:controller="it.polimi.ingsw.am12.Client.UI.Gui.ControllerLobby">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
+    <HBox>
+        <Text fx:id="errorMessage" stroke="crimson"/>
+        <Button fx:id="closeErrorMessage" onAction="#closeErrorMessage" visible="false">Close</Button>
+    </HBox>
     <Label text="Lobby"/>
+    <VBox fx:id  = "lobbies">
+    </VBox>
+    <Button fx:id= "startMatchButton" text="Start match" onAction="#onStartMatchClick" visible="false"/>
 </VBox>

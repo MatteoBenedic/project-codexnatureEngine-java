@@ -44,9 +44,10 @@ public class PropertyNicknameSet implements PropertyChange {
      */
     @Override
     public void updateGUI(GUI gui) throws IOException {
+        gui.setNickname(nickname);
         Stage stage = gui.getStage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateOrJoinMatch.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 500);
+        Scene scene = new Scene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
         ControllerCreateOrJoinMatch cn = fxmlLoader.getController();
         cn.setClientController(gui.getController());
         stage.setScene(scene);

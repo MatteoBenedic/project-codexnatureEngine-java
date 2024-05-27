@@ -178,7 +178,7 @@ public class ViewModel implements ViewModelUpdater {
         playingGrids.get(nickname).add(c);
 
         boolean isMyPlayingGrid = nickname.equals(myNickname);
-        notifyPropertyChange(new PropertyCardPlaced(nickname, isMyPlayingGrid, startCard, side, c1 ));
+        notifyPropertyChange(new PropertyCardPlaced(nickname, isMyPlayingGrid, true, startCard, side, c1 ));
 
         if(this.state!=state) {
             this.state = state;
@@ -323,7 +323,7 @@ public class ViewModel implements ViewModelUpdater {
         playingGrids.get(nickname).add(c);
 
         boolean isMyUpdate = nickname.equals(myNickname);
-        notifyPropertyChange(new PropertyCardPlaced(nickname, isMyUpdate, index, side, coordinates));
+        notifyPropertyChange(new PropertyCardPlaced(nickname, isMyUpdate, false, index, side, coordinates));
 
         int oldPoints = this.points.get(nickname);
         this.points.put(nickname, oldPoints+points);

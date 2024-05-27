@@ -30,6 +30,8 @@ public class ControllerCreateOrJoinMatch extends ControllerGUI {
     Button confirmButton;
     @FXML
     Text errorMessage;
+    @FXML
+    Button closeErrorMessage;
 
     /**
      * Reset the content of the view, to call when the user selects a different action
@@ -72,6 +74,7 @@ public class ControllerCreateOrJoinMatch extends ControllerGUI {
 
             } catch (NumberFormatException e) {
                 errorMessage.setText("Insert a valid number (min 2, max 4)");
+                closeErrorMessage.setVisible(true);
             }
 
         });

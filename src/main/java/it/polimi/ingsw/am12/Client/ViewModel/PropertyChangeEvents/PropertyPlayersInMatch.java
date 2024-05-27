@@ -1,8 +1,25 @@
 package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
+import it.polimi.ingsw.am12.Client.UI.Gui.ControllerLobby;
+import it.polimi.ingsw.am12.Client.UI.Gui.ControllerMatch;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Cell;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -11,6 +28,14 @@ import java.util.List;
 public class PropertyPlayersInMatch implements PropertyChange {
 
     List<String> nicknames;
+    private final static int ROWS_GRID = 81;
+    private final static int COLUMNS_GRID = 81;
+    private final static int ROWS_DRAWTABLE = 3;
+    private final static int COLUMNS_DRAWTABLE = 3;
+
+    private final static int COLUMNS_SCOREBOARD = 50;
+    private final static int CELL_SIZE = 5;
+    private final static int ROWS_SCOREBOARD = 100;
 
     /**
      * Class constructor
@@ -35,8 +60,92 @@ public class PropertyPlayersInMatch implements PropertyChange {
      * @param gui the GUI
      */
     @Override
-    public void updateGUI(GUI gui) {
+    public void updateGUI(GUI gui) throws IOException {
+        Stage stage = gui.getStage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Match.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
+        ControllerMatch cn = fxmlLoader.getController();
+        cn.setClientController(gui.getController());
+        stage.setScene(scene);
 
+        //Add a playing grid for each player
+        TabPane tabs = (TabPane) scene.lookup("#tabs");
+        for(String nickname : nicknames) {
+            Tab tab = new Tab(nickname);
+            GridPane grid = new GridPane();
+            grid.setId(nickname);
+            for (int i = 0; i < COLUMNS_GRID*4; i++) {
+                ColumnConstraints colConst = new ColumnConstraints();
+                colConst.setPercentWidth(100.0 / COLUMNS_GRID*4);
+                grid.getColumnConstraints().add(colConst);
+            }
+            for (int i = 0; i <ROWS_GRID*3; i++) {
+                RowConstraints rowConst = new RowConstraints();
+                rowConst.setPercentHeight(100.0 / ROWS_GRID*3);
+                grid.getRowConstraints().add(rowConst);
+            }
+
+
+            ScrollPane scrollPane = new ScrollPane(grid);
+            scrollPane.setId("scroll"+nickname);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setFitToHeight(true);
+            tab.setContent(scrollPane);
+            tab.setClosable(false);
+            tabs.getTabs().add(tab);
+        }
+
+        Tab tab = new Tab("Draw table");
+        GridPane drawTable = new GridPane();
+        drawTable.setId("drawTable");
+        drawTable.setHgap(50);
+        drawTable.setVgap(50);
+        drawTable.setPadding(new Insets(50));
+        for (int i = 0; i < COLUMNS_DRAWTABLE; i++) {
+            ColumnConstraints colConst = new ColumnConstraints();
+            colConst.setPercentWidth(100.0 / COLUMNS_DRAWTABLE);
+            drawTable.getColumnConstraints().add(colConst);
+        }
+        for (int i = 0; i <ROWS_DRAWTABLE; i++) {
+            RowConstraints rowConst = new RowConstraints();
+            rowConst.setPercentHeight(100.0 / ROWS_DRAWTABLE);
+            drawTable.getRowConstraints().add(rowConst);
+        }
+        tab.setContent(drawTable);
+        tab.setClosable(false);
+        tabs.getTabs().add(tab);
+
+        TabPane rightTabs = (TabPane) scene.lookup("#rightTabs");
+        Tab scoreBoardTab = new Tab("Score board");
+        GridPane scoreBoardGrid = new GridPane();
+        for (int i = 0; i < COLUMNS_SCOREBOARD; i++) {
+            ColumnConstraints colConst = new ColumnConstraints();
+            colConst.setMinWidth(CELL_SIZE);
+            colConst.setMaxWidth(CELL_SIZE);
+            scoreBoardGrid.getColumnConstraints().add(colConst);
+        }
+        for (int i = 0; i <ROWS_SCOREBOARD; i++) {
+            RowConstraints rowConst = new RowConstraints();
+            rowConst.setMinHeight(CELL_SIZE);
+            rowConst.setMaxHeight(CELL_SIZE);
+            scoreBoardGrid.getRowConstraints().add(rowConst);
+        }
+
+        Image img = new Image("plateau_score_imp.png");
+        ImageView imageView = new ImageView(img);
+        imageView.setFitWidth(250);
+        imageView.setFitHeight(500);
+        Pane cell = new Pane();
+        cell.setMinSize(CELL_SIZE, CELL_SIZE);
+        cell.setMaxSize(CELL_SIZE, CELL_SIZE);
+        cell.getChildren().add(imageView);
+        scoreBoardGrid.setId("scoreBoard");
+        scoreBoardGrid.add(cell, 0, 0);
+
+        scoreBoardGrid.setGridLinesVisible(true);
+        scoreBoardTab.setContent(scoreBoardGrid);
+        scoreBoardTab.setClosable(false);
+        rightTabs.getTabs().add(scoreBoardTab);
     }
 }
 

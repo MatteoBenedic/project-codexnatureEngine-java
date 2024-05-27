@@ -3,6 +3,10 @@ package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import it.polimi.ingsw.am12.Utils.Coordinate;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -40,6 +44,20 @@ public class PropertyPlaceablePositions implements PropertyChange{
      */
     @Override
     public void updateGUI(GUI gui) {
+        Stage stage = gui.getStage();
+        Scene scene = stage.getScene();
+        GridPane grid = (GridPane) scene.lookup("#"+gui.getNickname());
+        for(Coordinate c: availablePositions){
+            Pane cell = new Pane();
+            cell.setStyle("-fx-background-color: red;");
+            cell.setMinSize(50, 50);
+            cell.setMaxSize(50, 50);
+            grid.add(cell,c.getX(),c.getY());
+            cell.setOnMouseClicked(event -> {
+                gui.setSelectedCoordinates(c.getX(), c.getY());
+                    }
+            );
 
     }
+}
 }

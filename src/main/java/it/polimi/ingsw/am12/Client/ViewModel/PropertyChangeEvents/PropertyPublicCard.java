@@ -3,6 +3,14 @@ package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLIDrawBufferTable;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
+import it.polimi.ingsw.am12.Utils.Assets;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * There is a new public card on the table
@@ -41,7 +49,21 @@ public class PropertyPublicCard implements PropertyChange{
      * @param gui the GUI
      */
     @Override
-    public void updateGUI(GUI gui) {
+    public void updateGUI(GUI gui) throws IOException {
+        Stage stage = gui.getStage();
+        Scene scene = stage.getScene();
+
+        GridPane drawtable = (GridPane) scene.lookup("#drawTable");
+        int row = (deckIndex < 2) ? 0: 1;
+        int column = deckIndex % 2;
+
+        Assets a = new Assets();
+        String fileName = a.getFileName(cardIndex, true);
+        Image img = new Image(fileName);
+        ImageView imageView = new ImageView(img);
+        imageView.setFitWidth(180);
+        imageView.setFitHeight(100);
+        drawtable.add(imageView, column, row);
 
     }
 }

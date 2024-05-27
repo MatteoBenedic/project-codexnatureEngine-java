@@ -3,6 +3,11 @@ package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import it.polimi.ingsw.am12.Model.Logic.PlayerColour;
+import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 /**
  * A player has a new colour
@@ -48,6 +53,13 @@ public class PropertyPlayerColour implements PropertyChange{
      */
     @Override
     public void updateGUI(GUI gui) {
+        Stage stage = gui.getStage();
+        Scene scene = stage.getScene();
+
+        Pane pion = (Pane) scene.lookup("#"+playerColour.getDescription());
+        GridPane scoreBoardGrid = (GridPane) scene.lookup("#scoreBoard");
+        scoreBoardGrid.getChildren().remove(pion);
+        scoreBoardGrid.add(pion, 9, 90);
 
     }
 }

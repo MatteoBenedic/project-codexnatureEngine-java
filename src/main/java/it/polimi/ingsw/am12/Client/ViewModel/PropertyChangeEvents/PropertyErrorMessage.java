@@ -2,6 +2,11 @@ package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
 
 /**
  * The error message changed
@@ -34,6 +39,13 @@ public class PropertyErrorMessage implements PropertyChange{
      */
     @Override
     public void updateGUI(GUI gui) {
+        Stage stage = gui.getStage();
+        Scene scene = stage.getScene();
 
+        Text errorMessage = (Text) scene.lookup("#errorMessage");
+        errorMessage.setText(message);
+
+        Button closeErrorMessage = (Button) scene.lookup("#closeErrorMessage");
+        closeErrorMessage.setVisible(true);
     }
 }

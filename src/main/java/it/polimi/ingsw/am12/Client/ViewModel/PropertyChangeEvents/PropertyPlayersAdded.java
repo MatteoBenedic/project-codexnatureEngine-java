@@ -1,10 +1,12 @@
 package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
-import it.polimi.ingsw.am12.Client.UI.Gui.ControllerCreateOrJoinMatch;
+import it.polimi.ingsw.am12.Client.UI.Gui.*;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
@@ -44,10 +46,15 @@ public class PropertyPlayersAdded implements PropertyChange{
     public void updateGUI(GUI gui) throws IOException {
         Stage stage = gui.getStage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 500);
-        ControllerCreateOrJoinMatch cn = fxmlLoader.getController();
+        Scene scene = new Scene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
+        ControllerLobby cn = fxmlLoader.getController();
         cn.setClientController(gui.getController());
         stage.setScene(scene);
+
+        VBox lobbies = (VBox) scene.lookup("#lobbies");
+        for(String nickname : nicknames) {
+            lobbies.getChildren().add(new Text(nickname));
+        }
         stage.show();
     }
 }

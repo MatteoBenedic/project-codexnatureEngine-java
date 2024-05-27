@@ -3,6 +3,12 @@ package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Model.Logic.State;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
+import it.polimi.ingsw.am12.Network.Messages.Events.PlaceCardEvent;
+import it.polimi.ingsw.am12.Network.Messages.Events.PlaceStartCardEvent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * The turn changed and it's your turn
@@ -45,6 +51,29 @@ public class PropertyYourTurn implements PropertyChange{
      */
     @Override
     public void updateGUI(GUI gui) {
+        Stage stage = gui.getStage();
+        Scene scene = stage.getScene();
 
+        if(!newState.equals(State.DISTRIBUTION)) {
+            Text turn = (Text) scene.lookup("#turn");
+            turn.setText("It's your turn!");
+        }
+
+        switch (newState) {
+            case STARTCARD:
+                Button placeButtonStart = (Button) scene.lookup("#placeButton");
+                placeButtonStart.setOnAction(event -> {
+                    gui.getController().sendMessage(new PlaceStartCardEvent(gui.getNickname(), gui.getCardSide()));
+                });
+                placeButtonStart.setVisible(true);
+                break;
+            case PLACING:
+                Button placeButton = (Button) scene.lookup("#placeButton");
+                placeButton.setOnAction(event -> {
+                    gui.getController().sendMessage(new PlaceCardEvent(gui.getNickname(), gui.getSelectedCardInHand(), gui.getCardSide(), gui.getSelectedCoordinates().getX(), gui.getSelectedCoordinates().getY()));
+                });
+                placeButton.setVisible(true);
+                break;
+        }
     }
 }
