@@ -114,29 +114,28 @@ public class PropertyPlayersInMatch implements PropertyChange {
         TabPane rightTabs = (TabPane) scene.lookup("#rightTabs");
         Tab scoreBoardTab = new Tab("Score board");
         GridPane scoreBoardGrid = new GridPane();
+
+        scoreBoardGrid.setMaxWidth(CELL_SIZE*COLUMNS_SCOREBOARD);
+        scoreBoardGrid.setMinWidth(CELL_SIZE*COLUMNS_SCOREBOARD);
+        scoreBoardGrid.setMaxHeight(CELL_SIZE*ROWS_SCOREBOARD);
+        scoreBoardGrid.setMinHeight(CELL_SIZE*ROWS_SCOREBOARD);
+
+        Image img = new Image("plateau_score_imp.png");
+        BackgroundSize backgroundSize = new BackgroundSize(scoreBoardGrid.getWidth(), scoreBoardGrid.getHeight(), false, false, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, backgroundSize);
+        scoreBoardGrid.setBackground(new Background(backgroundImage));
+
         for (int i = 0; i < COLUMNS_SCOREBOARD; i++) {
             ColumnConstraints colConst = new ColumnConstraints();
-            colConst.setMinWidth(CELL_SIZE);
-            colConst.setMaxWidth(CELL_SIZE);
+            colConst.setPercentWidth(100.0 / COLUMNS_SCOREBOARD);
             scoreBoardGrid.getColumnConstraints().add(colConst);
         }
         for (int i = 0; i <ROWS_SCOREBOARD; i++) {
             RowConstraints rowConst = new RowConstraints();
-            rowConst.setMinHeight(CELL_SIZE);
-            rowConst.setMaxHeight(CELL_SIZE);
+            rowConst.setPercentHeight(100.0 / ROWS_SCOREBOARD);
             scoreBoardGrid.getRowConstraints().add(rowConst);
         }
-
-        Image img = new Image("plateau_score_imp.png");
-        ImageView imageView = new ImageView(img);
-        imageView.setFitWidth(CELL_SIZE*COLUMNS_SCOREBOARD);
-        imageView.setFitHeight(CELL_SIZE*ROWS_SCOREBOARD);
-        Pane cell = new Pane();
-        cell.setMinSize(CELL_SIZE, CELL_SIZE);
-        cell.setMaxSize(CELL_SIZE, CELL_SIZE);
-        cell.getChildren().add(imageView);
         scoreBoardGrid.setId("scoreBoard");
-        scoreBoardGrid.add(cell, 0, 0);
 
         scoreBoardTab.setContent(scoreBoardGrid);
         scoreBoardTab.setClosable(false);
