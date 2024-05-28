@@ -129,8 +129,8 @@ public class PropertyPlayersInMatch implements PropertyChange {
 
         Image img = new Image("plateau_score_imp.png");
         ImageView imageView = new ImageView(img);
-        imageView.setFitWidth(250);
-        imageView.setFitHeight(500);
+        imageView.setFitWidth(CELL_SIZE*COLUMNS_SCOREBOARD);
+        imageView.setFitHeight(CELL_SIZE*ROWS_SCOREBOARD);
         Pane cell = new Pane();
         cell.setMinSize(CELL_SIZE, CELL_SIZE);
         cell.setMaxSize(CELL_SIZE, CELL_SIZE);
