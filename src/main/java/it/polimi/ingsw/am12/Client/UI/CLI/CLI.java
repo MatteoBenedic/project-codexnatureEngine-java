@@ -157,7 +157,7 @@ public class CLI implements UserInterface {
                         int value = 0;
                         try{
                             value = Integer.parseInt(parts[1]);
-                        }catch(NullPointerException ignored){}
+                        }catch(ArrayIndexOutOfBoundsException ignored){}
                         userrequests.get(validRequestInstruction).setPossibleParameter(value);
                         userrequests.get(validRequestInstruction).showRequest(this);
                     } else {
