@@ -337,7 +337,8 @@ public class ViewModel implements ViewModelUpdater {
             notifyPropertyChange(new PropertyCardInHand(cardsInHand));
 
         this.state = state;
-        notifyPropertyChange(new PropertyStateChange(state));
+        if(turn.equals(myNickname))
+            notifyPropertyChange(new PropertyStateChange(state));
 
     }
 
