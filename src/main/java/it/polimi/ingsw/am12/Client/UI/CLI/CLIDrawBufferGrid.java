@@ -86,19 +86,10 @@ public class CLIDrawBufferGrid implements CLIDrawBuffer {
     @Override
     public List<String> extractCardfromIndex(int index, boolean side) {
         List<String> newCard = new ArrayList<>();
-        int srcIndex;
-
-        if(!side) {
-            if (index < 80)
-                srcIndex = (index % 40)/ 10 + DELTA_BACKS;
-            else
-                srcIndex = index + DELTA_STARTBACKS;
-        }else
-            srcIndex = index;
 
         for(CliCard c: repCards)
-            if(c.getIndex() == srcIndex){
-                newCard = c.getColouredRep();
+            if(c.getIndex() == index){
+                newCard = c.getColouredRep(side);
                 break;
             }
 

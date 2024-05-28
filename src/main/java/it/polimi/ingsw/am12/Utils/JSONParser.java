@@ -3,6 +3,7 @@ package it.polimi.ingsw.am12.Utils;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.am12.Client.UI.CLI.CliCard;
+import it.polimi.ingsw.am12.Client.UI.CLI.CliObjCard;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.GameCard;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.Side;
 import it.polimi.ingsw.am12.Model.CardDesign.ObjectiveCards.ObjectiveCard;
@@ -86,6 +87,18 @@ public class JSONParser {
         Type listofCLIcards = new TypeToken<List<CliCard>>() {
         }.getType();
         return gson.fromJson(reader, listofCLIcards);
+    }
+
+    /**
+     * Parse a list of CliObjectiveCards from a cliObjCards.json
+     * @return a list of CliObjectiveCards
+     */
+    public List<CliObjCard> parseCLIObjectiveCards(){
+        InputStream is = getClass().getClassLoader().getResourceAsStream("cliObjCards.json");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        Type listofCLIObjcards = new TypeToken<List<CliObjCard>>() {
+        }.getType();
+        return gson.fromJson(reader, listofCLIObjcards);
     }
 }
 

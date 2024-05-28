@@ -37,16 +37,10 @@ public class CLIDrawBufferTable implements CLIDrawBuffer {
     @Override
     public List<String> extractCardfromIndex(int index, boolean side) {
         List<String> newCard = new ArrayList<>();
-        int srcIndex;
-
-        if(!side)
-            srcIndex = (index % 40)/ 10 + DELTA_BACKS;
-        else
-            srcIndex = index;
 
         for(CliCard c: repCards)
-            if(c.getIndex() == srcIndex){
-                newCard = c.getColouredRep();
+            if(c.getIndex() == index){
+                newCard = c.getColouredRep(side);
                 break;
             }
 
@@ -62,26 +56,29 @@ public class CLIDrawBufferTable implements CLIDrawBuffer {
     public List<String> extractCardfromColour(CardColour colour){
         List<String> newCard = new ArrayList<>();
         int srcIndex = -1;
-        switch(colour){
-            case RED:
-                srcIndex = DELTA_BACKS;
-                break;
-            case GREEN:
-                srcIndex = DELTA_BACKS + 1;
-                break;
-            case BLUE:
-                srcIndex = DELTA_BACKS + 2;
-                break;
-            case PURPLE:
-                srcIndex = DELTA_BACKS + 3;
-                break;
-            default:
-                break;
+        try {
+            switch (colour) {
+                case RED:
+                    srcIndex = DELTA_BACKS;
+                    break;
+                case GREEN:
+                    srcIndex = DELTA_BACKS + 1;
+                    break;
+                case BLUE:
+                    srcIndex = DELTA_BACKS + 2;
+                    break;
+                case PURPLE:
+                    srcIndex = DELTA_BACKS + 3;
+                    break;
+                default:
+                    break;
+            }
+        }catch(NullPointerException ignored){
         }
 
         for(CliCard c: repCards)
             if(c.getIndex() == srcIndex){
-                newCard = c.getColouredRep();
+                newCard = c.getColouredRep(true);
                 break;
             }
         
@@ -93,7 +90,6 @@ public class CLIDrawBufferTable implements CLIDrawBuffer {
      */
     @Override
     public void printBuffer() {
-        System.out.println("This is the draw table: ");
         for(String s : bufferTable)
             System.out.println(s + ColourCLI.RESET.getColour());
     }

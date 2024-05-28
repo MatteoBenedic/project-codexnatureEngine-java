@@ -11,7 +11,9 @@ public class CliCard {
     int index;
     List<String> representation = new ArrayList<>();
     ColourCLI colour;
+    List<String> back = new ArrayList<>();
     List<String> colouredRep;
+    List<String> colouredBack;
 
 
     /**
@@ -20,10 +22,17 @@ public class CliCard {
      */
     public void defineColouredRep(){
         colouredRep = new ArrayList<>();
+        colouredBack = new ArrayList<>();
         for(int i = 0; i < representation.size(); i++){
             String str = colour.getColour() + representation.get(i);
 
             colouredRep.add(str);
+        }
+
+        for(int i = 0; i < back.size(); i++){
+            String str = colour.getColour() + back.get(i);
+
+            colouredBack.add(str);
         }
     }
 
@@ -35,9 +44,12 @@ public class CliCard {
     }
 
     /**
-     * @return the coloured representation of the card, packed in a list of strings
+     * @param side the side to represent
+     * @return the coloured representation of the side choosen of the card, packed in a list of strings
      */
-    public List<String> getColouredRep() {
-        return colouredRep;
+    public List<String> getColouredRep(boolean side) {
+        if(side)
+            return colouredRep;
+        return colouredBack;
     }
 }

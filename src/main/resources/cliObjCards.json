@@ -1,0 +1,65 @@
+[ {
+    "index": 86,
+    "description": "Pattern Objective: 2 points for each diagonal set of three RED cards from bottom left to top right"
+  },
+  {
+    "index": 87,
+    "description": "Pattern Objective: 2 points for each diagonal set of three GREEN cards from top left to bottom right"
+  },
+  {
+    "index": 88,
+    "description": "Pattern Objective: 2 points for each diagonal set of three BLUE cards from bottom left to top right"
+  },
+  {
+    "index": 89,
+    "description": "Pattern Objective: 2 points for each diagonal set of three PURPLE cards from top left to bottom right"
+  },
+  {
+    "index": 90,
+    "description": "Pattern Objective: 3 points for each set of 2 RED cards one above the other and a GREEN card at the bottom right corner of the bottom RED card"
+  },
+  {
+    "index": 91,
+    "description": "Pattern Objective: 3 points for each set of 2 GREEN cards one above the other and a PURPLE card at the bottom left corner of the bottom GREEN card"
+  },
+  {
+    "index": 92,
+    "description": "Pattern Objective: 3 points for each set of 2 BLUE cards one above the other and a RED card at the top right corner of the top BLUE card"
+  },
+  {
+    "index": 93,
+    "description": "Pattern Objective: 3 points for each set of 2 PURPLE cards one above the other and a BLUE card at the top left corner of the top PURPLE card"
+  },
+  {
+    "index": 94,
+    "description": "Resource Objective: 2 points for each set of 3 FUNGI visible on your final playing area"
+  },
+  {
+    "index": 95,
+    "description": "Resource Objective: 2 points for each set of 3 PLANTS visible on your final playing area"
+  },
+  {
+    "index": 96,
+    "description": "Resource Objective: 2 points for each set of 3 ANIMALS visible on your final playing area"
+  },
+  {
+    "index": 97,
+    "description": "Resource Objective: 2 points for each set of 3 INSECTS visible on your final playing area"
+  },
+  {
+    "index": 98,
+    "description": "Resource Objective: 3 points for each set of a MANUSCRIPT, a INKWELL and a QUILL visible on your final playing area"
+  },
+  {
+    "index": 99,
+    "description": "Resource Objective: 2 points for each set of 2 MANUSCRIPTS visible on your final playing area"
+  },
+  {
+    "index": 100,
+    "description": "Resource Objective: 2 points for each set of 2 INKWELLS visible on your final playing area"
+  },
+  {
+    "index": 101,
+    "description": "Resource Objective: 2 points for each set of 2 QUILLS visible on your final playing area"
+  }
+]

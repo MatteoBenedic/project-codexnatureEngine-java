@@ -5,18 +5,21 @@ package it.polimi.ingsw.am12.Client.UI.CLI.CommandsCLI;
  * to be show
  */
 public enum RequestInstruction {
-    GET_MY_HAND("showmycardsinhand"),
-    GET_MY_PLAYING_GRID("showmygrid"),
-    GET_MY_DRAW_TABLE("showdrawtable");
+    GET_MY_HAND("showmycardsinhand", 0),
+    GET_MY_PLAYING_GRID("showmygrid", 0),
+    GET_MY_DRAW_TABLE("showdrawtable", 0),
+    GET_FLIPPED_CARD("flipcard", 1);
 
     private String instruction;
+    private int numParams;
 
     /**
      * Class constructor
      * @param instruction the String command
      */
-    RequestInstruction(String instruction){
+    RequestInstruction(String instruction, int numParams){
         this.instruction = instruction;
+        this.numParams = numParams;
     }
 
     /**
@@ -26,4 +29,10 @@ public enum RequestInstruction {
     public String getInstruction(){
         return instruction;
     }
+
+    /**
+     * Get the number of parameters
+     * @return the number of parameters
+     */
+    public int getNumParams() {return numParams;}
 }

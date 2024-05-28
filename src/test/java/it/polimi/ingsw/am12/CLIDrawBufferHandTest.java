@@ -38,4 +38,31 @@ class CLIDrawBufferHandTest {
         hand.printBuffer();
     }
 
+    @Test
+    void flipCards(){
+        for(CliCard c : cards)
+            c.defineColouredRep();
+
+        CLIDrawBufferHand hand = new CLIDrawBufferHand(cards);
+        List<Integer> firsthand = new ArrayList<>();
+        firsthand.add(3);
+        firsthand.add(52);
+        firsthand.add(31);
+        hand.insertCardsInBuffer(firsthand);
+        hand.printBuffer();
+
+
+        hand.flipCard(1);
+        hand.printBuffer();
+
+        hand.flipCard(2);
+        hand.printBuffer();
+
+        hand.flipCard(1);
+        hand.printBuffer();
+
+        hand.flipCard(0);
+        hand.printBuffer();
+    }
+
 }

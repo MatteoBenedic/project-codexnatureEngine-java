@@ -27,5 +27,15 @@ public class UserRequestPlayingGrid implements UserRequest{
     @Override
     public void setNickname(String nickname){
         this.nickname = nickname;
-    };
+    }
+
+    /**
+     * Method that defines, if there is one, the integer parameter of the object
+     * @param value the integer parameter to set
+     */
+    @Override
+    public void setPossibleParameter(int value) {
+    }
+
+    ;
 }

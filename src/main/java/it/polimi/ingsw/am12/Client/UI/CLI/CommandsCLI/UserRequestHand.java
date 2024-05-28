@@ -26,6 +26,14 @@ public class UserRequestHand implements UserRequest{
      * @param nickname the nickname of the user who requested the action
      */
     @Override
-   public void setNickname(String nickname){}
+    public void setNickname(String nickname){}
+
+    /**
+     * Method that defines, if there is one, the integer parameter of the object
+     * @param value the integer parameter to set
+     */
+    @Override
+    public void setPossibleParameter(int value) {
+    }
 
 }

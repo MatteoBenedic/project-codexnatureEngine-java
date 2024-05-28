@@ -24,7 +24,9 @@ public class PropertyPublicObjective implements PropertyChange{
      */
     @Override
     public void updateCLI(CLI cli) {
-        System.out.println("There is a new public objective: "+ index);
+        System.out.println("Public objective ");
+        cli.printObjectiveCard(index);
+        System.out.println(" ");
     }
 
     /**

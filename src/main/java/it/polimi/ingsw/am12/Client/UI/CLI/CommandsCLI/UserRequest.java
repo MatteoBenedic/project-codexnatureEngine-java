@@ -19,5 +19,11 @@ public interface UserRequest {
      */
     void setNickname(String nickname);
 
+    /**
+     * Method that defines, if there is one, the integer parameter of the object
+     * @param value the integer parameter to set
+     */
+    void setPossibleParameter(int value);
+
 }
 

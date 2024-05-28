@@ -25,7 +25,14 @@ public class PropertyObjectivesToChoose implements PropertyChange{
      */
     @Override
     public void updateCLI(CLI cli) {
-        System.out.println("You have to choose one of these secret objectives: " + objectives[0] + " or " + objectives[1]);
+        int first = objectives[0];
+        int second = objectives[1];
+        System.out.println("You have to choose one of these secret objectives ");
+        cli.printObjectiveCard(first);
+        System.out.println(" ");
+        System.out.println(" or  ");
+        cli.printObjectiveCard(second);
+        System.out.println(" ");
     }
 
     /**

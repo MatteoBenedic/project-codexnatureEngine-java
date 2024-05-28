@@ -36,6 +36,7 @@ public class CLI implements UserInterface {
     private CLIDrawBufferTable drawtable;
     private CLIDrawBufferHand hand;
     private final List<CliCard> repCards;
+    private List<CliObjCard> objCards;
     private Thread inputThread;
 
     /**
@@ -53,6 +54,7 @@ public class CLI implements UserInterface {
         this.isActive = true;
         JSONParser jsonParser = new JSONParser();
         repCards = jsonParser.parseCLICards();
+        objCards = jsonParser.parseCLIObjectiveCards();
         for(CliCard c : repCards)
             c.defineColouredRep();
         playingGrids = new HashMap<>();
@@ -140,15 +142,33 @@ public class CLI implements UserInterface {
                         }
                     }
                 } else if (validRequestInstruction != null) {
-                    int expectedParams = 0;
-                    int actualParams = parts.length - 1;
+                    int expectedParams = validRequestInstruction.getNumParams();
+
+                    String[] parameters = {};
+                    if (parts.length > 1) {
+                        String trimmedParams = parts[1].replaceAll("\\s+", " ");
+                        trimmedParams = trimmedParams.trim();
+                        parameters = trimmedParams.split(" ");
+                    }
+                    int actualParams = parameters.length;
+
 
                     if (actualParams == expectedParams) {
+                        int value = 0;
+                        try{
+                            value = Integer.parseInt(parts[1]);
+                        }catch(NullPointerException ignored){}
+                        userrequests.get(validRequestInstruction).setPossibleParameter(value);
                         userrequests.get(validRequestInstruction).showRequest(this);
                     } else {
                         System.out.println("Expected " + expectedParams + " parameters");
-                        System.out.println(MSG_TOO_MANY_PARAMS + instruction);
+                        if (actualParams < expectedParams) {
+                            System.out.println(MSG_MISSING_PARAMS + instruction);
+                        } else {
+                            System.out.println(MSG_TOO_MANY_PARAMS + instruction);
+                        }
                     }
+
                 } else {
                     System.out.println(MSG_COMMAND_NOT_RECOGNIZED);
                 }
@@ -210,6 +230,7 @@ public class CLI implements UserInterface {
         userrequests.put(RequestInstruction.GET_MY_HAND, new UserRequestHand());
         userrequests.put(RequestInstruction.GET_MY_PLAYING_GRID, new UserRequestPlayingGrid());
         userrequests.put(RequestInstruction.GET_MY_DRAW_TABLE, new UserRequestDrawTable());
+        userrequests.put(RequestInstruction.GET_FLIPPED_CARD, new UserRequestFlipCard());
     }
 
     /**
@@ -282,5 +303,15 @@ public class CLI implements UserInterface {
      */
     public CLIDrawBufferHand getHand() {
         return hand;
+    }
+
+    /**
+     * It prints the objective card requested
+     * @param index the index of the requested objective card
+     */
+    public void printObjectiveCard(int index){
+        for(CliObjCard o: objCards)
+            if(index == o.getIndex())
+                System.out.println(o.getDescription());
     }
 }
