@@ -80,6 +80,15 @@ public class PropertyCardInHand implements PropertyChange{
                 imageView.setFitWidth(180);
                 imageView.setFitHeight(100);
                 hand.getChildren().add(imageView);
+
+                imageView.setOnMouseClicked(event1 -> {
+                            for (int i = 0; i < hand.getChildren().size(); i++) {
+                                ImageView cardinhand = (ImageView) hand.getChildren().get(i);
+                                if(cardinhand.equals(imageView))
+                                    gui.setSelectedCardInHand(i);
+                            }
+                        }
+                );
             }
         });
         switchSideButton.setVisible(true);

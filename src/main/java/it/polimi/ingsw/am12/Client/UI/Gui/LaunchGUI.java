@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class LaunchGUI extends Application {
 
-    private static int WINDOW_WIDTH = 1800;
-    private static int WINDOW_HEIGHT = 1000;
+    private final static int WINDOW_WIDTH = 1200;
+    private final static int WINDOW_HEIGHT = 700;
 
     /**
      * Launch the JavaFx application, with the args from ClientLauncher

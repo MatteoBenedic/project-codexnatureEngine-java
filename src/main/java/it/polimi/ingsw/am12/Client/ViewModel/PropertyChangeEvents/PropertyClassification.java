@@ -1,7 +1,18 @@
 package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
+import it.polimi.ingsw.am12.Client.UI.Gui.ControllerCreateOrJoinMatch;
+import it.polimi.ingsw.am12.Client.UI.Gui.ControllerMatch;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
+import it.polimi.ingsw.am12.Controller.Controller;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+
+import java.io.IOException;
 import java.util.LinkedHashMap;
 
 /**
@@ -29,7 +40,7 @@ public class PropertyClassification implements PropertyChange {
     @Override
     public void updateCLI(CLI cli) {
        System.out.println("Winners: ");
-       String[] players = (String[]) classification.sequencedKeySet().toArray();
+       String[] players = classification.sequencedKeySet().toArray(String[]::new);
        for(int i=0; i<numWinners; i++) {
            System.out.println(players[i] + " with " + classification.get(players[i]) + " points");
        }
@@ -44,7 +55,26 @@ public class PropertyClassification implements PropertyChange {
      * @param gui the GUI
      */
     @Override
-    public void updateGUI(GUI gui) {
+    public void updateGUI(GUI gui) throws IOException {
+        Stage stage = gui.getStage();
 
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Classification.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
+        ControllerMatch cn = fxmlLoader.getController();
+        cn.setClientController(gui.getController());
+        VBox stats = (VBox) scene.lookup("#classification");
+
+        String[] players = classification.sequencedKeySet().toArray(String[]::new);
+        stats.getChildren().add(new Text("Winners: "));
+        for(int i = 0; i<numWinners; i++) {
+            stats.getChildren().add(new Text(players[i] + " with " + classification.get(players[i]) + " points"));
+        }
+
+        stats.getChildren().add(new Text("Non winners: "));
+        for(int i=numWinners; i< players.length; i++) {
+            stats.getChildren().add(new Text(players[i] + " with " + classification.get(players[i]) + " points"));
+        }
+        stage.setScene(scene);
+        stage.show();
     }
 }

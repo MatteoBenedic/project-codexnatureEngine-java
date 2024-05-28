@@ -31,7 +31,7 @@ public class PropertyYourTurn implements PropertyChange{
      */
     @Override
     public void updateCLI(CLI cli) {
-        if(!newState.equals(State.DISTRIBUTION))
+        if(!newState.equals(State.DISTRIBUTION) && !newState.equals(State.END))
             System.out.println("It's your turn");
         switch (newState) {
 
@@ -54,25 +54,31 @@ public class PropertyYourTurn implements PropertyChange{
         Stage stage = gui.getStage();
         Scene scene = stage.getScene();
 
-        if(!newState.equals(State.DISTRIBUTION)) {
+        Button actionButton = (Button) scene.lookup("#actionButton");
+
+        if(!newState.equals(State.DISTRIBUTION) && !newState.equals(State.END)) {
             Text turn = (Text) scene.lookup("#turn");
             turn.setText("It's your turn!");
+            if(actionButton!= null) {
+                actionButton.setVisible(false);
+                actionButton.setOnAction((event) -> {});
+            }
         }
 
         switch (newState) {
             case STARTCARD:
-                Button placeButtonStart = (Button) scene.lookup("#placeButton");
-                placeButtonStart.setOnAction(event -> {
+                actionButton.setText("Place start card");
+                actionButton.setOnAction(event -> {
                     gui.getController().sendMessage(new PlaceStartCardEvent(gui.getNickname(), gui.getCardSide()));
                 });
-                placeButtonStart.setVisible(true);
+                actionButton.setVisible(true);
                 break;
             case PLACING:
-                Button placeButton = (Button) scene.lookup("#placeButton");
-                placeButton.setOnAction(event -> {
+                actionButton.setText("Place card");
+                actionButton.setOnAction(event -> {
                     gui.getController().sendMessage(new PlaceCardEvent(gui.getNickname(), gui.getSelectedCardInHand(), gui.getCardSide(), gui.getSelectedCoordinates().getX(), gui.getSelectedCoordinates().getY()));
                 });
-                placeButton.setVisible(true);
+                actionButton.setVisible(true);
                 break;
         }
     }

@@ -29,6 +29,10 @@ public class PropertyCardPlaced implements PropertyChange {
     Coordinate position;
     private final static int CENTRE_GRID_ROW = 40;
     private final static int CENTRE_GRID_COL = 40;
+    private final static int CELL_DIM_ROW = 30;
+    private final static int CELL_DIM_COL = 40;
+    private final static int MUL_ROW = 3;
+    private final static int MUL_COL = 4;
 
     /**
      * Class constructor
@@ -77,26 +81,26 @@ public class PropertyCardPlaced implements PropertyChange {
         Scene scene = stage.getScene();
 
         GridPane grid = (GridPane) scene.lookup("#" + nickname);
-        int row = position.getX()*3-(position.getX()-CENTRE_GRID_ROW);
-        int column = position.getY()*4-(position.getY()-CENTRE_GRID_COL);
+        int row = position.getX()*MUL_ROW-(position.getX()-CENTRE_GRID_ROW);
+        int column = position.getY()*MUL_COL-(position.getY()-CENTRE_GRID_COL);
 
         Assets a = new Assets();
         String fileName = a.getFileName(cardIndex, side);
         Image img = new Image(fileName);
         ImageView imageView = new ImageView(img);
-        imageView.setFitWidth(160);
-        imageView.setFitHeight(90);
+        imageView.setFitWidth(CELL_DIM_COL*MUL_COL);
+        imageView.setFitHeight(CELL_DIM_ROW*MUL_ROW);
         Pane cell = new Pane();
-        cell.setMinSize(40, 30);
-        cell.setMaxSize(40, 30);
+        cell.setMinSize(CELL_DIM_COL, CELL_DIM_ROW);
+        cell.setMaxSize(CELL_DIM_COL, CELL_DIM_ROW);
         cell.getChildren().add(imageView);
         grid.add(cell, column, row);
         imageView.setOnMouseClicked(event ->
                 gui.getController().sendMessage(
                         new GetPlaceablePositionsEvent(
                                 gui.getNickname(),
-                                row,
-                                column)));
+                                position.getX(),
+                                position.getY())));
 
         if(isStartCard && isYourPlayingGrid) {
             HBox hand = (HBox) scene.lookup("#hand");

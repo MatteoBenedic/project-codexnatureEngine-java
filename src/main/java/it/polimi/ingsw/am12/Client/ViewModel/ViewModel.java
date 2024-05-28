@@ -235,10 +235,6 @@ public class ViewModel implements ViewModelUpdater {
             this.objectives[j] = publicObjectives[j];
             notifyPropertyChange(new PropertyPublicObjective(this.objectives[j]));
         }
-        for (int j = 0; j < N_OBJECTIVES; j++) {
-            this.objectivesToChoose[j] = secretObjectives.get(myNickname)[j];
-        }
-        notifyPropertyChange(new PropertyObjectivesToChoose(objectivesToChoose));
 
         notifyPropertyChange(new PropertyDeckColour(newGoldDeckColour, 4, false));
         notifyPropertyChange(new PropertyDeckColour(newResDeckColour, 5, true));
@@ -247,6 +243,11 @@ public class ViewModel implements ViewModelUpdater {
             cardsInHand.add(c);
         }
         notifyPropertyChange(new PropertyCardInHand(cardsInHand));
+
+        for (int j = 0; j < N_OBJECTIVES; j++) {
+            this.objectivesToChoose[j] = secretObjectives.get(myNickname)[j];
+        }
+        notifyPropertyChange(new PropertyObjectivesToChoose(objectivesToChoose));
 
         this.state = state;
         notifyPropertyChange(new PropertyStateChange(state));
@@ -329,7 +330,7 @@ public class ViewModel implements ViewModelUpdater {
         this.points.put(nickname, oldPoints+points);
 
         if(points>0) {
-            notifyPropertyChange(new PropertyPoints(nickname, isMyUpdate, oldPoints+points));
+            notifyPropertyChange(new PropertyPoints(nickname, isMyUpdate, colours.get(nickname), oldPoints+points));
         }
 
         if(nickname.equals(myNickname))

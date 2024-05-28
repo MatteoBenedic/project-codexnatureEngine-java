@@ -3,6 +3,7 @@ package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLIDrawBufferTable;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
+import it.polimi.ingsw.am12.Network.Messages.Events.DrawCardEvent;
 import it.polimi.ingsw.am12.Utils.Assets;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -63,6 +64,9 @@ public class PropertyPublicCard implements PropertyChange{
         ImageView imageView = new ImageView(img);
         imageView.setFitWidth(180);
         imageView.setFitHeight(100);
+        imageView.setOnMouseClicked(event ->
+                gui.getController().sendMessage(new DrawCardEvent(gui.getNickname(), deckIndex)));
+
         drawtable.add(imageView, column, row);
 
     }

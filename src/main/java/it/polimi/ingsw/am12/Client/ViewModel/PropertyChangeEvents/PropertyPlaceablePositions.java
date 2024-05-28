@@ -16,6 +16,14 @@ import java.util.List;
 public class PropertyPlaceablePositions implements PropertyChange{
 
     List<Coordinate> availablePositions;
+    private final static int CENTRE_GRID_ROW = 40;
+
+    private final static int MUL_ROW = 3;
+    private final static int MUL_COL = 4;
+    private final static int CELL_DIM_ROW = 40;
+    private final static int CELL_DIM_COL = 30;
+    private final static int CENTRE_GRID_COL = 40;
+
 
     /**
      * Class constructor
@@ -50,11 +58,14 @@ public class PropertyPlaceablePositions implements PropertyChange{
         for(Coordinate c: availablePositions){
             Pane cell = new Pane();
             cell.setStyle("-fx-background-color: red;");
-            cell.setMinSize(50, 50);
-            cell.setMaxSize(50, 50);
-            grid.add(cell,c.getX(),c.getY());
+            cell.setMinSize(CELL_DIM_ROW, CELL_DIM_COL);
+            cell.setMaxSize(CELL_DIM_ROW, CELL_DIM_COL);
+
+            int row = c.getX()*MUL_ROW-(c.getX()-CENTRE_GRID_ROW);
+            int column = c.getY()*MUL_COL-(c.getY()-CENTRE_GRID_COL);
+            grid.add(cell, column, row);
             cell.setOnMouseClicked(event -> {
-                gui.setSelectedCoordinates(c.getX(), c.getY());
+                gui.setSelectedCoordinates(c.getX(),c.getY());
                     }
             );
 

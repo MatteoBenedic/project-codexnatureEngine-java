@@ -8,9 +8,6 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.layout.GridPane?>
 <VBox alignment="CENTER" spacing="1.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="it.polimi.ingsw.am12.Client.UI.Gui.ControllerMatch">
     <padding>
@@ -21,22 +18,23 @@
         <Button fx:id="closeErrorMessage" onAction="#closeErrorMessage" visible="false">Close</Button>
     </HBox>
     <Text fx:id="turn"/>
+    <Text fx:id="remainingRounds"/>
     <SplitPane minHeight="700" dividerPositions="0.6" orientation="HORIZONTAL">
         <SplitPane dividerPositions="0.7" orientation="VERTICAL">
             <TabPane fx:id="tabs">
             </TabPane>
-            <HBox fx:id="hand">
+            <HBox spacing="8.0">
+                <HBox fx:id="hand" spacing="8.0">
+                </HBox>
+                <HBox fx:id="objectives" spacing="8.0">
+                </HBox>
             </HBox>
             <HBox fx:id="controlPanel">
                 <Button fx:id="switchSideButton" visible="false">Switch side</Button>
-                <Button fx:id="placeButton" visible="false">Place</Button>
+                <Button fx:id="actionButton" visible="false">Place</Button>
             </HBox>
         </SplitPane>
         <TabPane fx:id="rightTabs">
-            <Tab  closable="false">
-                
-            </Tab>
-            <Tab fx:id="chat" closable="false"></Tab>
         </TabPane>
     </SplitPane>
 </VBox>

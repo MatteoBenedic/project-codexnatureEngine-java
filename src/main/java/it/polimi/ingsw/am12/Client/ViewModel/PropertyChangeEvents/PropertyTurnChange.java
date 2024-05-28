@@ -4,6 +4,7 @@ import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Model.Logic.State;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -31,7 +32,7 @@ public class PropertyTurnChange implements PropertyChange{
      */
     @Override
     public void updateCLI(CLI cli) {
-        if(!newState.equals(State.DISTRIBUTION))
+        if(!newState.equals(State.DISTRIBUTION) && !newState.equals(State.END))
             System.out.println("It's "+ nickname + "'s turn");
     }
 
@@ -45,9 +46,13 @@ public class PropertyTurnChange implements PropertyChange{
         Stage stage = gui.getStage();
         Scene scene = stage.getScene();
 
-        if(!newState.equals(State.DISTRIBUTION)) {
+        Button actionButton = (Button) scene.lookup("#actionButton");
+
+        if(!newState.equals(State.DISTRIBUTION) && !newState.equals(State.END)) {
             Text turn = (Text) scene.lookup("#turn");
             turn.setText("It's "+ nickname + "'s turn");
+            if(actionButton!= null)
+                actionButton.setVisible(false);
         }
     }
 }

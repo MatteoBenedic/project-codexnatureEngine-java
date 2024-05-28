@@ -11,8 +11,8 @@ import java.io.IOException;
  */
 public interface PropertyChange {
 
-    int WINDOW_WIDTH = 1800;
-    int WINDOW_HEIGHT = 1000;
+    int WINDOW_WIDTH = 1200;
+    int WINDOW_HEIGHT = 700;
 
     /**
      * Update the CLI with the changes in the viewModel

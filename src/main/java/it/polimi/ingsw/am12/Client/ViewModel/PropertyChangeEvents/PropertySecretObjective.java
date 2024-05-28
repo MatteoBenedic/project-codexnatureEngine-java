@@ -2,6 +2,12 @@ package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
+import it.polimi.ingsw.am12.Utils.Assets;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 /**
  * The secret objective is selected
@@ -45,6 +51,21 @@ public class PropertySecretObjective implements PropertyChange{
      */
     @Override
     public void updateGUI(GUI gui) {
+        Stage stage = gui.getStage();
+        Scene scene = stage.getScene();
+
+        if(isYourObjective) {
+            HBox objContainer = (HBox) scene.lookup("#objectives");
+            objContainer.getChildren().clear();
+
+            Assets a = new Assets();
+            String fileName = a.getFileName(index, true);
+            Image img = new Image(fileName);
+            ImageView imageView = new ImageView(img);
+            imageView.setFitWidth(180);
+            imageView.setFitHeight(100);
+            objContainer.getChildren().add(imageView);
+        }
 
     }
 }

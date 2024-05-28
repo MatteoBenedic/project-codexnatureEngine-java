@@ -3,6 +3,7 @@ package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import it.polimi.ingsw.am12.Model.Logic.PlayerColour;
+import it.polimi.ingsw.am12.Utils.PointPosition;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -59,7 +60,8 @@ public class PropertyPlayerColour implements PropertyChange{
         Pane pion = (Pane) scene.lookup("#"+playerColour.getDescription());
         GridPane scoreBoardGrid = (GridPane) scene.lookup("#scoreBoard");
         scoreBoardGrid.getChildren().remove(pion);
-        scoreBoardGrid.add(pion, 9, 90);
+        PointPosition pos = new PointPosition();
+        scoreBoardGrid.add(pion, pos.getPosition(0).getX(), pos.getPosition(0).getY());
 
     }
 }

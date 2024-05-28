@@ -4,12 +4,10 @@ import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import it.polimi.ingsw.am12.Model.Logic.PlayerColour;
 import it.polimi.ingsw.am12.Model.Logic.State;
-import it.polimi.ingsw.am12.Network.Messages.Events.GetPlaceablePositionsEvent;
-import it.polimi.ingsw.am12.Network.Messages.Events.SelectColourEvent;
+import it.polimi.ingsw.am12.Network.Messages.Events.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
@@ -66,17 +64,23 @@ public class PropertyStateChange implements PropertyChange{
     public void updateGUI(GUI gui) throws IOException {
         Stage stage = gui.getStage();
         Scene scene = stage.getScene();
+
+        Button actionButton = (Button) scene.lookup("#actionButton");
+        if(actionButton!= null) {
+            actionButton.setVisible(false);
+            actionButton.setOnAction((event) -> {});
+        }
+
         switch (newState) {
             case INITIALIZATION:
                 Button startMatchButton = (Button) scene.lookup("#startMatchButton");
 
                 startMatchButton.setVisible(true);
-                stage.setScene(scene);
-                stage.show();
                 break;
             case COLOUR:
                 GridPane scoreBoard = (GridPane) scene.lookup("#scoreBoard");
 
+                //Red pion
                 Image red = new Image("pion_rouge.png");
                 ImageView redImage = new ImageView(red);
                 Pane cell = new Pane();
@@ -87,7 +91,13 @@ public class PropertyStateChange implements PropertyChange{
                 redImage.setOnMouseClicked(event ->
                         gui.getController().sendMessage(
                                 new SelectColourEvent(gui.getNickname(), PlayerColour.RED)));
+                Pane cellRed = new Pane();
+                cellRed.setMinSize(CELL_SIZE, CELL_SIZE);
+                cellRed.setMaxSize(CELL_SIZE, CELL_SIZE);
+                cellRed.setId("red");
+                cellRed.getChildren().add(redImage);
 
+                //Yellow pion
                 Image yellow = new Image("pion_jaune.png");
                 ImageView yellowImage = new ImageView(yellow);
                 yellowImage.setFitWidth(50);
@@ -95,7 +105,13 @@ public class PropertyStateChange implements PropertyChange{
                 yellowImage.setOnMouseClicked(event ->
                         gui.getController().sendMessage(
                                 new SelectColourEvent(gui.getNickname(), PlayerColour.YELLOW)));
+                Pane cellYellow = new Pane();
+                cellYellow.setMinSize(CELL_SIZE, CELL_SIZE);
+                cellYellow.setMaxSize(CELL_SIZE, CELL_SIZE);
+                cellYellow.setId("yellow");
+                cellYellow.getChildren().add(yellowImage);
 
+                //Green pion
                 Image green = new Image("pion_vert.png");
                 ImageView greenImage = new ImageView(green);
                 greenImage.setFitWidth(50);
@@ -103,7 +119,13 @@ public class PropertyStateChange implements PropertyChange{
                 greenImage.setOnMouseClicked(event ->
                         gui.getController().sendMessage(
                                 new SelectColourEvent(gui.getNickname(), PlayerColour.GREEN)));
+                Pane cellGreen = new Pane();
+                cellGreen.setMinSize(CELL_SIZE, CELL_SIZE);
+                cellGreen.setMaxSize(CELL_SIZE, CELL_SIZE);
+                cellGreen.setId("green");
+                cellGreen.getChildren().add(greenImage);
 
+                //Blue pion
                 Image blue = new Image("pion_bleu.png");
                 ImageView blueImage = new ImageView(blue);
                 blueImage.setFitWidth(50);
@@ -111,25 +133,6 @@ public class PropertyStateChange implements PropertyChange{
                 blueImage.setOnMouseClicked(event ->
                         gui.getController().sendMessage(
                                 new SelectColourEvent(gui.getNickname(), PlayerColour.BLUE)));
-
-                Pane cellRed = new Pane();
-                cellRed.setMinSize(CELL_SIZE, CELL_SIZE);
-                cellRed.setMaxSize(CELL_SIZE, CELL_SIZE);
-                cellRed.setId("red");
-                cellRed.getChildren().add(redImage);
-
-                Pane cellYellow = new Pane();
-                cellYellow.setMinSize(CELL_SIZE, CELL_SIZE);
-                cellYellow.setMaxSize(CELL_SIZE, CELL_SIZE);
-                cellYellow.setId("yellow");
-                cellYellow.getChildren().add(yellowImage);
-
-                Pane cellGreen = new Pane();
-                cellGreen.setMinSize(CELL_SIZE, CELL_SIZE);
-                cellGreen.setMaxSize(CELL_SIZE, CELL_SIZE);
-                cellGreen.setId("green");
-                cellGreen.getChildren().add(greenImage);
-
                 Pane cellBlue = new Pane();
                 cellBlue.setMinSize(CELL_SIZE, CELL_SIZE);
                 cellBlue.setMaxSize(CELL_SIZE, CELL_SIZE);
@@ -141,8 +144,21 @@ public class PropertyStateChange implements PropertyChange{
                 scoreBoard.add(cellGreen, COLUMNS_SCOREBOARD, 50);
                 scoreBoard.add(cellBlue, COLUMNS_SCOREBOARD, 75);
 
-                stage.setScene(scene);
-                stage.show();
+                break;
+
+            case DISTRIBUTION:
+                actionButton.setText("Distribute cards");
+                actionButton.setOnAction(event -> {
+                    gui.getController().sendMessage(new DistributeCardsEvent());
+                });
+                actionButton.setVisible(true);
+                break;
+            case END:
+                actionButton.setText("Get classification");
+                actionButton.setOnAction(event -> {
+                    gui.getController().sendMessage(new EndGameEvent());
+                });
+                actionButton.setVisible(true);
                 break;
         }
     }

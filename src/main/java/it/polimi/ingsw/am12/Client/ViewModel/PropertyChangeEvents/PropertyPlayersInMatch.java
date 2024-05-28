@@ -4,19 +4,14 @@ import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.ControllerLobby;
 import it.polimi.ingsw.am12.Client.UI.Gui.ControllerMatch;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
+import it.polimi.ingsw.am12.Network.Messages.Events.ChatEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Cell;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -46,7 +41,7 @@ public class PropertyPlayersInMatch implements PropertyChange {
     }
 
     /**
-     * Update the CLI with the new card on the playing grid
+     * Update the CLI with the players in the match
      * @param cli the CLI
      */
     @Override
@@ -56,7 +51,7 @@ public class PropertyPlayersInMatch implements PropertyChange {
     }
 
     /**
-     * Update the GUI with the new card on the playing grid
+     * Update the GUI with the players in the match: initialize playing grids, score board and chat
      * @param gui the GUI
      */
     @Override
@@ -95,6 +90,7 @@ public class PropertyPlayersInMatch implements PropertyChange {
             tabs.getTabs().add(tab);
         }
 
+        //Score board
         Tab tab = new Tab("Draw table");
         GridPane drawTable = new GridPane();
         drawTable.setId("drawTable");
@@ -142,10 +138,46 @@ public class PropertyPlayersInMatch implements PropertyChange {
         scoreBoardGrid.setId("scoreBoard");
         scoreBoardGrid.add(cell, 0, 0);
 
-        scoreBoardGrid.setGridLinesVisible(true);
         scoreBoardTab.setContent(scoreBoardGrid);
         scoreBoardTab.setClosable(false);
         rightTabs.getTabs().add(scoreBoardTab);
+
+        //Chat
+        Tab chatTab = new Tab("Chat");
+        chatTab.setClosable(false);
+        VBox chat = new VBox();
+        VBox messages = new VBox();
+        messages.setId("messages");
+        chat.getChildren().add(messages);
+
+        CheckBox[] checkBoxes = new CheckBox[nicknames.size()];
+        for(int i = 0; i<checkBoxes.length; i++) {
+            checkBoxes[i] = new CheckBox();
+            checkBoxes[i].setText(nicknames.get(i));
+            chat.getChildren().add(checkBoxes[i]);
+        }
+
+        TextField messageField = new TextField();
+        chat.getChildren().add(messageField);
+        Button sendMessage = new Button("Send");
+        sendMessage.setOnAction((event) -> {
+            if(messageField.getText() != null && !messageField.getText().trim().isEmpty()) {
+                int numSelected = 0;
+                for(int i = 0; i<checkBoxes.length; i++) {
+                    if(checkBoxes[i].isSelected()) {
+                        numSelected ++;
+                        gui.getController().sendMessage(new ChatEvent(gui.getNickname(), nicknames.get(i), false, messageField.getText()));
+                    }
+                }
+                if(numSelected == 0) {
+                    gui.getController().sendMessage(new ChatEvent(gui.getNickname(), "", true, messageField.getText()));
+                }
+            }
+
+        });
+        chat.getChildren().add(sendMessage);
+        chatTab.setContent(chat);
+        rightTabs.getTabs().add(chatTab);
     }
 }
 

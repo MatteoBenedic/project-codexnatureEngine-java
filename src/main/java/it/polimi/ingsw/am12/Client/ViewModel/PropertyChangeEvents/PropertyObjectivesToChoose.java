@@ -2,6 +2,13 @@ package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
+import it.polimi.ingsw.am12.Network.Messages.Events.SelectObjectiveEvent;
+import it.polimi.ingsw.am12.Utils.Assets;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 
 /**
@@ -41,6 +48,26 @@ public class PropertyObjectivesToChoose implements PropertyChange{
      */
     @Override
     public void updateGUI(GUI gui) {
+        Stage stage = gui.getStage();
+        Scene scene = stage.getScene();
+
+        HBox objContainer = (HBox) scene.lookup("#objectives");
+        Assets a = new Assets();
+        for(int i = 0; i<objectives.length; i++) {
+            String fileName = a.getFileName(objectives[i], true);
+            Image img = new Image(fileName);
+            ImageView imageView = new ImageView(img);
+            imageView.setFitWidth(180);
+            imageView.setFitHeight(100);
+            objContainer.getChildren().add(imageView);
+
+            boolean isFirst = (i==0);
+            imageView.setOnMouseClicked(event -> {
+                        gui.getController().sendMessage(new SelectObjectiveEvent(gui.getNickname(), isFirst));
+                    }
+            );
+        }
+
 
     }
 }

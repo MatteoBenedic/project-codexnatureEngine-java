@@ -16,6 +16,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.security.InvalidParameterException;
 
 /**
  * RMI implementation of ClientController. It manages the communication with the server
@@ -131,8 +132,8 @@ public class ClientControllerRMI extends ClientController {
             try {
                 vv.performEvent((Event) message);
             } catch (WrongNumberOfPlayersException | DuplicateNicknameException | InvalidPlacementException |
-                     WrongInformationException | NotYourTurnException | EmptyDeckException |
-                     InvalidSearchPositionException | RemoteException e) {
+                     WrongInformationException | NotYourTurnException | EmptyDeckException | IllegalStateException |
+                     InvalidSearchPositionException | RemoteException | InvalidParameterException e) {
                 catchException(e);
             }
         }
