@@ -145,4 +145,31 @@ class CLIDrawBufferGridTest {
         grid.insertCardInBuffer(11, true, p10);
         grid.printBuffer();
     }
+
+    @Test
+    void printProgressiveGrid2(){
+        for(CliCard c : cards)
+            c.defineColouredRep();
+
+        CLIDrawBufferGrid grid = new CLIDrawBufferGrid(cards);
+        Coordinate position = new Coordinate(40, 40);
+        grid.insertCardInBuffer(80, true, position);
+        grid.printBuffer();
+
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+
+        Coordinate p1 = new Coordinate(41, 39);
+        grid.insertCardInBuffer(1, true, p1);
+        grid.printBuffer();
+
+        Coordinate p2 = new Coordinate(39, 41);
+        grid.insertCardInBuffer(51, true, p2);
+        grid.printBuffer();
+
+        Coordinate p3 = new Coordinate(40, 42);
+        grid.insertCardInBuffer(23, true, p3);
+        grid.printBuffer();
+    }
 }

@@ -14,6 +14,7 @@ public class CLIDrawBufferGrid implements CLIDrawBuffer {
     List<String> buffer;
     Coordinate topleftPosition = null;
     List<CliCard> repCards;
+    int len;
 
     /**
      * Class constructor
@@ -38,6 +39,7 @@ public class CLIDrawBufferGrid implements CLIDrawBuffer {
     public void insertCardInBuffer(int index, boolean side, Coordinate position) {
         if (topleftPosition == null) {
             topleftPosition = position;
+            len = LENGTH_CARD + COD_COLOUR;
         } else {
             if (position.getX() < topleftPosition.getX())
                 if (position.getY() < topleftPosition.getY()) {
@@ -55,11 +57,10 @@ public class CLIDrawBufferGrid implements CLIDrawBuffer {
                 }
             }
             int newLength = (position.getX() - topleftPosition.getX()) * (HEIGHT_CARD - COVERED_HEIGHT) + HEIGHT_CARD - COVERED_HEIGHT;
-            int len = 0;
+            for (String s : buffer)
+                if (len < s.length())
+                    len = s.length();
             if (newLength >= buffer.size()) {
-                for (String s : buffer)
-                    if (len < s.length())
-                        len = s.length();
                 String space = SPACE.repeat(len);
                 for (int i = buffer.size(); i < (newLength + HEIGHT_CARD); i++)
                     buffer.add(space);
