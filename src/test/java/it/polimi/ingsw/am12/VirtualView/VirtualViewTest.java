@@ -3,20 +3,14 @@ package it.polimi.ingsw.am12.VirtualView;
 import it.polimi.ingsw.am12.Client.ClientController.ClientController;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Controller.Controller;
+import it.polimi.ingsw.am12.Exceptions.*;
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Network.Messages.Events.DistributeCardsEvent;
 import it.polimi.ingsw.am12.Network.Messages.Events.JoinMatchEvent;
 import it.polimi.ingsw.am12.Network.Messages.Events.StartMatchEvent;
 import it.polimi.ingsw.am12.Model.Logic.GameModel;
-import it.polimi.ingsw.am12.Exceptions.WrongInformationException;
-import it.polimi.ingsw.am12.Exceptions.NotYourTurnException;
-import it.polimi.ingsw.am12.Exceptions.DuplicateNicknameException;
-import it.polimi.ingsw.am12.Exceptions.EmptyDeckException;
-import it.polimi.ingsw.am12.Exceptions.InvalidSearchPositionException;
-import it.polimi.ingsw.am12.Exceptions.WrongNumberOfPlayersException;
-import it.polimi.ingsw.am12.Exceptions.InvalidPlacementException;
 
 import org.junit.jupiter.api.Test;
-
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
@@ -28,7 +22,7 @@ class VirtualViewTest {
 //This virtualViewTest checks all the chain of communication from an internal view in the server itself
 
     @Test
-    void chainCommsPerformUpdate() throws WrongNumberOfPlayersException, NotBoundException, RemoteException, WrongInformationException, InvalidSearchPositionException, NotYourTurnException, EmptyDeckException, DuplicateNicknameException, InvalidPlacementException, IllegalStateException {
+    void chainCommsPerformUpdate() throws WrongNumberOfPlayersException, NotBoundException, RemoteException, WrongInformationException, InvalidSearchPositionException, NotYourTurnException, EmptyDeckException, DuplicateNicknameException, InvalidPlacementException, IllegalStateException, InvalidParameterException, it.polimi.ingsw.am12.Exceptions.IllegalStateException {
 
         Controller c = new Controller(2);
         GameModel gm = c.getModel();

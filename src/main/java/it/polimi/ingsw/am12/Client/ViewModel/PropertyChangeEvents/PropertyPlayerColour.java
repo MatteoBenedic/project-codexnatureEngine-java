@@ -15,9 +15,9 @@ import javafx.stage.Stage;
  */
 public class PropertyPlayerColour implements PropertyChange{
 
-    String nickname;
-    PlayerColour playerColour;
-    boolean isYourColour;
+    private final String nickname;
+    private final PlayerColour playerColour;
+    private final boolean isYourColour;
 
     /**
      * Class constructor

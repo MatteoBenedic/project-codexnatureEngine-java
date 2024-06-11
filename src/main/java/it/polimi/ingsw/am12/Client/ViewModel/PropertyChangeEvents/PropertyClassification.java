@@ -20,8 +20,8 @@ import java.util.LinkedHashMap;
  */
 public class PropertyClassification implements PropertyChange {
 
-    int numWinners;
-    LinkedHashMap<String, Integer> classification;
+    private final int numWinners;
+    private final LinkedHashMap<String, Integer> classification;
 
     /**
      * Class constructor

@@ -16,7 +16,7 @@ import javafx.stage.Stage;
  */
 public class PropertyObjectivesToChoose implements PropertyChange{
 
-    int[] objectives;
+    private final int[] objectives;
 
     /**
      * Class constructor

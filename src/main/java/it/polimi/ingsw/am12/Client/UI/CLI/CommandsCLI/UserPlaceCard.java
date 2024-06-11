@@ -8,7 +8,7 @@ import it.polimi.ingsw.am12.Message;
  */
 public class UserPlaceCard implements UserAction{
 
-    String nickname;
+    private String nickname;
     private static final int MAX_NUMBER_OF_ROWS = 81;
     private static final int MAX_NUMBER_OF_COL = 81;
     private static final String FRONT_SIDE = "front";

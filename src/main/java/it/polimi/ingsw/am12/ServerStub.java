@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am12;
 
 import it.polimi.ingsw.am12.Exceptions.*;
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Network.ServerSideSocketHandler;
 
 import it.polimi.ingsw.am12.Exceptions.NoNicknameException;
@@ -13,7 +14,6 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.security.InvalidParameterException;
 
 /**
  * Interface that defines the methods used by the client or the communication handler of the server make requests to the server

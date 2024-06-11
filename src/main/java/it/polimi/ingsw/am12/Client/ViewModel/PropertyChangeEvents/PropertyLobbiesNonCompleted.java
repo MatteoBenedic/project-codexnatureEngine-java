@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class PropertyLobbiesNonCompleted implements PropertyChange{
 
-    Map<String, Integer> lobbies;
+    private final Map<String, Integer> lobbies;
 
     /**
      * Class constructor

@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  */
 public class PropertyRemainingRounds implements PropertyChange {
 
-    int remainingRounds;
+    private final int remainingRounds;
 
     /**
      * Class constructor

@@ -6,14 +6,13 @@ import it.polimi.ingsw.am12.ViewModelUpdater;
 /**
  * Update to handle when a player places the start card
  */
-public class StartCardPlacedUpdate implements Update {
+public class StartCardPlacedUpdate extends Update {
 
-
-    String nickname;
-    int startCard;
-    boolean side;
-    String turn;
-    State state;
+    private final String nickname;
+    private final int startCard;
+    private final boolean side;
+    private final String turn;
+    private final State state;
 
     /**
      * Class constructor

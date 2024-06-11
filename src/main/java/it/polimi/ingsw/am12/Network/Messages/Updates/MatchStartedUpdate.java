@@ -6,16 +6,15 @@ import it.polimi.ingsw.am12.ViewModelUpdater;
 import java.util.Map;
 import java.util.List;
 
-public class MatchStartedUpdate implements Update {
+public class MatchStartedUpdate extends Update {
 
-    List<String> nicknames;
-    Map<String, Integer> startCards;
-    CardColour goldDeckColour;
-    CardColour resDeckColour;
-    int[] publicCards;
-    String turn;
-    State state;
-
+    private final List<String> nicknames;
+    private final Map<String, Integer> startCards;
+    private final CardColour goldDeckColour;
+    private final CardColour resDeckColour;
+    private final int[] publicCards;
+    private final String turn;
+    private final State state;
 
     /**
      * Class constructor

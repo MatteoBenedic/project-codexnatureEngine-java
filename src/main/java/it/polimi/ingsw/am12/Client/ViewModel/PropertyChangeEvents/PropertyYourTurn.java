@@ -15,7 +15,7 @@ import javafx.stage.Stage;
  */
 public class PropertyYourTurn implements PropertyChange{
 
-    State newState;
+    private final State newState;
 
     /**
      * Class constructor

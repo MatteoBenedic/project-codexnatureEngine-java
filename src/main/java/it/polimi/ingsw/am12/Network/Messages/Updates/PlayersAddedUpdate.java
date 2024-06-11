@@ -7,10 +7,10 @@ import it.polimi.ingsw.am12.ViewModelUpdater;
 /**
  * Update to handle when some players have joined the lobby
  */
-public class PlayersAddedUpdate implements Update{
+public class PlayersAddedUpdate extends Update{
 
-    List<String> nicknames;
-    State state;
+    private final List<String> nicknames;
+    private final State state;
 
     /**
      * Class constructor

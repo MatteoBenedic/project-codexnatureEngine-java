@@ -2,11 +2,12 @@ package it.polimi.ingsw.am12.Network.Messages.Events;
 
 import it.polimi.ingsw.am12.Exceptions.EmptyDeckException;
 import it.polimi.ingsw.am12.Model.Logic.GameModel;
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 
 /**
- * Event DistributeCardsEvent
+ * Event to distribute the cards to the players
  */
-public class DistributeCardsEvent implements Event{
+public class DistributeCardsEvent extends Event{
 
     //public DistributeCardsEvent() {}
 

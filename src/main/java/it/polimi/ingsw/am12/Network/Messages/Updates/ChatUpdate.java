@@ -5,10 +5,10 @@ import it.polimi.ingsw.am12.ViewModelUpdater;
 /**
  * Update to handle a message in the chat
  */
-public class ChatUpdate implements Update{
-    String sender;
-    boolean publicMess;
-    String chatMessage;
+public class ChatUpdate extends Update{
+    private final String sender;
+    private final boolean publicMess;
+    private final String chatMessage;
 
     /**
      * Class constructor

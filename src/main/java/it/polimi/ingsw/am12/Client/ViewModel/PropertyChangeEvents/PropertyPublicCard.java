@@ -18,8 +18,8 @@ import java.io.IOException;
  */
 public class PropertyPublicCard implements PropertyChange{
 
-    int deckIndex;
-    int cardIndex;
+    private final int deckIndex;
+    private final int cardIndex;
 
     /**
      * Class constructor

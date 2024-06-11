@@ -13,8 +13,8 @@ import javafx.stage.Stage;
  */
 public class PropertyTurnChange implements PropertyChange{
 
-    String nickname;
-    State newState;
+    private final String nickname;
+    private final State newState;
 
     /**
      * Class constructor

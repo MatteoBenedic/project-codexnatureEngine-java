@@ -5,7 +5,7 @@ import it.polimi.ingsw.am12.Message;
 
 public class UserChat implements UserAction{
 
-    String nickname;
+    private String nickname;
 
 
     /**

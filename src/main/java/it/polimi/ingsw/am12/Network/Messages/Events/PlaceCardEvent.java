@@ -1,28 +1,29 @@
 package it.polimi.ingsw.am12.Network.Messages.Events;
 
+import it.polimi.ingsw.am12.Exceptions.InvalidParameterException;
 import it.polimi.ingsw.am12.Exceptions.InvalidPlacementException;
 import it.polimi.ingsw.am12.Exceptions.NotYourTurnException;
 import it.polimi.ingsw.am12.Exceptions.WrongInformationException;
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Model.Logic.GameModel;
 
-import java.security.InvalidParameterException;
+/**
+ * Event to place a card
+ */
+public class PlaceCardEvent extends Event{
 
-public class PlaceCardEvent implements Event{
-
-    String nickname;
-    int index;
-    boolean side;
-    int xpos;
-    int ypos;
-
+    private final String nickname;
+    private final int index;
+    private final boolean side;
+    private final int xpos;
+    private final int ypos;
 
     /**
-     * Instantiates a new PlaceCard  event.
-     *
-     * @param nickname of the player
+     * Class constructor
+     * @param nickname the nickname of the player
      * @param side TRUE = front side, FALSE = back side
-     * @param xpos row index of grid
-     * @param ypos col index of grid
+     * @param xpos the row index of the selected position on the grid
+     * @param ypos the col index of the selected position on the grid
      */
     public PlaceCardEvent(String nickname, int index, boolean side, int xpos, int ypos) {
         this.nickname = nickname;
@@ -32,20 +33,18 @@ public class PlaceCardEvent implements Event{
         this.ypos = ypos;
     }
 
-    @Override
-
     /**
-     * place the card for player "nickname"
-
+     * Place the card for the player
+     * @param model the GameModel that interacts with this event
      * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      * @throws InvalidParameterException if the nickname is null
      * @throws WrongInformationException if the player is not part of this match
      * @throws NotYourTurnException  if it's not the turn of the player
      * @throws InvalidPlacementException  if a start card has already been placed for the player
-     *
      */
+    @Override
     public void executeCommand(GameModel model) throws InvalidParameterException, InvalidPlacementException,
-            NotYourTurnException, WrongInformationException, IllegalStateException{
+            NotYourTurnException, WrongInformationException, IllegalStateException {
 
             model.placeCard(nickname, index, side, xpos, ypos);
     }

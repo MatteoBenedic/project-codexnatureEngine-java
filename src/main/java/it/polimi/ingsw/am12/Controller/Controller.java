@@ -1,10 +1,10 @@
 package it.polimi.ingsw.am12.Controller;
 
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Network.Messages.Events.Event;
 import it.polimi.ingsw.am12.Exceptions.*;
 import it.polimi.ingsw.am12.Model.Logic.GameModel;
 import it.polimi.ingsw.am12.VirtualView.VirtualView;
-import java.security.InvalidParameterException;
 
 /**
  * This class is the controller of the game: its function is to coordinate
@@ -39,8 +39,7 @@ public class Controller implements EventListener {
      */
     @Override
     public synchronized void actionPerformed(Event e) throws WrongNumberOfPlayersException, DuplicateNicknameException,
-            IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
-            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
+            InvalidPlacementException, WrongInformationException, NotYourTurnException, EmptyDeckException, InvalidSearchPositionException, IllegalStateException, InvalidParameterException {
         e.executeCommand(model);
     }
 

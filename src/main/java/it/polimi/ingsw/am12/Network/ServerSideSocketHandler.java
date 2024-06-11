@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Network;
 
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Model.Logic.State;
 import it.polimi.ingsw.am12.Network.Messages.Events.Event;
 import it.polimi.ingsw.am12.Exceptions.NoNicknameException;
@@ -20,7 +21,6 @@ import java.net.Socket;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.security.InvalidParameterException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -136,10 +136,10 @@ public class ServerSideSocketHandler implements Runnable {
             }else {
                 try {
                     server.createMatch(message.getMatchName(), message.getNumPlayers(), nickClient);
-                } catch (DuplicateNicknameException | WrongNumberOfPlayersException |
-                         DuplicateMatchException | IOException | WrongInformationException |
-                         InvalidSearchPositionException | NotYourTurnException | EmptyDeckException |
-                         InvalidPlacementException | NoNicknameException e) {
+                } catch (DuplicateNicknameException | WrongNumberOfPlayersException | DuplicateMatchException |
+                         IOException | WrongInformationException | InvalidSearchPositionException |
+                         NotYourTurnException | EmptyDeckException | InvalidPlacementException | NoNicknameException |
+                         IllegalStateException | it.polimi.ingsw.am12.Exceptions.InvalidParameterException e) {
                     sendMessage(e);
                 }
             }
@@ -151,10 +151,10 @@ public class ServerSideSocketHandler implements Runnable {
             }else{
                 try {
                     server.joinMatch(message.getMatchName(), nickClient);
-                } catch (DuplicateNicknameException | WrongNumberOfPlayersException |
-                         IOException | WrongInformationException | IllegalStateException |
-                         InvalidSearchPositionException | NotYourTurnException | EmptyDeckException |
-                         InvalidPlacementException | NoMatchException | NoNicknameException e) {
+                } catch (DuplicateNicknameException | WrongNumberOfPlayersException | IOException |
+                         WrongInformationException | IllegalStateException | InvalidSearchPositionException |
+                         NotYourTurnException | EmptyDeckException | InvalidPlacementException | NoMatchException |
+                         NoNicknameException | it.polimi.ingsw.am12.Exceptions.InvalidParameterException e) {
                     sendMessage(e);
                 }
             }
@@ -168,7 +168,7 @@ public class ServerSideSocketHandler implements Runnable {
                     view.performEvent(event);
                 } catch (WrongInformationException | InvalidSearchPositionException | NotYourTurnException |
                          WrongNumberOfPlayersException | EmptyDeckException | DuplicateNicknameException |
-                         InvalidPlacementException | InvalidParameterException | NullPointerException |
+                         InvalidPlacementException | NullPointerException | InvalidParameterException |
                          IllegalStateException e) {
                     sendMessage(e);
                 }

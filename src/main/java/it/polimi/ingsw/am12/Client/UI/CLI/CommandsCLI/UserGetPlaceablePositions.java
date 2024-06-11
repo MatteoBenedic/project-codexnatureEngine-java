@@ -8,7 +8,7 @@ import it.polimi.ingsw.am12.Message;
  */
 public class UserGetPlaceablePositions implements UserAction{
 
-    String nickname;
+    private String nickname;
     private static final int MAX_NUMBER_OF_ROWS = 81;
     private static final int MAX_NUMBER_OF_COL = 81;
 

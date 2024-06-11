@@ -7,17 +7,17 @@ import it.polimi.ingsw.am12.ViewModelUpdater;
 /**
  * Update to handle when a card is drawn
  */
-public class CardDrawnUpdate implements Update {
+public class CardDrawnUpdate extends Update {
 
-    String nickname;
-    int indexDrawnCard;
-    int deckIndex;
-    int newPublicCard;
-    CardColour newGoldDeckColour;
-    CardColour newResDeckColour;
-    String turn;
-    int remaningRounds;
-    State state;
+    private final String nickname;
+    private final int indexDrawnCard;
+    private final int deckIndex;
+    private final int newPublicCard;
+    private final CardColour newGoldDeckColour;
+    private final CardColour newResDeckColour;
+    private final String turn;
+    private final int remaningRounds;
+    private final State state;
 
     /**
      * Class constructor

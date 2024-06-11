@@ -9,7 +9,7 @@ import it.polimi.ingsw.am12.Model.Logic.PlayerColour;
  */
 public class UserSelectColour implements UserAction{
 
-    String nickname;
+    private String nickname;
 
     /**
      * Create a message to select a colour

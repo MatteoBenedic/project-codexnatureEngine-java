@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class PropertyErrorMessage implements PropertyChange{
 
-    String message;
+    private final String message;
 
     /**
      * Class costructor

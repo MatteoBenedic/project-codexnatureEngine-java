@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Client.ClientController;
 
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Message;
 import it.polimi.ingsw.am12.Network.Messages.Events.Event;
 import it.polimi.ingsw.am12.Exceptions.*;
@@ -16,7 +17,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.security.InvalidParameterException;
 
 /**
  * RMI implementation of ClientController. It manages the communication with the server
@@ -58,18 +58,6 @@ public class ClientControllerRMI extends ClientController {
     }
 
     /**
-     * Receive an update from the server and modify the ViewModel accordingly
-     * @param update the received update
-     */
-    @Override
-    public void catchMessage(Update update){
-        update.executeUpdate(viewModel);
-        if(update instanceof NicknameEstablishedUpdate) {
-            setVirtualView(((NicknameEstablishedUpdate) update).getNickname());
-        }
-    }
-
-    /**
      * Sets the VirtualView remote object by a lookup in RMI registry
      * @param nickname the nickname of the user who owns the VirtualView.
      */
@@ -87,55 +75,13 @@ public class ClientControllerRMI extends ClientController {
      */
     @Override
     public void sendMessage(Message message) {
-        if(message instanceof NicknameMessage) {
-            try {
-                server.setNickname(((NicknameMessage) message).getNickname(), this, null);
-            } catch (RemoteException | DuplicateNicknameException | AlreadyBoundException | NotBoundException e) {
-                catchException(e);
-            }
-        }
-        if(message instanceof CreateMatchMessage) {
-            try {
-                server.createMatch(((CreateMatchMessage) message).getMatchName(), ((CreateMatchMessage) message).getNumPlayers(), viewModel.getNickname());
-            } catch (RemoteException | DuplicateNicknameException | AlreadyBoundException | NotBoundException |
-                     WrongInformationException | InvalidSearchPositionException | NotYourTurnException |
-                     NoNicknameException | DuplicateMatchException | WrongNumberOfPlayersException |
-                     EmptyDeckException | InvalidPlacementException e) {
-                catchException(e);
-            }
-        }
-        if(message instanceof JoinMatchMessage) {
-            try {
-                server.joinMatch(((JoinMatchMessage) message).getMatchName(), viewModel.getNickname());
-            } catch (RemoteException | DuplicateNicknameException | AlreadyBoundException | NotBoundException |
-                     WrongInformationException | InvalidSearchPositionException | NotYourTurnException |
-                     NoNicknameException | WrongNumberOfPlayersException |
-                     EmptyDeckException | InvalidPlacementException | NoMatchException e) {
-                catchException(e);
-            }
-        }
-        if(message instanceof LobbiesRequestMessage) {
-            try {
-                server.getIncompleteLobbies(viewModel.getNickname());
-            } catch (NoNicknameException | RemoteException e) {
-                catchException(e);
-            }
-        }
-        if(message instanceof CloseMatchConnectionMessage) {
-            try {
-                server.closeMatchForPlayer(viewModel.getNickname());
-            } catch (NoMatchException | RemoteException e) {
-                catchException(e);
-            }
-        }
-        if(message instanceof Event) {
-            try {
-                vv.performEvent((Event) message);
-            } catch (WrongNumberOfPlayersException | DuplicateNicknameException | InvalidPlacementException |
-                     WrongInformationException | NotYourTurnException | EmptyDeckException | IllegalStateException |
-                     InvalidSearchPositionException | RemoteException | InvalidParameterException e) {
-                catchException(e);
-            }
+        try {
+            message.sendRMI(this, server, vv, viewModel.getNickname());
+        } catch (NoNicknameException | DuplicateMatchException | WrongNumberOfPlayersException |
+                 WrongInformationException | DuplicateNicknameException | AlreadyBoundException | EmptyDeckException |
+                 NotBoundException | InvalidSearchPositionException | NotYourTurnException | RemoteException |
+                 NoMatchException | InvalidPlacementException | IllegalStateException | InvalidParameterException e) {
+            catchException(e);
         }
     }
 }

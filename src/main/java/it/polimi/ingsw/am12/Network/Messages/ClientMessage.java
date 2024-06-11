@@ -5,9 +5,9 @@ package it.polimi.ingsw.am12.Network.Messages;
  */
 public class ClientMessage {
 
-    String message;
-    boolean isPublic;
-    String sender;
+    private final String message;
+    private final boolean isPublic;
+    private final String sender;
 
     /**
      * Class constructor

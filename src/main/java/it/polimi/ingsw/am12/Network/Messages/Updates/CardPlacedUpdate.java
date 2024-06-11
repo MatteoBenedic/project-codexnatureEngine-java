@@ -7,14 +7,14 @@ import it.polimi.ingsw.am12.ViewModelUpdater;
 /**
  * Update to handle when a Card is placed.
  */
-public class CardPlacedUpdate implements Update {
+public class CardPlacedUpdate extends Update {
 
-    String nickname;
-    int index;
-    Boolean side;
-    int points;
-    State state;
-    Coordinate coordinates;
+    private final String nickname;
+    private final int index;
+    private final Boolean side;
+    private final int points;
+    private final State state;
+    private final Coordinate coordinates;
 
     /**
      * Class constructor

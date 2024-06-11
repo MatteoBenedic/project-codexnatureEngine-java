@@ -5,8 +5,8 @@ import it.polimi.ingsw.am12.ViewModelUpdater;
 /**
  * Update to handle the registration of a player nickname
  */
-public class NicknameEstablishedUpdate implements Update{
-    String nickname;
+public class NicknameEstablishedUpdate extends Update{
+    private final String nickname;
 
     /**
      * Class constructor

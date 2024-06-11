@@ -17,9 +17,9 @@ import javafx.stage.Stage;
  */
 public class PropertyDeckColour implements PropertyChange{
 
-    CardColour colour;
-    int deckIndex;
-    boolean print;
+    private final CardColour colour;
+    private final int deckIndex;
+    private final boolean print;
 
     /**
      * Class constructor

@@ -3,13 +3,13 @@ package it.polimi.ingsw.am12.VirtualView;
 
 import it.polimi.ingsw.am12.Controller.EventListener;
 import it.polimi.ingsw.am12.Exceptions.*;
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Network.Messages.Events.Event;
 import it.polimi.ingsw.am12.VVStub;
 import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
 
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
-import java.security.InvalidParameterException;
 
 /**
  * This class is the server side component of the player view.
@@ -55,8 +55,8 @@ public abstract class VirtualView extends UnicastRemoteObject implements UpdateL
      * @param e the Event to perform
      */
     public void performEvent(Event e) throws WrongNumberOfPlayersException, DuplicateNicknameException,
-            IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
-            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException {
+            InvalidPlacementException, WrongInformationException, NotYourTurnException,
+            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException, IllegalStateException {
         listener.actionPerformed(e);
     }
 

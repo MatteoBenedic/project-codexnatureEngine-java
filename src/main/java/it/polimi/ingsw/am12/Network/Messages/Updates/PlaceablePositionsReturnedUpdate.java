@@ -7,10 +7,10 @@ import java.util.List;
 /**
  * Update to handle when the player asks for placeable position around a card
  */
-public class PlaceablePositionsReturnedUpdate implements Update {
+public class PlaceablePositionsReturnedUpdate extends Update {
 
-    List<Coordinate> availablePositions;
-    String nickname;
+    private final List<Coordinate> availablePositions;
+    private final String nickname;
 
     /**
      * Class constructor

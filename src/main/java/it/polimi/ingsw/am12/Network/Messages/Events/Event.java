@@ -1,22 +1,39 @@
 package it.polimi.ingsw.am12.Network.Messages.Events;
 
+import it.polimi.ingsw.am12.ClientStub;
 import it.polimi.ingsw.am12.Exceptions.*;
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Message;
 import it.polimi.ingsw.am12.Model.Logic.GameModel;
-import java.security.InvalidParameterException;
+import it.polimi.ingsw.am12.ServerStub;
+import it.polimi.ingsw.am12.VVStub;
+import java.rmi.RemoteException;
 
 /**
- * Interface that defines an event that allows the client to excute a model function
+ * Abstract class that defines an event that allows the client to execute a model function
  * requires method executeCommand
  */
-public interface Event extends Message {
+public abstract class Event implements Message {
+
+    /**
+     * Invoke the corresponding function in remote server via RMI
+     * @param client the client
+     * @param server the remote Server
+     * @param vv the remote VirtualView
+     * @param nickname the nickname of the player;
+     */
+    public void sendRMI(ClientStub client, ServerStub server, VVStub vv, String nickname) throws RemoteException, DuplicateNicknameException, WrongInformationException, InvalidSearchPositionException, NotYourTurnException, WrongNumberOfPlayersException, EmptyDeckException, InvalidPlacementException, IllegalStateException, it.polimi.ingsw.am12.Exceptions.InvalidParameterException {
+       vv.performEvent(this);
+    }
 
     /**
      * Execute the command of a listened event
-     * Each implementation of this interface Overrides this method
+     * Each subclass of Event overrides this method
      * @param model the GameModel that interacts with this event
      */
-    void executeCommand(GameModel model) throws WrongNumberOfPlayersException, DuplicateNicknameException,
+    public void executeCommand(GameModel model) throws WrongNumberOfPlayersException, DuplicateNicknameException,
             IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
-            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException;
+            EmptyDeckException, InvalidSearchPositionException, it.polimi.ingsw.am12.Exceptions.InvalidParameterException {
+
+    }
 }

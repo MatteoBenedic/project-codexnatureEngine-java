@@ -14,7 +14,7 @@ import javafx.stage.Stage;
  */
 public class PropertyPublicObjective implements PropertyChange{
 
-    int index;
+    private final int index;
 
     /**
      * Class constructor

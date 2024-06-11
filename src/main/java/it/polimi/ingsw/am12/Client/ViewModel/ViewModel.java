@@ -17,11 +17,11 @@ import java.util.*;
  */
 public class ViewModel implements ViewModelUpdater {
 
-    static final int START_CARD_COL = 40;
-    static final int START_CARD_ROW = 40;
-    static final int MAX_NUM_MESS = 10;
-    static final int CARDS_ON_TABLE = 4;
-    static final int N_OBJECTIVES = 2;
+    private static final int START_CARD_COL = 40;
+    private static final int START_CARD_ROW = 40;
+    private static final int MAX_NUM_MESS = 10;
+    private static final int CARDS_ON_TABLE = 4;
+    private static final int N_OBJECTIVES = 2;
 
     private String match;
     private Map<String,Integer> lobbies;
@@ -84,6 +84,7 @@ public class ViewModel implements ViewModelUpdater {
      */
     public void nicknameEstablishedUpdate(String nickname){
         this.myNickname = nickname;
+        ui.setNickname(nickname);
         notifyPropertyChange(new PropertyNicknameSet(nickname));
     }
 

@@ -1,9 +1,8 @@
 package it.polimi.ingsw.am12.Controller;
 
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Network.Messages.Events.Event;
 import it.polimi.ingsw.am12.Exceptions.*;
-
-import java.security.InvalidParameterException;
 
 /**
  * Interface that defines an event listener:
@@ -15,6 +14,6 @@ public interface EventListener {
      * @param e the listened Event
      */
     void actionPerformed(Event e) throws WrongNumberOfPlayersException, DuplicateNicknameException,
-            IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
-            InvalidParameterException, EmptyDeckException, InvalidSearchPositionException;
+            InvalidPlacementException, WrongInformationException, NotYourTurnException,
+            EmptyDeckException, InvalidSearchPositionException, IllegalStateException, InvalidParameterException;
 }

@@ -33,13 +33,4 @@ public class ClientControllerSocket extends ClientController {
         socketHandler.send(message);
     }
 
-    /**
-     * Receive an update from the server and modify the ViewModel accordingly
-     * @param update the received update
-     */
-    @Override
-    public void catchMessage(Update update){
-        update.executeUpdate(viewModel);
-    }
-
 }

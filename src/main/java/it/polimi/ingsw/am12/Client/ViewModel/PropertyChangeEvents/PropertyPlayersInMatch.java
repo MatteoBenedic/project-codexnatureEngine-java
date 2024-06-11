@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class PropertyPlayersInMatch implements PropertyChange {
 
-    List<String> nicknames;
+    private final List<String> nicknames;
     private final static int ROWS_GRID = 81;
     private final static int COLUMNS_GRID = 81;
     private final static int ROWS_DRAWTABLE = 3;

@@ -13,4 +13,10 @@ public interface UserInterface {
      * @param p an instance of PropertyChange that describes with property has changed
      */
     void propertyChange(PropertyChange p);
+
+    /**
+     * Set the nickname of the player
+     * @param nickname the nickname of the player
+     */
+    void setNickname(String nickname);
 }

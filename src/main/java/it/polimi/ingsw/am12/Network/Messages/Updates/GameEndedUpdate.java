@@ -8,11 +8,11 @@ import it.polimi.ingsw.am12.ViewModelUpdater;
 /**
  * Update to handle the end of the game, in order to show the results
  */
-public class GameEndedUpdate implements Update {
+public class GameEndedUpdate extends Update {
 
-    int winners;
-    LinkedHashMap<String, Integer> classification;
-    State state;
+    private final int winners;
+    private final LinkedHashMap<String, Integer> classification;
+    private final State state;
 
     /**
      * Class constructor

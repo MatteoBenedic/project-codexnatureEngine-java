@@ -32,7 +32,6 @@ public class UserCreateMatch implements UserAction{
         String matchName = parameters[1];
         commandParametersSent(numPlayers, matchName);
         return new CreateMatchMessage(numPlayers, matchName);
-
     }
 
     /**
@@ -40,7 +39,9 @@ public class UserCreateMatch implements UserAction{
      * @param nickname the nickname of the user who requested the action
      */
     @Override
-    public void setNickname(String nickname) {}
+    public void setNickname(String nickname) {
+        
+    }
 
     /**
      * Check that the number of players in the params is valid

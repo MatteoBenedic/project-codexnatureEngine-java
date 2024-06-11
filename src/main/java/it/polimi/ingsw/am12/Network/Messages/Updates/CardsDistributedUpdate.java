@@ -10,14 +10,14 @@ import java.util.Map;
 /**
  * Update to handle the card distribution when the match starts
  */
-public class CardsDistributedUpdate implements Update {
-    String turn;
-    Map<String, List<Integer>> cardsDistributed;
-    CardColour newGoldDeckColour;
-    CardColour newResDeckColour;
-    Map<String, int[]> secretObjectives;
-    int[] publicObjectives;
-    State state;
+public class CardsDistributedUpdate extends Update {
+    private final String turn;
+    private final Map<String, List<Integer>> cardsDistributed;
+    private final CardColour newGoldDeckColour;
+    private final CardColour newResDeckColour;
+    private final Map<String, int[]> secretObjectives;
+    private final int[] publicObjectives;
+    private final State state;
 
     /**
      * Class constructor

@@ -8,7 +8,7 @@ import it.polimi.ingsw.am12.Message;
  */
 public class UserSelectObjective implements UserAction{
 
-    String nickname;
+    private String nickname;
     private static final String FIRST_OBJ = "first";
     private static final String SECOND_OBJ = "second";
 

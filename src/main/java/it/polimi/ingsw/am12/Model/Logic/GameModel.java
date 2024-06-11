@@ -1,18 +1,12 @@
 package it.polimi.ingsw.am12.Model.Logic;
 
-import it.polimi.ingsw.am12.Exceptions.WrongInformationException;
-import it.polimi.ingsw.am12.Exceptions.NotYourTurnException;
-import it.polimi.ingsw.am12.Exceptions.DuplicateNicknameException;
-import it.polimi.ingsw.am12.Exceptions.EmptyDeckException;
-import it.polimi.ingsw.am12.Exceptions.InvalidSearchPositionException;
-import it.polimi.ingsw.am12.Exceptions.WrongNumberOfPlayersException;
-import it.polimi.ingsw.am12.Exceptions.InvalidPlacementException;
+import it.polimi.ingsw.am12.Exceptions.*;
+import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Model.CardDesign.GameCard.CardColour;
 import it.polimi.ingsw.am12.Network.Messages.Updates.*;
 import it.polimi.ingsw.am12.Utils.Coordinate;
 import it.polimi.ingsw.am12.VirtualView.UpdateListener;
 import it.polimi.ingsw.am12.VirtualView.VirtualView;
-import java.security.InvalidParameterException;
 import java.util.*;
 
 /**
@@ -544,8 +538,9 @@ public class GameModel{
      * @param addressee name of the addressee
      * @param chatMessage message to send
      * @throws WrongInformationException  if the sender or the addressee is not part of this match
+     * @throws InvalidParameterException if a parameter is null or empty
      */
-    public void manageChat(String nickname, String addressee, boolean publicMess, String chatMessage) throws WrongInformationException {
+    public void manageChat(String nickname, String addressee, boolean publicMess, String chatMessage) throws WrongInformationException, InvalidParameterException {
         if(nickname == null) {
             throw new InvalidParameterException("The nickname is null");
         }

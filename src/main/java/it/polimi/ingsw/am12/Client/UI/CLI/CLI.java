@@ -9,6 +9,7 @@ import it.polimi.ingsw.am12.Network.Messages.MatchCloseMode;
 import it.polimi.ingsw.am12.Network.Messages.NicknameMessage;
 import it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents.PropertyChange;
 import it.polimi.ingsw.am12.Network.Messages.Updates.GameStoppedUpdate;
+import it.polimi.ingsw.am12.Network.Messages.Updates.NicknameEstablishedUpdate;
 import it.polimi.ingsw.am12.Utils.JSONParser;
 
 import java.io.BufferedReader;
@@ -23,7 +24,7 @@ import java.util.List;
  * to the Client controller. It also saves the graphic objects to print.
  */
 public class CLI implements UserInterface {
-    ClientController controller;
+    private ClientController controller;
     private HashMap<CommandInstruction, UserAction> useractions = new HashMap<>();
     private HashMap<RequestInstruction, UserRequest> userrequests = new HashMap<>();
     private CLIState currentState;
@@ -247,6 +248,7 @@ public class CLI implements UserInterface {
      * @param nickname the user nickname
      */
     public void setNickname(String nickname) {
+        controller.setVirtualView(nickname);
         setNicknameOnUserActions(nickname);
         this.isNicknameSet = true;
         currentState = CLIState.WAITING_COMMAND;

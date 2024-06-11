@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class PropertyCardInHand implements PropertyChange{
 
-    List<Integer> cards;
+    private final List<Integer> cards;
 
     /**
      * Class constructor

@@ -8,7 +8,7 @@ import it.polimi.ingsw.am12.Message;
  */
 public class UserPlaceStartCard implements UserAction{
 
-    String nickname;
+    private String nickname;
     private static final String FRONT_SIDE = "front";
     private static final String BACK_SIDE = "back";
 

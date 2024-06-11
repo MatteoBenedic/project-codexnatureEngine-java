@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  * Update to handle the request of non completed lobbies
  */
-public class LobbiesNonCompletedUpdate implements Update{
-    Map<String, Integer> lobbies;
+public class LobbiesNonCompletedUpdate extends Update{
+    private final Map<String, Integer> lobbies;
 
     /**
      * Class constructor

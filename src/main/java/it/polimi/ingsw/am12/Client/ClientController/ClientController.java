@@ -5,7 +5,9 @@ import it.polimi.ingsw.am12.Message;
 import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
 import it.polimi.ingsw.am12.Client.UI.UserInterface;
 import it.polimi.ingsw.am12.Client.ViewModel.ViewModel;
+import it.polimi.ingsw.am12.VVStub;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -58,4 +60,12 @@ public class ClientController extends UnicastRemoteObject implements ClientStub 
     public void catchException(Exception e) {
         viewModel.setErrorMessage(e.getMessage());
     };
+
+    /**
+     * If the connection is RMI, sets the VirtualView remote object by a lookup in RMI registry.
+     * The method is implemented in the ClientControllerRMI.
+     * @param nickname the nickname of the user who owns the VirtualView.
+     */
+    public void setVirtualView(String nickname) {
+    }
 }

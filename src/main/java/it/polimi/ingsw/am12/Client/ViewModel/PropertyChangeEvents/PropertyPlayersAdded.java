@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class PropertyPlayersAdded implements PropertyChange{
 
-    List<String> nicknames;
+    private final List<String> nicknames;
 
     /**
      * Class constructor

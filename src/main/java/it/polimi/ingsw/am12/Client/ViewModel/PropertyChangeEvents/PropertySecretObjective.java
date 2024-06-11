@@ -14,9 +14,9 @@ import javafx.stage.Stage;
  */
 public class PropertySecretObjective implements PropertyChange{
 
-    String nickname;
-    int index;
-    boolean isYourObjective;
+    private final String nickname;
+    private final int index;
+    private final boolean isYourObjective;
 
     /**
      * Class constructor

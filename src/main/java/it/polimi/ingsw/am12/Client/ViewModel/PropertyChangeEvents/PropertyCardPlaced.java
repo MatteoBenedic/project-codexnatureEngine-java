@@ -21,12 +21,12 @@ import static java.lang.Math.abs;
  */
 public class PropertyCardPlaced implements PropertyChange {
 
-    String nickname;
-    boolean isYourPlayingGrid;
-    boolean isStartCard;
-    int cardIndex;
-    boolean side;
-    Coordinate position;
+    private final String nickname;
+    private final boolean isYourPlayingGrid;
+    private final boolean isStartCard;
+    private final int cardIndex;
+    private final boolean side;
+    private final Coordinate position;
     private final static int CENTRE_GRID_ROW = 40;
     private final static int CENTRE_GRID_COL = 40;
     private final static int CELL_DIM_ROW = 30;

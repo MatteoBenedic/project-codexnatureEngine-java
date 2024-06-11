@@ -7,12 +7,12 @@ import it.polimi.ingsw.am12.ViewModelUpdater;
 /**
  * Update to handle when a player chooses the colour at the beginning of the match.
  */
-public class ColourSelectedUpdate implements Update{
+public class ColourSelectedUpdate extends Update{
 
-    String nickname;
-    PlayerColour colour;
-    String turn;
-    State state;
+    private final String nickname;
+    private final PlayerColour colour;
+    private final String turn;
+    private final State state;
 
     /**
      * Class constructor

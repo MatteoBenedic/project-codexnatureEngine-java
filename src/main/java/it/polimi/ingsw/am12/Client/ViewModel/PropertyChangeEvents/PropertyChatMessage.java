@@ -12,10 +12,10 @@ import javafx.stage.Stage;
  */
 public class PropertyChatMessage implements PropertyChange {
 
-    String sender;
-    boolean isPublic;
-    boolean isYourMessage;
-    String message;
+    private final String sender;
+    private final boolean isPublic;
+    private final boolean isYourMessage;
+    private final String message;
     private final static int MAX_NUM_MESSAGES = 10;
 
     /**

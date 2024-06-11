@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class PropertyPlaceablePositions implements PropertyChange{
 
-    List<Coordinate> availablePositions;
+    private final List<Coordinate> availablePositions;
     private final static int CENTRE_GRID_ROW = 40;
 
     private final static int MUL_ROW = 3;

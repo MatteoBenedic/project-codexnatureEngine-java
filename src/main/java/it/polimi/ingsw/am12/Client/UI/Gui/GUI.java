@@ -46,6 +46,7 @@ public class GUI implements UserInterface {
      * @param nickname the nickname of the player
      */
     public void setNickname(String nickname) {
+        controller.setVirtualView(nickname);
         this.nickname = nickname;
     }
 

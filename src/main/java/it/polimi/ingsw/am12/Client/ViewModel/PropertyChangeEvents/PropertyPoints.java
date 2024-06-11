@@ -14,10 +14,10 @@ import javafx.stage.Stage;
  */
 public class PropertyPoints implements PropertyChange{
 
-    String nickname;
-    PlayerColour playerColour;
-    boolean isYourPoints;
-    int points;
+    private final String nickname;
+    private final PlayerColour playerColour;
+    private final boolean isYourPoints;
+    private final int points;
 
     /**
      * Class constructor

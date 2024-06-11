@@ -19,8 +19,7 @@ import java.io.IOException;
  */
 public class PropertyStateChange implements PropertyChange{
 
-    State newState;
-
+    private final State newState;
     private final static int COLUMNS_SCOREBOARD = 50;
     private final static int CELL_SIZE = 5;
     private final static int ROWS_SCOREBOARD = 100;

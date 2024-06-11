@@ -6,12 +6,12 @@ import it.polimi.ingsw.am12.ViewModelUpdater;
 /**
  * Update to handle when the player chooses the objective
  */
-public class ObjectiveSelectedUpdate implements Update {
+public class ObjectiveSelectedUpdate extends Update {
 
-    String nickname;
-    int secretObjective;
-    String turn;
-    State state;
+    private final String nickname;
+    private final int secretObjective;
+    private final String turn;
+    private final State state;
 
     /**
      * Class constructor
