@@ -373,29 +373,15 @@ public class ViewModel implements ViewModelUpdater {
             notifyPropertyChange(new PropertyRemainingRounds(remainingRounds));
         }
 
-        if(deckIndex == 0 || deckIndex == 1) {
+        if(deckIndex<=3) {
             this.publicCards[deckIndex] = newPublicCard;
             notifyPropertyChange(new PropertyPublicCard(deckIndex, newPublicCard));
-            this.goldDeckColour = newGoldDeckColour;
-            notifyPropertyChange(new PropertyDeckColour(goldDeckColour, 4, true));
         }
 
-        if(deckIndex == 2 || deckIndex == 3){
-            this.publicCards[deckIndex] = newPublicCard;
-            notifyPropertyChange(new PropertyPublicCard(deckIndex, newPublicCard));
-            this.resDeckColour = newResDeckColour;
-            notifyPropertyChange(new PropertyDeckColour(resDeckColour, 5, true));
-        }
-
-        if(deckIndex == 4) {
-            this.goldDeckColour = newGoldDeckColour;
-            notifyPropertyChange(new PropertyDeckColour(goldDeckColour, deckIndex, true));
-        }
-
-        if(deckIndex == 5){
-            this.resDeckColour = newResDeckColour;
-            notifyPropertyChange(new PropertyDeckColour(resDeckColour, deckIndex, true));
-        }
+        this.goldDeckColour = newGoldDeckColour;
+        notifyPropertyChange(new PropertyDeckColour(goldDeckColour, 4, false));
+        this.resDeckColour = newResDeckColour;
+        notifyPropertyChange(new PropertyDeckColour(resDeckColour, 5, true));
 
         this.state = state;
         notifyPropertyChange(new PropertyStateChange(state));

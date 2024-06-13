@@ -5,6 +5,7 @@ import it.polimi.ingsw.am12.Client.UI.CLI.CLIDrawBufferTable;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import it.polimi.ingsw.am12.Network.Messages.Events.DrawCardEvent;
 import it.polimi.ingsw.am12.Utils.Assets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -58,16 +59,24 @@ public class PropertyPublicCard implements PropertyChange{
         int row = (deckIndex < 2) ? 0: 1;
         int column = deckIndex % 2;
 
-        Assets a = new Assets();
-        String fileName = a.getFileName(cardIndex, true);
-        Image img = new Image(fileName);
-        ImageView imageView = new ImageView(img);
-        imageView.setFitWidth(180);
-        imageView.setFitHeight(100);
-        imageView.setOnMouseClicked(event ->
-                gui.getController().sendMessage(new DrawCardEvent(gui.getNickname(), deckIndex)));
+        for(Node node : drawtable.getChildren()) {
+            if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column ) {
+                drawtable.getChildren().remove(node);
+                break;
+            }
+        }
 
-        drawtable.add(imageView, column, row);
+        if(cardIndex!=-1) {
+            Assets a = new Assets();
+            String fileName = a.getFileName(cardIndex, true);
+            Image img = new Image(fileName);
+            ImageView imageView = new ImageView(img);
+            imageView.setFitWidth(180);
+            imageView.setFitHeight(100);
+            imageView.setOnMouseClicked(event ->
+                    gui.getController().sendMessage(new DrawCardEvent(gui.getNickname(), deckIndex)));
 
+            drawtable.add(imageView, column, row);
+        }
     }
 }

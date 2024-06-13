@@ -68,6 +68,7 @@ public class Match {
     /**
      * Get the indexes of the public drawable cards
      * @return an int[4] array, that are the indexes of the public drawable cards
+     * (-1 if there is no card in that position)
      * 0 = gold card 1
      * 1 = gold card 2
      * 2 = resource card 1
@@ -77,8 +78,12 @@ public class Match {
         GameCard[] publicCards = drawTable.getPublicCards();
         int [] indexes = new int[4];
         for(int i =0; i<publicCards.length; i++) {
-            indexes[i] = publicCards[i].getIndex();
-
+            if(publicCards[i] == null) {
+                indexes[i] = -1;
+            }
+            else {
+                indexes[i] = publicCards[i].getIndex();
+            }
         }
         return indexes;
     }

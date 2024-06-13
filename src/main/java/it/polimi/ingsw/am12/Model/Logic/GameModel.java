@@ -464,17 +464,11 @@ public class GameModel{
         match.drawCard(index);
         int remainingRounds = nextTurn();
 
+        CardColour newGoldDeckColour = match.getDeckColours()[0];
+        CardColour newResDeckColour = match.getDeckColours()[1];
         int newPublicCard = -1;
         if(index<=3) {
             newPublicCard = match.getPublicCards()[index];
-        }
-        CardColour newGoldDeckColour = null;
-        if(index <= 1 || index ==4) {
-            newGoldDeckColour = match.getDeckColours()[0];
-        }
-        CardColour newResDeckColour = null;
-        if(index ==2 || index ==3 || index == 5) {
-            newResDeckColour = match.getDeckColours()[1];
         }
 
         if(remainingRounds == 0)
