@@ -247,7 +247,7 @@ public class Match {
     /**
      * Initialize the decks for the match
      */
-    public void createDecks () {
+    public void createDecks () throws EmptyDeckException {
         drawTable = new DrawTable();
         JSONParser parser = new JSONParser();
         this.objDeck = parser.parseObjectiveCards();

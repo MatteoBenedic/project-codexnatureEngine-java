@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.List;
 
+import static java.lang.System.exit;
+
 
 /**
  * This class elaborates the commands from a CLI and creates the corresponding message to send
@@ -182,7 +184,8 @@ public class CLI implements UserInterface {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    System.err.println("Thread interrupted exception");
+                    exit(1);
                 }
             }
             else if(currentState == CLIState.MATCH_STOPPED) {

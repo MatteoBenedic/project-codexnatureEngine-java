@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am12.Network.Messages.Events;
 
+import it.polimi.ingsw.am12.Exceptions.EmptyDeckException;
 import it.polimi.ingsw.am12.Model.Logic.GameModel;
 import it.polimi.ingsw.am12.Exceptions.WrongNumberOfPlayersException;
 import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
@@ -17,7 +18,7 @@ public class StartMatchEvent extends Event{
      * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
      */
     @Override
-    public void executeCommand(GameModel model) throws WrongNumberOfPlayersException, IllegalStateException{
+    public void executeCommand(GameModel model) throws WrongNumberOfPlayersException, IllegalStateException, EmptyDeckException {
             model.addPlayersToMatch();
     }
 }

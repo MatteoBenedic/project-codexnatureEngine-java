@@ -6,6 +6,8 @@ import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+import static java.lang.System.exit;
+
 /**
  * This class is the server side component of the player view in case of a RMI connection of the client.
  * When the player requests an action, it creates an event to notify the Controller of the game.
@@ -36,7 +38,7 @@ public class VirtualViewRMI extends VirtualView{
         try {
             client.catchMessage(u);
         } catch (RemoteException e) {
-            throw new RuntimeException(e.getMessage());
+            System.err.println("Client not connected");
         }
     }
 }

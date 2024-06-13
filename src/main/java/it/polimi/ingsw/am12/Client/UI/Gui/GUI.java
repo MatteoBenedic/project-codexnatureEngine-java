@@ -12,6 +12,8 @@ import java.util.List;
 
 import java.io.IOException;
 
+import static java.lang.System.exit;
+
 /**
  * Graphical User Interface
  */
@@ -140,7 +142,8 @@ public class GUI implements UserInterface {
             try {
                 p.updateGUI(thisGUI());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.err.println("Error in updating the GUI");
+                exit(1);
             }
         });
     }

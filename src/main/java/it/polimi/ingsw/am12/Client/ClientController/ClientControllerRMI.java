@@ -18,6 +18,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import static java.lang.System.exit;
+
 /**
  * RMI implementation of ClientController. It manages the communication with the server
  * and receives the updates to send to the ViewModel
@@ -40,20 +42,23 @@ public class ClientControllerRMI extends ClientController {
         try {
             addr = InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
+            System.err.println("Server not connected");
+            exit(1);
         }
 
         String host = addr.getHostName();
         try {
             registry = LocateRegistry.getRegistry(host, port);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            System.err.println("Server not connected");
+            exit(1);
         }
 
         try {
             server = (ServerStub) registry.lookup("CodexServer");
         } catch (NotBoundException e) {
-            throw new RuntimeException(e);
+            System.err.println("Server not connected");
+            exit(1);
         }
     }
 
@@ -65,7 +70,8 @@ public class ClientControllerRMI extends ClientController {
         try {
             vv = (VVStub) registry.lookup(nickname+"VirtualView");
         } catch (RemoteException | NotBoundException e) {
-            throw new RuntimeException(e);
+            System.err.println("Server not connected");
+            exit(1);
         }
     }
 

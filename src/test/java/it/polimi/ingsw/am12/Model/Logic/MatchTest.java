@@ -82,7 +82,7 @@ class MatchTest {
     }
 
     @Test
-    void assignStartCards() {
+    void assignStartCards() throws EmptyDeckException {
         Match match = new Match(3);
         match.addPlayer("player1");
         match.addPlayer("player2");
@@ -100,7 +100,7 @@ class MatchTest {
 
     @Test
 
-    void placeStartCards() throws InvalidPlacementException {
+    void placeStartCards() throws InvalidPlacementException, EmptyDeckException {
         Match match = new Match(3);
         match.addPlayer("player1");
         match.addPlayer("player2");
@@ -218,7 +218,7 @@ class MatchTest {
     }
 
     @Test
-    void getPlaceablePositions() throws InvalidPlacementException, InvalidSearchPositionException {
+    void getPlaceablePositions() throws InvalidPlacementException, InvalidSearchPositionException, EmptyDeckException {
         //Test case: available positions around start card back
         // (4 visible corners)
         Match match = new Match(1);
@@ -377,7 +377,7 @@ class MatchTest {
     }
 
     @Test
-    void isTurn() throws WrongInformationException {
+    void isTurn() throws WrongInformationException, EmptyDeckException {
         Match match = new Match(3);
         match.addPlayer("player1");
         match.addPlayer("player2");
@@ -408,7 +408,7 @@ class MatchTest {
     }
 
     @Test
-    public void orderByPointsTest() throws InvalidPlacementException, IllegalRequirementsException {
+    public void orderByPointsTest() throws InvalidPlacementException, IllegalRequirementsException, EmptyDeckException {
         Match match = new Match(4);
         match.addPlayer("player1");
         match.addPlayer("player2");

@@ -161,7 +161,7 @@ public class GameModel{
      * @throws WrongNumberOfPlayersException    if the number of nicknames in the lobby differs from the
      *                                          number of players of the match. In this case no player is added.
      */
-    public void addPlayersToMatch() throws WrongNumberOfPlayersException, IllegalStateException {
+    public void addPlayersToMatch() throws WrongNumberOfPlayersException, IllegalStateException, EmptyDeckException {
 
         if(lobby.size() != match.getNumPlayers())
         {

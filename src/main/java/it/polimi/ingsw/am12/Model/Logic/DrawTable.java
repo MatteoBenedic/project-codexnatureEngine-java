@@ -25,18 +25,12 @@ public class DrawTable {
     /**
      * Class constructor
      */
-    public DrawTable(){
+    public DrawTable() throws EmptyDeckException {
         initializeDecks();
-
-        try {
-            gold1=drawHiddenGold();
-            gold2=drawHiddenGold();
-            res1=drawHiddenResource();
-            res2=drawHiddenResource();
-        }
-        catch (EmptyDeckException e) {
-            throw new RuntimeException("Error in decks initialization");
-        }
+        gold1=drawHiddenGold();
+        gold2=drawHiddenGold();
+        res1=drawHiddenResource();
+        res2=drawHiddenResource();
     }
 
     /**

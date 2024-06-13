@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.lang.System.exit;
 import static java.lang.System.out;
 
 /**
@@ -68,8 +69,8 @@ public class ClientSideSocketHandler implements Runnable{
 
         } catch (IOException e) {
             connected = false;
-            out.println("Server not connected");
-            throw new RuntimeException(e);
+            System.err.println("Server not connected");
+            exit(1);
         }
 
         //startPingPong();
@@ -189,27 +190,3 @@ public class ClientSideSocketHandler implements Runnable{
     }
 
 }
-
-
-
-
-
-
-/*
-    private void pingServer() {
-        try {
-            output.reset();
-            out.println("Sending ping to server...");
-            output.writeObject("ping");
-            //Rimane in attesa finchè non riceve pong dal server
-            Object inObj;
-            do {
-                inObj = input.readObject();
-            } while(!(inObj instanceof String) || !inObj.equals("pong"));
-            out.println("Pong received!");
-        } catch (IOException | ClassNotFoundException e) {
-            out.println("Server not connected");
-            throw new RuntimeException();
-        }
-    }
- */
