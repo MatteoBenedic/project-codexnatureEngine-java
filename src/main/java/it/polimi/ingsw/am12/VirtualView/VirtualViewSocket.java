@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am12.VirtualView;
 
 
+import it.polimi.ingsw.am12.Exceptions.NoMatchException;
 import it.polimi.ingsw.am12.Network.ServerSideSocketHandler;
 import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
 
@@ -36,5 +37,17 @@ public class VirtualViewSocket extends VirtualView {
     @Override
     public void sendUpdate(Update u) {
         socketHandler.sendMessage(u);
+    }
+
+    /**
+     * Closes the socket connection
+     */
+    @Override
+    protected void shutdown() {
+        try {
+            socketHandler.shutdown();
+        } catch (NoMatchException | RemoteException | NotBoundException e) {
+            System.err.println("Error in closing connection" + e.getMessage());
+        }
     }
 }

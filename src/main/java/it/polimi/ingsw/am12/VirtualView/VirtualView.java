@@ -10,6 +10,8 @@ import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
 
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This class is the server side component of the player view.
@@ -18,6 +20,8 @@ import java.rmi.server.UnicastRemoteObject;
 public abstract class VirtualView extends UnicastRemoteObject implements UpdateListener, VVStub {
     private EventListener listener;
     private final String nickname;
+    private Timer waitingTime = new Timer();
+    private static final int PING_TIMEOUT = 10000;
 
 
     /**
@@ -75,5 +79,49 @@ public abstract class VirtualView extends UnicastRemoteObject implements UpdateL
     public String getNickname() {
         return nickname;
     }
+
+    /**
+     * Starts a task to check if at least a ping is received from client within the ping timeout
+     */
+    public void startPingTimer() {
+        waitingTime = new Timer();
+        waitingTime.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                //If a ping is not received within the PING_TIMEOUT, the client is inactive
+                System.err.println("Ping timeout: the client " + nickname + " " +  " is inactive. Closing connection...");
+                shutdown();
+            }
+        }, PING_TIMEOUT);
+    }
+
+    /**
+     * Resets the ping timer when a ping is received from client.
+     * Starts a new ping timer.
+     */
+    public void resetPingTimer() {
+        if (waitingTime != null) {
+            waitingTime.cancel();
+        }
+        System.out.println("reset ping timer...");
+        startPingTimer();
+    }
+
+    /**
+     * Closes the connection with a client when the ping timeout is triggered
+     */
+    protected void shutdown(){}
+
+    /**
+     * RMI ping equivalent: this method represents an invocation that is done to periodically
+     * check if the connection with the server is still active
+     */
+    public void invokePingRMI(){}
+
+    /**
+     * RMI method used to answer the RMI client once a ping invocation is received.
+     * It is the RMI equivalent to a pong answer
+     */
+    protected void answerPongRMI() {}
 
 }

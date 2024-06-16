@@ -14,6 +14,7 @@ import it.polimi.ingsw.am12.Utils.JSONParser;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.List;
@@ -52,7 +53,6 @@ public class CLI implements UserInterface {
         this.controller = controller;
         controller.addViewModelListener(this);
         this.currentState = CLIState.WAITING_NICKNAME;
-        //this.isActive = true;
         this.isNicknameSet = false;
         this.isActive = true;
         JSONParser jsonParser = new JSONParser();
@@ -66,7 +66,6 @@ public class CLI implements UserInterface {
 
         this.inputThread = new Thread(this::readUserInput);
         inputThread.start();
-        //new Thread(this::readUserInput).start();
         inizializeUserActions();
 
     }
@@ -79,120 +78,133 @@ public class CLI implements UserInterface {
     private void readUserInput() {
         Scanner cliScanner = new Scanner(System.in);
         while(isActive) {
-            //System.out.println("isActive " + isActive);
-            if (currentState == CLIState.WAITING_NICKNAME) {
-                System.out.println("Enter nickname: ");
-                String nickname = cliScanner.nextLine();
-                NicknameMessage nicknameMessage = new NicknameMessage(nickname);
-                currentState = CLIState.WAIT_FOR_UPDATE;
-                controller.sendMessage(nicknameMessage);
-            } else if (currentState == CLIState.WAITING_COMMAND) {
-                String command = cliScanner.nextLine().trim();
-                String trimmedCommand = command.replaceAll("\\s+", " ");
-                String[] parts = trimmedCommand.split(" ", 2);
-                String instruction = parts[0];
+            try {
+                if (currentState == CLIState.WAITING_NICKNAME) {
+                    System.out.println("Enter nickname: ");
+                    String nickname = cliScanner.nextLine();
+                    NicknameMessage nicknameMessage = new NicknameMessage(nickname);
+                    currentState = CLIState.WAIT_FOR_UPDATE;
+                    controller.sendMessage(nicknameMessage);
+                } else if (currentState == CLIState.WAITING_COMMAND) {
+                    try {
+                        String command = cliScanner.nextLine().trim();
+                        String trimmedCommand = command.replaceAll("\\s+", " ");
+                        String[] parts = trimmedCommand.split(" ", 2);
+                        String instruction = parts[0];
 
-                CommandInstruction validCommandInstruction = null;
-                for (CommandInstruction allowedCommandInstruction : CommandInstruction.values()) {
-                    if (allowedCommandInstruction.getInstruction().equals(instruction)) {
-                        validCommandInstruction = allowedCommandInstruction;
-                        break;
-                    }
-                }
-
-                RequestInstruction validRequestInstruction = null;
-                for (RequestInstruction allowedRequestInstruction : RequestInstruction.values()) {
-                    if (allowedRequestInstruction.getInstruction().equals(instruction)) {
-                        validRequestInstruction = allowedRequestInstruction;
-                        break;
-                    }
-                }
-
-                if (validCommandInstruction != null) {
-                    int expectedParams = validCommandInstruction.getNumParams();
-
-                    String[] parameters = {};
-                    if (parts.length > 1) {
-                        String trimmedParams = parts[1].replaceAll("\\s+", " ");
-                        trimmedParams = trimmedParams.trim();
-                        parameters = trimmedParams.split(" ");
-                    }
-                    int actualParams = parameters.length;
-
-                    if(validCommandInstruction.equals(CommandInstruction.CHAT)) {
-                        if (actualParams > expectedParams)
-                            actualParams = expectedParams;
-                    }
-
-                    if (actualParams == expectedParams) {
-                        String param = (actualParams > 0) ? parts[1] : null;
-                        Message message = useractions.get(validCommandInstruction).createMessage(param);
-                        if (message != null) {
-                            controller.sendMessage(message);
-                            if (validCommandInstruction == CommandInstruction.END_GAME) {
-                                currentState = CLIState.CLOSING_PHASE;
-                            }
-                            if( validCommandInstruction == CommandInstruction.QUIT) {
-                                currentState = CLIState.MATCH_STOPPED;
+                        CommandInstruction validCommandInstruction = null;
+                        for (CommandInstruction allowedCommandInstruction : CommandInstruction.values()) {
+                            if (allowedCommandInstruction.getInstruction().equals(instruction)) {
+                                validCommandInstruction = allowedCommandInstruction;
+                                break;
                             }
                         }
-                    } else {
-                        System.out.println("Expected " + expectedParams + " parameters");
-                        if (actualParams < expectedParams) {
-                            System.out.println(MSG_MISSING_PARAMS + instruction);
-                        } else {
-                            System.out.println(MSG_TOO_MANY_PARAMS + instruction);
+
+                        RequestInstruction validRequestInstruction = null;
+                        for (RequestInstruction allowedRequestInstruction : RequestInstruction.values()) {
+                            if (allowedRequestInstruction.getInstruction().equals(instruction)) {
+                                validRequestInstruction = allowedRequestInstruction;
+                                break;
+                            }
                         }
-                    }
-                } else if (validRequestInstruction != null) {
-                    int expectedParams = validRequestInstruction.getNumParams();
 
-                    String[] parameters = {};
-                    if (parts.length > 1) {
-                        String trimmedParams = parts[1].replaceAll("\\s+", " ");
-                        trimmedParams = trimmedParams.trim();
-                        parameters = trimmedParams.split(" ");
-                    }
-                    int actualParams = parameters.length;
+                        if (validCommandInstruction != null) {
+                            int expectedParams = validCommandInstruction.getNumParams();
+
+                            String[] parameters = {};
+                            if (parts.length > 1) {
+                                String trimmedParams = parts[1].replaceAll("\\s+", " ");
+                                trimmedParams = trimmedParams.trim();
+                                parameters = trimmedParams.split(" ");
+                            }
+                            int actualParams = parameters.length;
+
+                            if(validCommandInstruction.equals(CommandInstruction.CHAT)) {
+                                if (actualParams > expectedParams)
+                                    actualParams = expectedParams;
+                            }
+
+                            if (actualParams == expectedParams) {
+                                String param = (actualParams > 0) ? parts[1] : null;
+                                Message message = useractions.get(validCommandInstruction).createMessage(param);
+                                if (message != null) {
+                                    controller.sendMessage(message);
+                                    if (validCommandInstruction == CommandInstruction.END_GAME) {
+                                        currentState = CLIState.CLOSING_PHASE;
+                                    }
+                                    if( validCommandInstruction == CommandInstruction.QUIT) {
+                                        currentState = CLIState.MATCH_STOPPED;
+                                    }
+                                }
+                            } else {
+                                System.out.println("Expected " + expectedParams + " parameters");
+                                if (actualParams < expectedParams) {
+                                    System.out.println(MSG_MISSING_PARAMS + instruction);
+                                } else {
+                                    System.out.println(MSG_TOO_MANY_PARAMS + instruction);
+                                }
+                            }
+                        } else if (validRequestInstruction != null) {
+                            int expectedParams = validRequestInstruction.getNumParams();
+
+                            String[] parameters = {};
+                            if (parts.length > 1) {
+                                String trimmedParams = parts[1].replaceAll("\\s+", " ");
+                                trimmedParams = trimmedParams.trim();
+                                parameters = trimmedParams.split(" ");
+                            }
+                            int actualParams = parameters.length;
 
 
-                    if (actualParams == expectedParams) {
-                        int value = 0;
-                        try{
-                            value = Integer.parseInt(parts[1]);
-                        }catch(ArrayIndexOutOfBoundsException ignored){}
-                        userrequests.get(validRequestInstruction).setPossibleParameter(value);
-                        userrequests.get(validRequestInstruction).showRequest(this);
-                    } else {
-                        System.out.println("Expected " + expectedParams + " parameters");
-                        if (actualParams < expectedParams) {
-                            System.out.println(MSG_MISSING_PARAMS + instruction);
+                            if (actualParams == expectedParams) {
+                                int value = 0;
+                                try{
+                                    value = Integer.parseInt(parts[1]);
+                                }catch(ArrayIndexOutOfBoundsException ignored){}
+                                userrequests.get(validRequestInstruction).setPossibleParameter(value);
+                                userrequests.get(validRequestInstruction).showRequest(this);
+                            } else {
+                                System.out.println("Expected " + expectedParams + " parameters");
+                                if (actualParams < expectedParams) {
+                                    System.out.println(MSG_MISSING_PARAMS + instruction);
+                                } else {
+                                    System.out.println(MSG_TOO_MANY_PARAMS + instruction);
+                                }
+                            }
+
                         } else {
-                            System.out.println(MSG_TOO_MANY_PARAMS + instruction);
+                            System.out.println(MSG_COMMAND_NOT_RECOGNIZED);
                         }
+                    } catch (RuntimeException e) {
+                        throw new InputDisabledException("Input disabled!");
                     }
-
-                } else {
-                    System.out.println(MSG_COMMAND_NOT_RECOGNIZED);
                 }
-            }
-            else if (currentState == CLIState.CLOSING_PHASE) {
-                CloseMatchConnectionMessage closeConnectionMessage = new CloseMatchConnectionMessage(MatchCloseMode.ENDGAME);
-                controller.sendMessage(closeConnectionMessage);
-                //isActive = false;
-            } else if(currentState == CLIState.WAIT_FOR_UPDATE) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    System.err.println("Thread interrupted exception");
-                    exit(1);
+                else if (currentState == CLIState.CLOSING_PHASE) {
+                    CloseMatchConnectionMessage closeConnectionMessage = new CloseMatchConnectionMessage(MatchCloseMode.ENDGAME);
+                    controller.sendMessage(closeConnectionMessage);
                 }
-            }
-            else if(currentState == CLIState.MATCH_STOPPED) {
-                System.out.println("Disabling command interface...");
-                CloseMatchConnectionMessage closeConnectionMessage = new CloseMatchConnectionMessage(MatchCloseMode.QUIT);
-                controller.sendMessage(closeConnectionMessage);
-                isActive = false;
+                else if(currentState == CLIState.WAIT_FOR_UPDATE) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        System.err.println("Thread interrupted exception");
+                        exit(1);
+                    }
+                }
+                else if(currentState == CLIState.MATCH_STOPPED) {
+                    try {
+                        System.out.println("Asking to stop the match...");
+                        CloseMatchConnectionMessage closeConnectionMessage = new CloseMatchConnectionMessage(MatchCloseMode.QUIT);
+                        controller.sendMessage(closeConnectionMessage);
+                        isActive = false;
+                        System.out.println("Disabling command interface...");
+                    } catch (RuntimeException e) {
+                        throw new InputDisabledException("Input disabled!");
+                    }
+                }
+            } catch (InputDisabledException e) {
+                System.err.println(e.getMessage());
+                break;
             }
         }
     }
@@ -252,6 +264,7 @@ public class CLI implements UserInterface {
      */
     public void setNickname(String nickname) {
         controller.setVirtualView(nickname);
+        new Thread(() -> controller.startPingPong()).start();
         setNicknameOnUserActions(nickname);
         this.isNicknameSet = true;
         currentState = CLIState.WAITING_COMMAND;
@@ -273,11 +286,10 @@ public class CLI implements UserInterface {
      * Disables the possibility for the user to enter commands
      * when the match is stopped
      */
-    public void disableCommand(){
+    public void disableCommand() {
         currentState = CLIState.MATCH_STOPPED;
+        controller.connectionLostHandler();
         isActive = false;
-        //System.out.println("Current state = "+ currentState + " isActive = " + isActive);
-        inputThread.interrupt(); //Da rivedere. Il thread readUserInput è bloccato dalla System.in
     }
 
 

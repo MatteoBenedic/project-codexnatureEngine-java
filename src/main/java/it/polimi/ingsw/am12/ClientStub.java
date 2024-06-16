@@ -17,4 +17,10 @@ public interface ClientStub extends Remote, Serializable {
      * @param u the received update
      */
     void catchMessage(Update u) throws RemoteException;
+
+    /**
+     * RMI pong equivalent: this method represents an invocation that is done
+     * to answer a ping invocation
+     */
+    void invokePongRMI() throws RemoteException;
 }

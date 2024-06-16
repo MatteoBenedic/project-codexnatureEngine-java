@@ -16,4 +16,6 @@ public interface VVStub extends Remote, Serializable {
     void performEvent(Event e) throws WrongNumberOfPlayersException, DuplicateNicknameException,
             IllegalStateException, InvalidPlacementException, WrongInformationException, NotYourTurnException,
             InvalidParameterException, EmptyDeckException, InvalidSearchPositionException, RemoteException;
+
+    void invokePingRMI() throws RemoteException;
 }

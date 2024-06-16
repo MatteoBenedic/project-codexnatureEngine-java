@@ -1,13 +1,18 @@
 package it.polimi.ingsw.am12.Client.ClientController;
 
+import it.polimi.ingsw.am12.Client.UI.CLI.InputDisabledException;
 import it.polimi.ingsw.am12.Message;
 import it.polimi.ingsw.am12.Network.ClientSideSocketHandler;
+import it.polimi.ingsw.am12.Network.Messages.Updates.NicknameEstablishedUpdate;
 import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
+
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 /**
  * Socket implementation of ClientController. It manages the communication with the socket handler
- * and receives the updates to send to the ViewModel
+ * receives the updates to send to the ViewModel and starts the ping-pong mechanism on the client side,
+ * for the detection of connection problems
  */
 public class ClientControllerSocket extends ClientController {
 
@@ -33,4 +38,19 @@ public class ClientControllerSocket extends ClientController {
         socketHandler.send(message);
     }
 
+    /**
+     * Send a "ping" to the server through Socket
+     */
+    @Override
+    protected void pingServer() {
+        socketHandler.pingMessageToServer();
+    }
+
+    /**
+     * Closes the socket connection
+     */
+    @Override
+    protected void closeConnection(){
+        socketHandler.closeConnection();
+    }
 }

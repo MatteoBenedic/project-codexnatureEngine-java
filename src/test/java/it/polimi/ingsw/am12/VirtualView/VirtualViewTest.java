@@ -10,6 +10,7 @@ import it.polimi.ingsw.am12.Network.Messages.Events.JoinMatchEvent;
 import it.polimi.ingsw.am12.Network.Messages.Events.StartMatchEvent;
 import it.polimi.ingsw.am12.Model.Logic.GameModel;
 
+import it.polimi.ingsw.am12.Server;
 import org.junit.jupiter.api.Test;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -31,7 +32,7 @@ class VirtualViewTest {
         ClientController client = new ClientController("127.0.0.1", 1600);
         CLI clientUI = new CLI(client);
 
-        VirtualView v1 = new VirtualViewRMI("p1", client);
+        VirtualView v1 = new VirtualViewRMI("p1", client, new Server(0, null));
 
         c.addView(v1);
 
@@ -50,7 +51,7 @@ class VirtualViewTest {
         assertThrows(IllegalStateException.class, () -> v1.performEvent(e2));
 
         //Created second player
-        VirtualView v2 = new VirtualViewRMI("p2", client);
+        VirtualView v2 = new VirtualViewRMI("p2", client, new Server(0, null));
         c.addView(v2);
         JoinMatchEvent e3 = new JoinMatchEvent("p2", v2);
         v2.performEvent(e3);

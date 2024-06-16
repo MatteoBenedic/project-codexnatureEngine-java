@@ -86,4 +86,11 @@ public interface ServerStub extends Remote, Serializable {
      * @throws RemoteException if remote communication with the RMI registry failed
      */
     void closeMatchForPlayer(String nickName) throws NoMatchException, RemoteException;
+
+    /**
+     * Handles the disconnection of a player: closes the match in which the player was
+     * @param nickname a String with the nickname of the disconnected player
+     * @throws RemoteException if remote communication with the RMI registry failed
+     */
+    void playerDisconnectionHandler(String nickname) throws RemoteException;
 }

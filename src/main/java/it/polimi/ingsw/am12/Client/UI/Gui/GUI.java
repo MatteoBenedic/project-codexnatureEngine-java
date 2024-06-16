@@ -49,6 +49,7 @@ public class GUI implements UserInterface {
      */
     public void setNickname(String nickname) {
         controller.setVirtualView(nickname);
+        new Thread(() -> controller.startPingPong()).start();
         this.nickname = nickname;
     }
 

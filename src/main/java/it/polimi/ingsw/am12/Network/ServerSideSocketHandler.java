@@ -35,10 +35,7 @@ public class ServerSideSocketHandler implements Runnable {
     private Server server;
     private VirtualView view;
     private String nickClient;
-    private Timer waitingTime = new Timer();
-    private static final int PING_TIMEOUT = 10000;
     private boolean connected;
-    private boolean matchisStillActive;
 
     /**
      * Constructor of a socket connection handler
@@ -61,7 +58,6 @@ public class ServerSideSocketHandler implements Runnable {
             connected = true;
             output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());
-            startPingTimer();
 
             while(connected){
                 try {
@@ -93,11 +89,8 @@ public class ServerSideSocketHandler implements Runnable {
         if(inObj instanceof String && inObj.equals("ping")) {
             if(nickClient != null)
                 System.out.println("Ping from client " + nickClient + " " + socket.toString() + " received. Sending pong...");
-            else
-                System.out.println("Ping from client [nickname not set yet] " + socket.toString() + " received. Sending pong...");
-
             try {
-                resetPingTimer();
+                view.resetPingTimer();
                 output.writeObject("pong");
             } catch(IOException e) {
                 System.err.println("Pong was not sent: " + e.getMessage());
@@ -117,6 +110,8 @@ public class ServerSideSocketHandler implements Runnable {
                     sendMessage(e);
                 }
             }
+            if(view != null)
+                view.startPingTimer();
         }
         if(inObj instanceof LobbiesRequestMessage){
             if(nickClient == null)
@@ -209,7 +204,7 @@ public class ServerSideSocketHandler implements Runnable {
     }
 
     /**
-     * Remove the player and close the Socket connection
+     * Close the Socket connection and notifies the server that a player has disconnected
      * @throws NoMatchException if the player is not part of a match
      * @throws NotBoundException if an attempt is made to look for a name that is not currently
      *                           bound in the RMI registry
@@ -239,9 +234,7 @@ public class ServerSideSocketHandler implements Runnable {
         }
     }
 
-    /**
-     * Starts a task to check if at least a ping is received from client within the ping timeout
-     */
+    /*
     private void startPingTimer() {
         waitingTime = new Timer();
         waitingTime.schedule(new TimerTask() {
@@ -260,10 +253,7 @@ public class ServerSideSocketHandler implements Runnable {
         }, PING_TIMEOUT);
     }
 
-    /**
-     * Resets the ping timer when a ping is received from client.
-     * Starts a new ping timer.
-     */
+
     private void resetPingTimer() {
         if (waitingTime != null) {
             waitingTime.cancel();
@@ -271,24 +261,5 @@ public class ServerSideSocketHandler implements Runnable {
         System.out.println("reset ping timer...");
         startPingTimer();
     }
-}
-
-    /*
-    private void startPingTimer() {
-        waitingTime = new Timer();
-        waitingTime.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                //If a ping is not received within the PING_TIMEOUT, the client is inactive
-                try {
-                    System.err.println("Ping timeout: the client "+ socket.toString() + " is inactive. Closing socket connection...");
-                    connected = false;
-                    server.printNicknamesToMatch();
-                    socket.close();
-                } catch (IOException e) {
-                    System.err.println("Error in closing connection" + e.getMessage());
-                }
-            }
-        }, PING_TIMEOUT);
-    }
     */
+}

@@ -1,11 +1,13 @@
 package it.polimi.ingsw.am12.Network;
 
 import it.polimi.ingsw.am12.Client.ClientController.*;
+import it.polimi.ingsw.am12.Client.UI.CLI.InputDisabledException;
 import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,12 +24,6 @@ public class ClientSideSocketHandler implements Runnable{
     private int port;
     private ObjectOutputStream output;
     private ObjectInputStream input;
-    private String idNickname;
-    private volatile boolean connected;
-    private Timer pingTimer = new Timer();
-    private Timer pongTimeoutTimer;
-    private static final int PING_INTERVAL = 2500;
-    private static final int PONG_TIMEOUT = 10000;
 
     /**
      * Constructor for the ClientSideSocketHandler
@@ -45,12 +41,13 @@ public class ClientSideSocketHandler implements Runnable{
      * Send an object to the server
      * @param inObj the Object to send
      */
-    public void send(Object inObj){
+    public void send(Object inObj) {
         try {
             output.reset();
             output.writeObject(inObj);
         } catch(IOException e){
-            System.err.println(e.getMessage());
+            System.err.println("I/O error! " + e.getMessage() + ". Disabling command interface...");
+            throw new RuntimeException("Input disabled!");
         }
     }
 
@@ -65,75 +62,14 @@ public class ClientSideSocketHandler implements Runnable{
             socket = new Socket(ip, port);
             input = new ObjectInputStream(socket.getInputStream());
             output = new ObjectOutputStream(socket.getOutputStream());
-            connected = true;
-
         } catch (IOException e) {
-            connected = false;
             System.err.println("Server not connected");
             exit(1);
         }
 
-        //startPingPong();
-        new Thread(this::startPingPong).start();
         new Thread(this::waitForUpdate).start();
-
     }
 
-
-    /**
-     * Send a "ping" to the server
-     */
-    private void pingServer() {
-        try {
-            //System.out.println("Sending a ping to server...");
-            output.reset();
-            output.writeObject("ping");
-        } catch (IOException e) {
-            System.err.println("Error in sending ping... " + e.getMessage());
-        }
-    }
-
-    /**
-     * Starts the ping-pong mechanism: schedules a task to send ping at fixed intervals,
-     * then calls a method to schedule another task that checks if a pong is received withing the pong timeout
-     */
-    private void startPingPong() {
-        pingTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (connected) {
-                    pingServer();
-                }
-            }
-        }, 0, PING_INTERVAL);
-
-        schedulePongTimeout();
-    }
-
-    /**
-     * Schedule a task that initilizes a new timer to check if pong is received within the timeout
-     */
-    private void schedulePongTimeout() {
-        if (pongTimeoutTimer != null)
-            pongTimeoutTimer.cancel();
-
-        pongTimeoutTimer = new Timer();
-        pongTimeoutTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                connectionLostHandler();
-            }
-        }, PONG_TIMEOUT);
-    }
-
-    /**
-     * Reset the pong timeout timer
-     */
-    private void resetPongTimeoutTimer() {
-        if (pongTimeoutTimer != null)
-            pongTimeoutTimer.cancel();
-        schedulePongTimeout();
-    }
 
     /**
      * Wait for updates from the server
@@ -152,10 +88,11 @@ public class ClientSideSocketHandler implements Runnable{
                 }
                 if(inObject instanceof String && inObject.equals("pong")){
                     //System.out.println("pong received");
-                    resetPongTimeoutTimer();
+                    controller.resetPongTimeoutTimer();
                 }
             } catch (IOException | ClassNotFoundException e) {
-                connectionLostHandler();
+                closeConnection();
+                break;
             }
 
         }
@@ -166,13 +103,14 @@ public class ClientSideSocketHandler implements Runnable{
      */
     public void closeConnection(){
         try {
-            connected = false;
             if(input != null)
                 input.close();
             if(output != null)
                 output.close();
             if(socket != null)
                 socket.close();
+            Timer pingTimer = controller.getPingTimer();
+            Timer pongTimeoutTimer = controller.getPongTimeoutTimer();
             pingTimer.cancel();
             if(pongTimeoutTimer != null)
                 pongTimeoutTimer.cancel();
@@ -182,11 +120,16 @@ public class ClientSideSocketHandler implements Runnable{
         }
     }
 
-    private void connectionLostHandler() {
-        if(connected) {
-            System.out.println("connection to server lost...");
-            closeConnection();
+    /**
+     * This method sends a ping to the server through socket
+     */
+    public void pingMessageToServer() {
+        try {
+            //System.out.println("Sending a ping to server...");
+            output.reset();
+            output.writeObject("ping");
+        } catch (IOException e) {
+            System.err.println("Error in sending ping... " + e.getMessage());
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
+import it.polimi.ingsw.am12.Client.UI.CLI.InputDisabledException;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 
 import java.io.IOException;
@@ -18,9 +19,11 @@ public class PropertyGameStopped implements PropertyChange{
     public void updateCLI(CLI cli) {
         System.out.println(GAME_STOPPED_MSG);
         cli.disableCommand();
+
     }
 
     @Override
     public void updateGUI(GUI gui) throws IOException {
+        //TODO: Update GUI client that the game has been stopped
     }
 }

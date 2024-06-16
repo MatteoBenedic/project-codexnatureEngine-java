@@ -2,9 +2,7 @@ package it.polimi.ingsw.am12.Client.ClientController;
 
 import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 import it.polimi.ingsw.am12.Message;
-import it.polimi.ingsw.am12.Network.Messages.Events.Event;
 import it.polimi.ingsw.am12.Exceptions.*;
-import it.polimi.ingsw.am12.Network.Messages.*;
 import it.polimi.ingsw.am12.Network.Messages.Updates.NicknameEstablishedUpdate;
 import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
 import it.polimi.ingsw.am12.ServerStub;
@@ -13,11 +11,13 @@ import it.polimi.ingsw.am12.VVStub;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Timer;
 import static java.lang.System.exit;
 
 /**
@@ -29,6 +29,7 @@ public class ClientControllerRMI extends ClientController {
     Registry registry;
     ServerStub server;
     VVStub vv;
+    private String vvnick;
 
     /**
      * Class constructor
@@ -56,9 +57,9 @@ public class ClientControllerRMI extends ClientController {
 
         try {
             server = (ServerStub) registry.lookup("CodexServer");
-        } catch (NotBoundException e) {
-            System.err.println("Server not connected");
-            exit(1);
+        } catch (NotBoundException | ConnectException e) {
+           System.err.println("Server not connected");
+           exit(1);
         }
     }
 
@@ -68,7 +69,9 @@ public class ClientControllerRMI extends ClientController {
      */
     public void setVirtualView(String nickname) {
         try {
-            vv = (VVStub) registry.lookup(nickname+"VirtualView");
+            vvnick = nickname+"VirtualView";
+            vv = (VVStub) registry.lookup(vvnick);
+            //vv = (VVStub) registry.lookup(nickname+"VirtualView");
         } catch (RemoteException | NotBoundException e) {
             System.err.println("Server not connected");
             exit(1);
@@ -85,9 +88,59 @@ public class ClientControllerRMI extends ClientController {
             message.sendRMI(this, server, vv, viewModel.getNickname());
         } catch (NoNicknameException | DuplicateMatchException | WrongNumberOfPlayersException |
                  WrongInformationException | DuplicateNicknameException | AlreadyBoundException | EmptyDeckException |
-                 NotBoundException | InvalidSearchPositionException | NotYourTurnException | RemoteException |
+                 NotBoundException | InvalidSearchPositionException | NotYourTurnException |
                  NoMatchException | InvalidPlacementException | IllegalStateException | InvalidParameterException e) {
             catchException(e);
+        } catch (RemoteException e) {
+            throw new RuntimeException("Input disabled!");
         }
     }
+
+    /**
+     * Sends a ping to the server (RMI invocation)
+     */
+    @Override
+    protected void pingServer() {
+        //System.out.println("Attempting to ping server...");
+        try {
+            vv.invokePingRMI();
+        } catch (RemoteException e) {
+            System.err.println("Error in sending ping to server");
+        }
+    }
+
+    /**
+     * Closes the connection with the server
+     */
+    @Override
+    protected void closeConnection() {
+        try {
+            try {
+                registry.unbind(vvnick);
+            } catch (RemoteException e) {
+                System.err.println(vvnick + " was not bound in registry");
+            } catch (NotBoundException e) {
+                System.err.println("Error: cannot unbind " + vvnick + " from registry");
+            }
+            UnicastRemoteObject.unexportObject(this, true);
+            System.out.println("Connection closed!");
+        } catch (RemoteException e) {
+            System.err.println("Error in closing connection: " + e.getMessage());
+        }
+        Timer pingTimer = getPingTimer();
+        Timer pongTimeoutTimer = getPongTimeoutTimer();
+        pingTimer.cancel();
+        if(pongTimeoutTimer != null)
+            pongTimeoutTimer.cancel();
+    }
+
+    /**
+     * RMI pong equivalent: this method represents an invocation that is done
+     * to answer a ping invocation
+     */
+    public void invokePongRMI(){
+        //System.out.println("Pong received");
+        resetPongTimeoutTimer();
+    }
+
 }

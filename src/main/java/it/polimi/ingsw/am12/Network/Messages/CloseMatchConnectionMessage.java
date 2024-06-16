@@ -39,6 +39,16 @@ public class CloseMatchConnectionMessage implements Message {
      * @param nickname the nickname of the player;
      */
     public void sendRMI(ClientStub client, ServerStub server, VVStub vv, String nickname) throws NoMatchException, RemoteException {
-        server.closeMatchForPlayer(nickname);
+        if(mode ==MatchCloseMode.QUIT) {
+            try {
+                server.playerDisconnectionHandler(nickname);
+                throw new RuntimeException("Input disabled!");
+            } catch (RemoteException e) {
+                throw new RuntimeException("Input disabled!");
+            }
+        }
+        else {
+            server.closeMatchForPlayer(nickname);
+        }
     }
 }

@@ -42,6 +42,7 @@ public class AppLauncher {
             Registry registry = LocateRegistry.createRegistry(PORT_REGISTRY);
             System.setProperty("java.rmi.server.hostname", HOST_ID);
             Server server = new Server(PORT_SOCKET, registry);
+
             registry.bind("CodexServer", server);
 
             server.start();
@@ -76,5 +77,4 @@ public class AppLauncher {
             exit(1);
         }
     }
-
 }

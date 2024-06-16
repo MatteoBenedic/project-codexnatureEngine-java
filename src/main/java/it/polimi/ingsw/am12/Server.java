@@ -92,7 +92,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
 
         VirtualView v;
         if (client != null) {
-            v = new VirtualViewRMI(nickname, client);
+            v = new VirtualViewRMI(nickname, client, this);
             registry.bind(nickname + "VirtualView", v);
         } else {
             v = new VirtualViewSocket(nickname, socketHandler);
@@ -350,7 +350,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * @param matchName a String with the name of the match that has been terminated
      * @throws RemoteException if remote communication with the RMI registry failed
      */
-    public synchronized void notifyMatchTermination(String matchName) throws RemoteException {
+    private synchronized void notifyMatchTermination(String matchName) throws RemoteException {
         if (matches.containsKey(matchName)) {
             Controller gameController = matches.get(matchName);
             gameController.getModel().forceEndGame();
@@ -363,7 +363,6 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * @throws RemoteException if remote communication with the RMI registry failed
      */
     public synchronized void playerDisconnectionHandler(String nickname) throws RemoteException {
-        //System.out.println("Player " + nickname + " has asked to close the match or has lost connection");
         String matchName = nicknamesToMatch.get(nickname);
         if (matchName != null) {
             System.out.println("Player " + nickname + " has just disconnected or lost connection from match " + matchName);
@@ -376,7 +375,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
     /**
      * Displays, for each player connected to the server, the corresponding match name
      */
-    public void printNicknamesToMatch() {
+    private void printNicknamesToMatch() {
         System.out.println("Server{" + "nicknamesToMatch=" + nicknamesToMatch + "}");
     }
 
@@ -385,7 +384,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * @param nickname a String with the nickname of the player
      * @return the game State if the player is in a match; null otherwise;
      */
-    public State getGameStateFromNickname(String nickname) {
+    public synchronized State getGameStateFromNickname(String nickname) {
         String matchName = nicknamesToMatch.get(nickname);
         if (matches.containsKey(matchName)) {
             Controller gameController = matches.get(matchName);
@@ -394,4 +393,11 @@ public class Server extends UnicastRemoteObject implements ServerStub {
         else return null;
     }
 
+    /**
+     * getter for the RMI registry
+     * @return the RMI registry
+     */
+    public Registry getRegistry() {
+        return registry;
+    }
 }
