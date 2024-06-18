@@ -13,7 +13,6 @@ public interface CLIDrawBuffer {
     static final int COVERED_LENGTH = 5;
     static final int COD_COLOUR = 5;
     static final int DELTA_BACKS = 86;
-    static final int DELTA_STARTBACKS = 10;
     static final String SPACE = " ";
 
     /**
@@ -29,6 +28,5 @@ public interface CLIDrawBuffer {
      * Method used to print the buffer in the CLI
      */
     void printBuffer();
-
 
 }

@@ -18,7 +18,8 @@ public enum CommandInstruction {
     PLACE_CARD("placecard", 4),
     DRAW_CARD("drawcard", 1),
     END_GAME("endgame", 0),
-    CHAT("chat", 3),
+    PUBLIC_CHAT("chatpublic", 1),
+    PRIVATE_CHAT("chatprivate", 2),
     //close connection
     QUIT("q", 0);
     private final String instruction;

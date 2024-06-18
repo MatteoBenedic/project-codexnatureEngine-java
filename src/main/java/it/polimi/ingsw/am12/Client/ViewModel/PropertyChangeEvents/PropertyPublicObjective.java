@@ -30,6 +30,7 @@ public class PropertyPublicObjective implements PropertyChange{
      */
     @Override
     public void updateCLI(CLI cli) {
+        cli.getObjectives().setPublicObjectives(index);
         System.out.println("Public objective ");
         cli.printObjectiveCard(index);
         System.out.println(" ");

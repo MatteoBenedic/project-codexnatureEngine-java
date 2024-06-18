@@ -39,6 +39,7 @@ public class CLI implements UserInterface {
     private HashMap<String, CLIDrawBufferGrid> playingGrids;
     private CLIDrawBufferTable drawtable;
     private CLIDrawBufferHand hand;
+    private CLIObjectivesBuffer objectives;
     private final List<CliCard> repCards;
     private List<CliObjCard> objCards;
     private Thread inputThread;
@@ -63,6 +64,7 @@ public class CLI implements UserInterface {
         playingGrids = new HashMap<>();
         drawtable = new CLIDrawBufferTable(repCards);
         hand = new CLIDrawBufferHand(repCards);
+        objectives = new CLIObjectivesBuffer(objCards);
 
         this.inputThread = new Thread(this::readUserInput);
         inputThread.start();
@@ -119,10 +121,11 @@ public class CLI implements UserInterface {
                             }
                             int actualParams = parameters.length;
 
-                            if(validCommandInstruction.equals(CommandInstruction.CHAT)) {
-                                if (actualParams > expectedParams)
-                                    actualParams = expectedParams;
-                            }
+                    if(validCommandInstruction.equals(CommandInstruction.PUBLIC_CHAT)
+                            || validCommandInstruction.equals(CommandInstruction.PRIVATE_CHAT)) {
+                        if (actualParams > expectedParams)
+                            actualParams = expectedParams;
+                    }
 
                             if (actualParams == expectedParams) {
                                 String param = (actualParams > 0) ? parts[1] : null;
@@ -240,12 +243,14 @@ public class CLI implements UserInterface {
         useractions.put(CommandInstruction.PLACE_CARD, new UserPlaceCard());
         useractions.put(CommandInstruction.DRAW_CARD, new UserDrawCard());
         useractions.put(CommandInstruction.END_GAME, new UserEndGame());
-        useractions.put(CommandInstruction.CHAT, new UserChat());
+        useractions.put(CommandInstruction.PUBLIC_CHAT, new UserPublicChat());
+        useractions.put(CommandInstruction.PRIVATE_CHAT, new UserPrivateChat());
         useractions.put(CommandInstruction.QUIT, new UserStopGame());
 
         userrequests.put(RequestInstruction.GET_MY_HAND, new UserRequestHand());
         userrequests.put(RequestInstruction.GET_MY_PLAYING_GRID, new UserRequestPlayingGrid());
         userrequests.put(RequestInstruction.GET_MY_DRAW_TABLE, new UserRequestDrawTable());
+        userrequests.put(RequestInstruction.GET_MY_OBJECTIVES, new UserRequestObjectives());
         userrequests.put(RequestInstruction.GET_FLIPPED_CARD, new UserRequestFlipCard());
     }
 
@@ -323,7 +328,14 @@ public class CLI implements UserInterface {
     }
 
     /**
-     * It prints the objective card requested
+     * @return the buffer that prints the objective cards, both the public and the secret ones
+     */
+    public CLIObjectivesBuffer getObjectives(){
+        return objectives;
+    }
+
+    /**
+     * It prints the objective card defined or chosen with the last action
      * @param index the index of the requested objective card
      */
     public void printObjectiveCard(int index){

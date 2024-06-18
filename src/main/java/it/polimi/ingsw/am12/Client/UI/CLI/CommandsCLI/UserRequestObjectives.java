@@ -1,24 +1,21 @@
 package it.polimi.ingsw.am12.Client.UI.CLI.CommandsCLI;
 
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
-import it.polimi.ingsw.am12.Client.UI.CLI.CLIDrawBufferHand;
+import it.polimi.ingsw.am12.Client.UI.CLI.CLIObjectivesBuffer;
 
 /**
- * Show the player's hand
+ * Show the player's objectives
  */
-public class UserRequestHand implements UserRequest{
-
-    String nickname;
+public class UserRequestObjectives implements UserRequest{
 
     /**
-     * Show the player's hand
+     * Prints in the command line the player's objectives
      * @param cli the cli;
      */
     @Override
-    public void showRequest(CLI cli){
-        CLIDrawBufferHand hand = cli.getHand();
-        System.out.println("Your hand:");
-        hand.printBuffer();
+    public void showRequest(CLI cli) {
+        CLIObjectivesBuffer cliObjectives = cli.getObjectives();
+        cliObjectives.printBuffer();
     }
 
     /**
@@ -35,5 +32,4 @@ public class UserRequestHand implements UserRequest{
     @Override
     public void setPossibleParameter(int value) {
     }
-
 }

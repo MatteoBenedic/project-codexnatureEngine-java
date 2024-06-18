@@ -39,6 +39,7 @@ public class PropertySecretObjective implements PropertyChange{
     @Override
     public void updateCLI(CLI cli) {
         if(isYourObjective) {
+            cli.getObjectives().setSecretObjective(index);
             System.out.println("Your secret objective is ");
             cli.printObjectiveCard(index);
         }else
