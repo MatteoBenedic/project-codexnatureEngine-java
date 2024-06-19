@@ -46,6 +46,7 @@ public class PropertyPlayerColour implements PropertyChange{
         else {
             System.out.println(nickname + "'s colour is now "+playerColour.getDescription());
         }
+        cli.getIntermediateClassification().setColour(nickname, playerColour.getDescription());
     }
 
     /**

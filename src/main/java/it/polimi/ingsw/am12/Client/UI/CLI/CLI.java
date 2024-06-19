@@ -42,6 +42,7 @@ public class CLI implements UserInterface {
     private CLIObjectivesBuffer objectives;
     private final List<CliCard> repCards;
     private List<CliObjCard> objCards;
+    private CLIClassificationBuffer intermediateClassification;
     private Thread inputThread;
 
     /**
@@ -65,6 +66,7 @@ public class CLI implements UserInterface {
         drawtable = new CLIDrawBufferTable(repCards);
         hand = new CLIDrawBufferHand(repCards);
         objectives = new CLIObjectivesBuffer(objCards);
+        intermediateClassification = new CLIClassificationBuffer();
 
         this.inputThread = new Thread(this::readUserInput);
         inputThread.start();
@@ -82,6 +84,7 @@ public class CLI implements UserInterface {
         while(isActive) {
             try {
                 if (currentState == CLIState.WAITING_NICKNAME) {
+                    System.out.println(ColourCLI.GREEN.getColour()+ "Welcome to Codex Naturalis!" + ColourCLI.RESET.getColour());
                     System.out.println("Enter nickname: ");
                     String nickname = cliScanner.nextLine();
                     NicknameMessage nicknameMessage = new NicknameMessage(nickname);
@@ -252,6 +255,8 @@ public class CLI implements UserInterface {
         userrequests.put(RequestInstruction.GET_MY_DRAW_TABLE, new UserRequestDrawTable());
         userrequests.put(RequestInstruction.GET_MY_OBJECTIVES, new UserRequestObjectives());
         userrequests.put(RequestInstruction.GET_FLIPPED_CARD, new UserRequestFlipCard());
+        userrequests.put(RequestInstruction.GET_OTHER_GRID, new UserRequestSwitchVisualization());
+        userrequests.put(RequestInstruction.GET_HELP, new UserRequestHelp());
     }
 
     /**
@@ -332,6 +337,13 @@ public class CLI implements UserInterface {
      */
     public CLIObjectivesBuffer getObjectives(){
         return objectives;
+    }
+
+    /**
+     * @return the buffer that prints the intermediate classification
+     */
+    public CLIClassificationBuffer getIntermediateClassification(){
+        return intermediateClassification;
     }
 
     /**

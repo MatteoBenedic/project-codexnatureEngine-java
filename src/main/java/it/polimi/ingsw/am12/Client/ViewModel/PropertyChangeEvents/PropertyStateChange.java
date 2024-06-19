@@ -46,9 +46,14 @@ public class PropertyStateChange implements PropertyChange{
                         "\n showmycardsinhand" +
                         "\n showmygrid" +
                         "\n showdrawtable" +
-                        "\n chat ['public'/'private'] [name of the recipient] [text of the message]");
+                        "\n showobjectives" +
+                        "\n flipcard" +
+                        "\n switchgridvisual" +
+                        "\n chatpublic [text of the message]" +
+                        "\n chatprivate [name of the recipient] [text of the message]");
                 System.out.println("Type 'distributecards' to distribute the cards");
             }
+            case PLACING -> cli.getIntermediateClassification().printBuffer();
             case DRAWING -> System.out.println("Draw a card: type 'drawcard 0/1/2/3/4/5'");
             case END -> System.out.println("Type 'endgame' to get the results");
             case CLOSED -> System.out.println("The game has ended: type q to quit");

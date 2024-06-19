@@ -13,16 +13,21 @@ import static java.lang.Math.max;
 public class CLIDrawBufferGrid implements CLIDrawBuffer {
     List<String> buffer;
     Coordinate topleftPosition = null;
+    Coordinate firstCard = null;
     List<CliCard> repCards;
     int len;
+    List<String> positionsAndOverflowBuffer;
+    boolean alternativeVisualization;
 
     /**
      * Class constructor
      * @param repCards the list of all the cards in form of CliCards given by the CLI
      */
     public CLIDrawBufferGrid(List<CliCard> repCards) {
+        alternativeVisualization = false;
         this.repCards = repCards;
         this.buffer = new ArrayList<>();
+        this.positionsAndOverflowBuffer = new ArrayList<>();
         for(int i = 0; i < HEIGHT_CARD; i++){
             String newString = SPACE.repeat(LENGTH_CARD);
 
@@ -39,41 +44,12 @@ public class CLIDrawBufferGrid implements CLIDrawBuffer {
     public void insertCardInBuffer(int index, boolean side, Coordinate position) {
         if (topleftPosition == null) {
             topleftPosition = position;
+            firstCard = position;
             len = LENGTH_CARD + COD_COLOUR;
         } else {
-            if (position.getX() < topleftPosition.getX())
-                if (position.getY() < topleftPosition.getY()) {
-                    topleftPosition = position;
-                    shiftBufferDown();
-                    shiftBufferRight();
-                } else {
-                    topleftPosition.setX(position.getX());
-                    shiftBufferDown();
-                }
-            else {
-                if (position.getY() < topleftPosition.getY()) {
-                    topleftPosition.setY(position.getY());
-                    shiftBufferRight();
-                }
-            }
-            int newLength = (position.getX() - topleftPosition.getX()) * (HEIGHT_CARD - COVERED_HEIGHT) + HEIGHT_CARD - COVERED_HEIGHT;
-            for (String s : buffer)
-                if (len < s.length())
-                    len = s.length();
-            if (newLength >= buffer.size()) {
-                String space = SPACE.repeat(len);
-                for (int i = buffer.size(); i < (newLength + HEIGHT_CARD); i++)
-                    buffer.add(space);
-            }
-            for(int i = 0; i < buffer.size(); i++) {
-                String s = buffer.get(i);
-                if (s.length() < len) {
-                    int a = s.length();
-                    String toAppend = s + SPACE.repeat(len - a);
-                    buffer.set(i, toAppend);
-                }
-            }
+            redefineBuffer(position);
         }
+
         drawNewCard(index, side, position);
     }
 
@@ -102,8 +78,57 @@ public class CLIDrawBufferGrid implements CLIDrawBuffer {
      */
     @Override
     public void printBuffer() {
-        for(String s : buffer)
-            System.out.println(s+ ColourCLI.RESET.getColour());
+        if(!alternativeVisualization) {
+            for (String s : buffer)
+                System.out.println(s + ColourCLI.RESET.getColour());
+            System.out.println("The first card in the top line is at position: line " + firstCard.getX() + " column " + firstCard.getY());
+        }else
+            for(String s: positionsAndOverflowBuffer)
+                System.out.println(s);
+    }
+
+    /**
+     * It switches which buffer to print between the original one and the alternative one
+     */
+    public void switchAlternativeVisualization(){
+        if(alternativeVisualization)
+            alternativeVisualization = false;
+        else
+            alternativeVisualization = true;
+    }
+
+    /**
+     * Based on the position of the new card, it redefines the strings of the buffer to prepare to place a new card
+     * by shifting the strings down or by creating a space on the left of all the strings or by adding some lines in it.
+     * At the end, it updates all the lines to the same length, adapted to the longest.
+     * In the meantime, it updates the topLeftPosition and the firstCard position if needed
+     */
+    private void redefineBuffer(Coordinate position) {
+        if (position.getX() < topleftPosition.getX()){
+            firstCard = position;
+            if (position.getY() < topleftPosition.getY()) {
+                topleftPosition = position;
+                shiftBufferDown();
+                shiftBufferRight();
+            } else {
+                topleftPosition.setX(position.getX());
+                shiftBufferDown();
+            }
+        }else {
+            if (position.getY() < topleftPosition.getY()) {
+                topleftPosition.setY(position.getY());
+                shiftBufferRight();
+                if(position.getX() == topleftPosition.getX())
+                    firstCard = position;
+            }else if(position.getX() == topleftPosition.getX()){
+                if(position.getY() < firstCard.getY())
+                    firstCard = position;
+            }
+        }
+
+        addLinesInBuffer(position);
+
+        updateLengthStrings();
     }
 
     /**
@@ -127,6 +152,38 @@ public class CLIDrawBufferGrid implements CLIDrawBuffer {
         String space = SPACE.repeat(length);
         for(int i = 0; i < (HEIGHT_CARD - COVERED_HEIGHT); i++)
             buffer.addFirst(space);
+    }
+
+    /**
+     * Adds lines to the buffer until the desired number if necessary
+     * @param position the position of the new card needed to calculate if new lines are needed
+     */
+    private void addLinesInBuffer(Coordinate position){
+
+        int newLength = (position.getX() - topleftPosition.getX()) * (HEIGHT_CARD - COVERED_HEIGHT) + HEIGHT_CARD - COVERED_HEIGHT;
+
+        if (newLength >= buffer.size()) {
+            String space = SPACE.repeat(len);
+            for (int i = buffer.size(); i < (newLength + HEIGHT_CARD); i++)
+                buffer.add(space);
+        }
+    }
+
+    /**
+     * It updates the length of the strings in the buffer by adapting these to the longest one
+     */
+    private void updateLengthStrings(){
+        for (String s : buffer)
+            if (len < s.length())
+                len = s.length();
+        for(int i = 0; i < buffer.size(); i++) {
+            String s = buffer.get(i);
+            if (s.length() < len) {
+                int a = s.length();
+                String toAppend = s + SPACE.repeat(len - a);
+                buffer.set(i, toAppend);
+            }
+        }
     }
 
     /**
@@ -172,6 +229,25 @@ public class CLIDrawBufferGrid implements CLIDrawBuffer {
 
             buffer.set(i, newString);
         }
+
+
+        drawNewCardinAlternativeBuffer(newCard, position);
+    }
+
+    /**
+     * It draws in the alternative buffer (with the clearer positions, used to give more information or in case of
+     * overflow representation in the command line) the card and it writes its position
+     * @param newCard the card to draw
+     * @param position the position of the card to draw
+     */
+    private void drawNewCardinAlternativeBuffer(List<String> newCard, Coordinate position){
+        for(String s: newCard)
+            positionsAndOverflowBuffer.add(s + ColourCLI.RESET.getColour());
+        positionsAndOverflowBuffer.add(SPACE);
+
+        positionsAndOverflowBuffer.add("Position: line " + position.getX() + " column " + position.getY());
+        positionsAndOverflowBuffer.add(SPACE);
+        positionsAndOverflowBuffer.add(SPACE);
     }
 
 }

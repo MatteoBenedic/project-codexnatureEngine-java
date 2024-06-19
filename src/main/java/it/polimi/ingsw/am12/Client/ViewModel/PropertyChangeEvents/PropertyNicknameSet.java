@@ -35,6 +35,7 @@ public class PropertyNicknameSet implements PropertyChange {
                 "\n creatematch [num players] [name of the match]" +
                 "\n joinmatch [name of the match]" +
                 "\n getlobbies");
+        System.out.println("Write 'help' if you need help with the commands or anything else");
     }
 
     /**

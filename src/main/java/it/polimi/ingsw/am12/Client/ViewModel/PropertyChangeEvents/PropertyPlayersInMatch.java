@@ -46,8 +46,10 @@ public class PropertyPlayersInMatch implements PropertyChange {
      */
     @Override
     public void updateCLI(CLI cli) {
-        for(String nickname : nicknames)
+        for(String nickname : nicknames) {
             cli.addPlayer(nickname);
+            cli.getIntermediateClassification().insertPlayer(nickname);
+        }
     }
 
     /**

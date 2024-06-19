@@ -45,6 +45,8 @@ public class PropertyPoints implements PropertyChange{
             System.out.println("You have now " + points + " points");
         else
             System.out.println(nickname + " has now " + points + " points");
+
+        cli.getIntermediateClassification().setPoints(nickname, points);
     }
 
     /**
