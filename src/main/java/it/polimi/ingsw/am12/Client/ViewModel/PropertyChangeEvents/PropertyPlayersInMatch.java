@@ -23,8 +23,11 @@ import java.util.List;
 public class PropertyPlayersInMatch implements PropertyChange {
 
     private final List<String> nicknames;
+    private final String myNickname;
     private final static int ROWS_GRID = 81;
     private final static int COLUMNS_GRID = 81;
+    private final static int MUL_ROW = 3;
+    private final static int MUL_COL = 4;
     private final static int ROWS_DRAWTABLE = 3;
     private final static int COLUMNS_DRAWTABLE = 3;
 
@@ -35,9 +38,11 @@ public class PropertyPlayersInMatch implements PropertyChange {
     /**
      * Class constructor
      * @param nicknames the list of the players in the match
+     * @param myNickname the nickname of the player of this client
      */
-    public PropertyPlayersInMatch(List<String> nicknames) {
+    public PropertyPlayersInMatch(List<String> nicknames, String myNickname) {
         this.nicknames = nicknames;
+        this.myNickname = myNickname;
     }
 
     /**
@@ -67,37 +72,21 @@ public class PropertyPlayersInMatch implements PropertyChange {
 
         //Add a playing grid for each player
         TabPane tabs = (TabPane) scene.lookup("#tabs");
+        Tab myTab = createPlayingGridTab(myNickname);
+        tabs.getTabs().add(myTab);
         for(String nickname : nicknames) {
-            Tab tab = new Tab(nickname);
-            GridPane grid = new GridPane();
-            grid.setId(nickname);
-            for (int i = 0; i < COLUMNS_GRID*4; i++) {
-                ColumnConstraints colConst = new ColumnConstraints();
-                colConst.setPercentWidth(100.0 / COLUMNS_GRID*4);
-                grid.getColumnConstraints().add(colConst);
+            if(!nickname.equals(myNickname)) {
+                Tab tab = createPlayingGridTab(nickname);
+                tabs.getTabs().add(tab);
             }
-            for (int i = 0; i <ROWS_GRID*3; i++) {
-                RowConstraints rowConst = new RowConstraints();
-                rowConst.setPercentHeight(100.0 / ROWS_GRID*3);
-                grid.getRowConstraints().add(rowConst);
-            }
-
-
-            ScrollPane scrollPane = new ScrollPane(grid);
-            scrollPane.setId("scroll"+nickname);
-            scrollPane.setFitToWidth(true);
-            scrollPane.setFitToHeight(true);
-            tab.setContent(scrollPane);
-            tab.setClosable(false);
-            tabs.getTabs().add(tab);
         }
 
         //Score board
         Tab tab = new Tab("Draw table");
         GridPane drawTable = new GridPane();
         drawTable.setId("drawTable");
-        drawTable.setHgap(50);
-        drawTable.setVgap(50);
+        drawTable.setHgap(15);
+        drawTable.setVgap(15);
         drawTable.setPadding(new Insets(50));
         for (int i = 0; i < COLUMNS_DRAWTABLE; i++) {
             ColumnConstraints colConst = new ColumnConstraints();
@@ -109,6 +98,7 @@ public class PropertyPlayersInMatch implements PropertyChange {
             rowConst.setPercentHeight(100.0 / ROWS_DRAWTABLE);
             drawTable.getRowConstraints().add(rowConst);
         }
+        drawTable.getStyleClass().add("background");
         tab.setContent(drawTable);
         tab.setClosable(false);
         tabs.getTabs().add(tab);
@@ -175,10 +165,44 @@ public class PropertyPlayersInMatch implements PropertyChange {
                 }
             }
 
+            messageField.setText("");
+            for (CheckBox checkBox : checkBoxes) {
+                checkBox.setSelected(false);
+            }
+
         });
         chat.getChildren().add(sendMessage);
         chatTab.setContent(chat);
         rightTabs.getTabs().add(chatTab);
     }
-}
 
+    /**
+     * Create a Tab with a new playing grid for a player
+     * @param nickname the nickname of the player
+     * @return a Tab with the player's playing grid
+     */
+    private Tab createPlayingGridTab(String nickname) {
+        Tab tab = new Tab(nickname);
+        GridPane grid = new GridPane();
+        grid.setId(nickname);
+        for (int i = 0; i < COLUMNS_GRID*MUL_COL; i++) {
+            ColumnConstraints colConst = new ColumnConstraints();
+            colConst.setPercentWidth(100.0 / COLUMNS_GRID*MUL_COL);
+            grid.getColumnConstraints().add(colConst);
+        }
+        for (int i = 0; i <ROWS_GRID*MUL_ROW; i++) {
+            RowConstraints rowConst = new RowConstraints();
+            rowConst.setPercentHeight(100.0 / ROWS_GRID*MUL_ROW);
+            grid.getRowConstraints().add(rowConst);
+        }
+
+        ScrollPane scrollPane = new ScrollPane(grid);
+        scrollPane.setId("scroll"+nickname);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.getStyleClass().add("scroll-pane");
+        tab.setContent(scrollPane);
+        tab.setClosable(false);
+        return tab;
+    }
+}

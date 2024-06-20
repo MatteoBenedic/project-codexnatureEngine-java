@@ -23,7 +23,7 @@ public class PointPosition {
 
         position.put(25,new Coordinate(20,2));
         position.put(29,new Coordinate(20,14));
-        position.put(20,new Coordinate(20,27));
+        position.put(20,new Coordinate(20,28));
 
         position.put(2,new Coordinate(32,88));
 

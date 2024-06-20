@@ -49,6 +49,10 @@ public class PropertyTurnChange implements PropertyChange{
         Button actionButton = (Button) scene.lookup("#actionButton");
 
         if(!newState.equals(State.DISTRIBUTION) && !newState.equals(State.END)) {
+
+            Text help = (Text) scene.lookup("#help");
+            help.setText("");
+
             Text turn = (Text) scene.lookup("#turn");
             turn.setText("It's "+ nickname + "'s turn");
             if(actionButton!= null)

@@ -65,15 +65,25 @@ public class PropertyYourTurn implements PropertyChange{
             }
         }
 
+        Text help = (Text) scene.lookup("#help");
+
         switch (newState) {
             case STARTCARD:
+                help.setText("Place your start card");
                 actionButton.setText("Place start card");
                 actionButton.setOnAction(event -> {
                     gui.getController().sendMessage(new PlaceStartCardEvent(gui.getNickname(), gui.getCardSide()));
                 });
                 actionButton.setVisible(true);
                 break;
+            case COLOUR:
+                help.setText("Select a colour");
+                break;
+            case OBJECTIVE:
+                help.setText("Choose your secret objective");
+                break;
             case PLACING:
+                help.setText("Place a card");
                 actionButton.setText("Place card");
                 actionButton.setOnAction(event -> {
                     gui.getController().sendMessage(new PlaceCardEvent(gui.getNickname(), gui.getSelectedCardInHand(), gui.getCardSide(), gui.getSelectedCoordinates().getX(), gui.getSelectedCoordinates().getY()));

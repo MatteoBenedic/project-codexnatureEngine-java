@@ -6,11 +6,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 <VBox fx:id="root" alignment="TOP_CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      stylesheets="/css/style.css"
+      styleClass="background"
       fx:controller="it.polimi.ingsw.am12.Client.UI.Gui.ControllerCreateOrJoinMatch">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="40.0"/>
     </padding>
-    <HBox>
+    <HBox alignment="TOP_CENTER">
         <Text fx:id="errorMessage" stroke="crimson"/>
         <Button fx:id="closeErrorMessage" onAction="#closeErrorMessage" visible="false">Close</Button>
     </HBox>
@@ -19,7 +21,7 @@
         <Button text="Join match" onAction="#onJoinMatchClick"/>
         <Button text="Get lobbies" onAction="#onGetLobbiesClick"/>
     </HBox>
-    <VBox fx:id="content" alignment="TOP_CENTER" spacing="20.0">
+    <VBox fx:id="content" alignment="TOP_CENTER" maxWidth="600" spacing="20.0">
 
     </VBox>
 </VBox>

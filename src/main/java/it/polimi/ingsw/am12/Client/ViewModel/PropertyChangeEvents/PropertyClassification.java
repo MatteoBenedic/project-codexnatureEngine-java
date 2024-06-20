@@ -62,17 +62,16 @@ public class PropertyClassification implements PropertyChange {
         Scene scene = new Scene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
         ControllerMatch cn = fxmlLoader.getController();
         cn.setClientController(gui.getController());
-        VBox stats = (VBox) scene.lookup("#classification");
+        VBox winners = (VBox) scene.lookup("#winners");
+        VBox nonWinners = (VBox) scene.lookup("#nonWinners");
 
         String[] players = classification.sequencedKeySet().toArray(String[]::new);
-        stats.getChildren().add(new Text("Winners: "));
         for(int i = 0; i<numWinners; i++) {
-            stats.getChildren().add(new Text(players[i] + " with " + classification.get(players[i]) + " points"));
+            winners.getChildren().add(new Text(players[i] + " with " + classification.get(players[i]) + " points"));
         }
 
-        stats.getChildren().add(new Text("Non winners: "));
         for(int i=numWinners; i< players.length; i++) {
-            stats.getChildren().add(new Text(players[i] + " with " + classification.get(players[i]) + " points"));
+            nonWinners.getChildren().add(new Text(players[i] + " with " + classification.get(players[i]) + " points"));
         }
         stage.setScene(scene);
         stage.show();

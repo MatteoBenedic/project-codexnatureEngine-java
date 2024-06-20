@@ -18,6 +18,7 @@ public class PropertyPoints implements PropertyChange{
     private final PlayerColour playerColour;
     private final boolean isYourPoints;
     private final int points;
+    private final int equalScores;
 
     /**
      * Class constructor
@@ -28,11 +29,12 @@ public class PropertyPoints implements PropertyChange{
      * @param playerColour the colour of the player
      * @param points the number of gained points
      */
-    public PropertyPoints(String nickname, boolean isYourPoints, PlayerColour playerColour, int points) {
+    public PropertyPoints(String nickname, boolean isYourPoints, PlayerColour playerColour, int points, int equalScores) {
         this.nickname = nickname;
         this.playerColour = playerColour;
         this.isYourPoints = isYourPoints;
         this.points = points;
+        this.equalScores = equalScores;
     }
 
     /**
@@ -62,7 +64,7 @@ public class PropertyPoints implements PropertyChange{
         GridPane scoreBoardGrid = (GridPane) scene.lookup("#scoreBoard");
         scoreBoardGrid.getChildren().remove(pion);
         PointPosition pos = new PointPosition();
-        scoreBoardGrid.add(pion, pos.getPosition(points).getX(), pos.getPosition(points).getY());
+        scoreBoardGrid.add(pion, pos.getPosition(points).getX()+equalScores, pos.getPosition(points).getY()+equalScores);
 
     }
 }

@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.util.List;
@@ -18,6 +19,11 @@ import java.util.List;
 public class PropertyCardInHand implements PropertyChange{
 
     private final List<Integer> cards;
+    private final static int CARD_WIDTH_SMALL = 180;
+    private final static int CARD_HEIGHT_SMALL = 100;
+
+    private final static int CARD_WIDTH_BIG = 210;
+    private final static int CARD_HEIGHT_BIG = 120;
 
     /**
      * Class constructor
@@ -51,47 +57,76 @@ public class PropertyCardInHand implements PropertyChange{
         HBox hand = (HBox) scene.lookup("#hand");
         hand.getChildren().clear();
         Assets a = new Assets();
+        gui.setCardSide(true);
+        gui.setSelectedCardInHand(0);
         for(int cardIndex : cards) {
             String fileName = a.getFileName(cardIndex, true);
             Image img = new Image(fileName);
             ImageView imageView = new ImageView(img);
-            imageView.setFitWidth(180);
-            imageView.setFitHeight(100);
+            if(cards.indexOf(cardIndex) == 0) {
+                imageView.setFitWidth(CARD_WIDTH_BIG);
+                imageView.setFitHeight(CARD_HEIGHT_BIG);
+            }
+            else {
+                imageView.setFitWidth(CARD_WIDTH_SMALL);
+                imageView.setFitHeight(CARD_HEIGHT_SMALL);
+            }
             hand.getChildren().add(imageView);
-
-            imageView.setOnMouseClicked(event -> {
-                        for (int i = 0; i < hand.getChildren().size(); i++) {
-                            ImageView cardinhand = (ImageView) hand.getChildren().get(i);
-                            if(cardinhand.equals(imageView))
-                                gui.setSelectedCardInHand(i);
-                        }
-                    }
-            );
+            setCardInHandOnClick(hand, imageView, gui);
         }
+
+        //Select first card by default
+
+
 
         Button switchSideButton = (Button) scene.lookup("#switchSideButton");
         switchSideButton.setOnAction(event -> {
             gui.switchCardSide();
+            gui.setSelectedCardInHand(0);
             hand.getChildren().clear();
             for(int cardIndex : cards) {
                 String fileName = a.getFileName(cardIndex, gui.getCardSide());
                 Image img = new Image(fileName);
                 ImageView imageView = new ImageView(img);
-                imageView.setFitWidth(180);
-                imageView.setFitHeight(100);
+                if(cards.indexOf(cardIndex) == 0) {
+                    imageView.setFitWidth(CARD_WIDTH_BIG);
+                    imageView.setFitHeight(CARD_HEIGHT_BIG);
+                }
+                else {
+                    imageView.setFitWidth(CARD_WIDTH_SMALL);
+                    imageView.setFitHeight(CARD_HEIGHT_SMALL);
+                }
                 hand.getChildren().add(imageView);
 
-                imageView.setOnMouseClicked(event1 -> {
-                            for (int i = 0; i < hand.getChildren().size(); i++) {
-                                ImageView cardinhand = (ImageView) hand.getChildren().get(i);
-                                if(cardinhand.equals(imageView))
-                                    gui.setSelectedCardInHand(i);
-                            }
-                        }
-                );
+                setCardInHandOnClick(hand, imageView, gui);
+
             }
         });
         switchSideButton.setVisible(true);
+    }
 
+    /**
+     * Set the onClick listener of a card in hand
+     * @param hand the container of the cards in hand
+     * @param imageView the card in hand
+     * @param gui the GUI
+     */
+    private void setCardInHandOnClick(HBox hand, ImageView imageView, GUI gui) {
+        imageView.setOnMouseClicked(event1 -> {
+            for (int i = 0; i < hand.getChildren().size(); i++) {
+                ImageView cardInHand = (ImageView) hand.getChildren().get(i);
+
+                if(cardInHand.equals(imageView)) {
+                    gui.setSelectedCardInHand(i);
+                    cardInHand.setFitWidth(CARD_WIDTH_BIG);
+                    cardInHand.setFitHeight(CARD_HEIGHT_BIG);
+                }
+                else {
+                    cardInHand.setFitWidth(CARD_WIDTH_SMALL);
+                    cardInHand.setFitHeight(CARD_HEIGHT_SMALL);
+                }
+            }
+        });
     }
 }
+

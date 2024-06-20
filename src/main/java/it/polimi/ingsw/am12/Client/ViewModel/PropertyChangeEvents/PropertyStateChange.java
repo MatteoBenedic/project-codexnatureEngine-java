@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
@@ -74,6 +75,8 @@ public class PropertyStateChange implements PropertyChange{
             actionButton.setVisible(false);
             actionButton.setOnAction((event) -> {});
         }
+
+        Text help = (Text) scene.lookup("#help");
 
         switch (newState) {
             case INITIALIZATION:
@@ -151,13 +154,18 @@ public class PropertyStateChange implements PropertyChange{
                 break;
 
             case DISTRIBUTION:
+                help.setText("Distribute the cards");
                 actionButton.setText("Distribute cards");
                 actionButton.setOnAction(event -> {
                     gui.getController().sendMessage(new DistributeCardsEvent());
                 });
                 actionButton.setVisible(true);
                 break;
+            case DRAWING:
+                help.setText("Draw a card");
+                break;
             case END:
+                help.setText("The game has ended");
                 actionButton.setText("Get classification");
                 actionButton.setOnAction(event -> {
                     gui.getController().sendMessage(new EndGameEvent());

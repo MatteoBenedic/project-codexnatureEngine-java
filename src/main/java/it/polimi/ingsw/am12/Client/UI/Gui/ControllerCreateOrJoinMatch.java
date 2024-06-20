@@ -54,8 +54,12 @@ public class ControllerCreateOrJoinMatch extends ControllerGUI {
 
         matchNameLabel = new Label("Enter match name...");
         matchNameField = new TextField();
+        matchNameField.setMinWidth(300);
+        matchNameField.setMaxWidth(300);
         numPlayersLabel = new Label("Enter number of players: (min 2, max 4)");
         numPlayersField = new TextField();
+        numPlayersField.setMinWidth(300);
+        numPlayersField.setMaxWidth(300);
         confirmButton = new Button("Create");
 
         content.getChildren().add(matchNameLabel);
@@ -93,6 +97,8 @@ public class ControllerCreateOrJoinMatch extends ControllerGUI {
 
         matchNameLabel = new Label("Enter match name...");
         matchNameField = new TextField();
+        matchNameField.setMinWidth(300);
+        matchNameField.setMaxWidth(300);
         confirmButton = new Button("Join");
 
         content.getChildren().add(matchNameLabel);

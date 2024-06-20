@@ -132,7 +132,7 @@ public class ViewModel implements ViewModelUpdater {
             playingGrids.put(nickname, new ArrayList<>());
             points.put(nickname, 0);
         }
-        notifyPropertyChange(new PropertyPlayersInMatch(nicknames));
+        notifyPropertyChange(new PropertyPlayersInMatch(nicknames, myNickname));
         this.goldDeckColour = goldDeckColour;
         this.resDeckColour = resDeckColour;
         this.cardsInHand.add(startCards.get(myNickname));
@@ -331,7 +331,12 @@ public class ViewModel implements ViewModelUpdater {
         this.points.put(nickname, oldPoints+points);
 
         if(points>0) {
-            notifyPropertyChange(new PropertyPoints(nickname, isMyUpdate, colours.get(nickname), oldPoints+points));
+            int equalScores = -1;
+            for(String n : this.points.keySet()) {
+                if(this.points.get(n) == oldPoints+points)
+                    equalScores ++;
+            }
+            notifyPropertyChange(new PropertyPoints(nickname, isMyUpdate, colours.get(nickname), oldPoints+points, equalScores));
         }
 
         if(nickname.equals(myNickname))

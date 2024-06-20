@@ -39,6 +39,6 @@ public class PropertyRemainingRounds implements PropertyChange {
         Stage stage = gui.getStage();
         Scene scene = stage.getScene();
         Text remainingRoundsText= (Text) scene.lookup("#remainingRounds");
-        remainingRoundsText.setText("Remainig rounds: " + remainingRounds);
+        remainingRoundsText.setText("Remaining rounds: " + remainingRounds);
     }
 }

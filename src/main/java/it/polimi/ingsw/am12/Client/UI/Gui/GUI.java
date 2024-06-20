@@ -100,6 +100,14 @@ public class GUI implements UserInterface {
     }
 
     /**
+     * Set the current side of the cards in hand
+     * @param cardSide the side of the cards in hand (TRUE = front, FALSE = back)
+     */
+    public void setCardSide(boolean cardSide) {
+        this.cardSide = cardSide;
+    }
+
+    /**
      * Get the position of the selected card in hand
      * @return the position of the selected card in hand
      */
@@ -148,6 +156,4 @@ public class GUI implements UserInterface {
             }
         });
     }
-
-
 }

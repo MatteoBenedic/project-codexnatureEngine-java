@@ -4,7 +4,11 @@ import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.*;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -51,9 +55,17 @@ public class PropertyPlayersAdded implements PropertyChange{
         cn.setClientController(gui.getController());
         stage.setScene(scene);
 
-        VBox lobbies = (VBox) scene.lookup("#lobbies");
+        HBox lobbies = (HBox) scene.lookup("#lobbies");
         for(String nickname : nicknames) {
-            lobbies.getChildren().add(new Text(nickname));
+            VBox vBox = new VBox();
+            vBox.setAlignment(Pos.CENTER);
+            Image img = new Image("user.png");
+            ImageView imageView = new ImageView(img);
+            imageView.setFitWidth(70);
+            imageView.setFitHeight(70);
+            vBox.getChildren().add(imageView);
+            vBox.getChildren().add(new Text(nickname));
+            lobbies.getChildren().add(vBox);
         }
         stage.show();
     }

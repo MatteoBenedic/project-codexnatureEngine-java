@@ -1,0 +1,63 @@
+.red-highlight {
+    -fx-background-color: red;
+    -fx-border-color: black
+}
+
+.no-border {
+    -fx-border-width: 0 0 0 0;
+}
+
+.top-left-border {
+    -fx-border-width: 4 0 0 4;
+}
+
+.top-border {
+    -fx-border-width: 4 0 0 0;
+}
+
+.top-right-border {
+    -fx-border-width: 4 4 0 0;
+}
+
+.right-border {
+    -fx-border-width: 0 4 0 0;
+}
+
+.bottom-right-border {
+    -fx-border-width: 0 4 4 0;
+}
+
+.bottom-border {
+    -fx-border-width: 0 0 4 0;
+}
+
+.bottom-left-border {
+    -fx-border-width: 0 0 4 4;
+}
+
+.left-border {
+    -fx-border-width: 0 0 0 4;
+}
+
+.image-border {
+    -fx-border-color: black;
+    -fx-border-width: 4 4 4 4;
+}
+
+.background {
+    -fx-background-image: url("background-image.png");
+    -fx-background-size: 100% 100%;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-image: url("background-image.png");
+    -fx-background-size: 100% 100%;
+}
+
+.title {
+    -fx-font-size: 20;
+}
+
+.subTitle {
+    -fx-font-size: 15;
+}

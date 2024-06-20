@@ -6,7 +6,9 @@ import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import it.polimi.ingsw.am12.Network.Messages.Events.GetPlaceablePositionsEvent;
 import it.polimi.ingsw.am12.Utils.Assets;
 import it.polimi.ingsw.am12.Utils.Coordinate;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -31,6 +33,8 @@ public class PropertyCardPlaced implements PropertyChange {
     private final static int CENTRE_GRID_COL = 40;
     private final static int CELL_DIM_ROW = 30;
     private final static int CELL_DIM_COL = 40;
+    private final static int ROWS_GRID = 81;
+    private final static int COLUMNS_GRID = 81;
     private final static int MUL_ROW = 3;
     private final static int MUL_COL = 4;
 
@@ -80,35 +84,41 @@ public class PropertyCardPlaced implements PropertyChange {
         Stage stage = gui.getStage();
         Scene scene = stage.getScene();
 
+        ScrollPane scroll = (ScrollPane) scene.lookup("#scroll" + nickname);
         GridPane grid = (GridPane) scene.lookup("#" + nickname);
-        int row = position.getX()*MUL_ROW-(position.getX()-CENTRE_GRID_ROW);
-        int column = position.getY()*MUL_COL-(position.getY()-CENTRE_GRID_COL);
+        grid.getChildren().removeIf(node -> node.getStyleClass().contains("red-highlight"));
+        int row = position.getX() * MUL_ROW - (position.getX() - CENTRE_GRID_ROW);
+        int column = position.getY() * MUL_COL - (position.getY() - CENTRE_GRID_COL);
 
         Assets a = new Assets();
         String fileName = a.getFileName(cardIndex, side);
         Image img = new Image(fileName);
         ImageView imageView = new ImageView(img);
-        imageView.setFitWidth(CELL_DIM_COL*MUL_COL);
-        imageView.setFitHeight(CELL_DIM_ROW*MUL_ROW);
+        imageView.setFitWidth(CELL_DIM_COL * MUL_COL);
+        imageView.setFitHeight(CELL_DIM_ROW * MUL_ROW);
         Pane cell = new Pane();
         cell.setMinSize(CELL_DIM_COL, CELL_DIM_ROW);
         cell.setMaxSize(CELL_DIM_COL, CELL_DIM_ROW);
         cell.getChildren().add(imageView);
         grid.add(cell, column, row);
-        imageView.setOnMouseClicked(event ->
+        if(isYourPlayingGrid) {
+            imageView.setOnMouseClicked(event -> {
+                grid.getChildren().removeIf(node -> node.getStyleClass().contains("red-highlight"));
                 gui.getController().sendMessage(
                         new GetPlaceablePositionsEvent(
                                 gui.getNickname(),
                                 position.getX(),
-                                position.getY())));
+                                position.getY()));
+            });
+        }
+
+        scroll.layout();
+        scroll.setHvalue((double) column / ((COLUMNS_GRID-1)*MUL_COL));
+        scroll.setVvalue((double) row / ((ROWS_GRID-1)*MUL_ROW));
 
         if(isStartCard && isYourPlayingGrid) {
             HBox hand = (HBox) scene.lookup("#hand");
             hand.getChildren().clear();
-        }
-
-        if(isStartCard) {
-            grid.setGridLinesVisible(true);
         }
     }
 }

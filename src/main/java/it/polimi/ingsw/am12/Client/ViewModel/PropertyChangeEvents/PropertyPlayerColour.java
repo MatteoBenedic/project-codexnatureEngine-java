@@ -4,8 +4,8 @@ import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import it.polimi.ingsw.am12.Model.Logic.PlayerColour;
 import it.polimi.ingsw.am12.Utils.PointPosition;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -18,6 +18,7 @@ public class PropertyPlayerColour implements PropertyChange{
     private final String nickname;
     private final PlayerColour playerColour;
     private final boolean isYourColour;
+    private final static int COLUMNS_SCOREBOARD = 50;
 
     /**
      * Class constructor
@@ -62,7 +63,13 @@ public class PropertyPlayerColour implements PropertyChange{
         GridPane scoreBoardGrid = (GridPane) scene.lookup("#scoreBoard");
         scoreBoardGrid.getChildren().remove(pion);
         PointPosition pos = new PointPosition();
-        scoreBoardGrid.add(pion, pos.getPosition(0).getX(), pos.getPosition(0).getY());
+
+        int offset = 0;
+        for(Node node : scoreBoardGrid.getChildren()) {
+            if(GridPane.getColumnIndex(node) != COLUMNS_SCOREBOARD)
+                offset ++;
+        }
+        scoreBoardGrid.add(pion, pos.getPosition(0).getX()+offset, pos.getPosition(0).getY()+offset);
 
     }
 }
