@@ -13,7 +13,6 @@ import it.polimi.ingsw.am12.Network.Messages.CreateMatchMessage;
 import it.polimi.ingsw.am12.Network.Messages.JoinMatchMessage;
 import it.polimi.ingsw.am12.Server;
 import it.polimi.ingsw.am12.VirtualView.VirtualView;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,8 +20,6 @@ import java.net.Socket;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 /**
@@ -170,22 +167,10 @@ public class ServerSideSocketHandler implements Runnable {
             }
         }
         if(inObj instanceof CloseMatchConnectionMessage){
-            CloseMatchConnectionMessage closeMatchConnectionMessage = (CloseMatchConnectionMessage) inObj;
-            if(closeMatchConnectionMessage.getMode()==MatchCloseMode.QUIT) {
-                try {
-                    shutdown();
-                } catch (NoMatchException | NotBoundException | RemoteException e) {
-                    sendMessage(e);
-                }
-            }
-            else if(closeMatchConnectionMessage.getMode()==MatchCloseMode.ENDGAME){
-                if(server.getGameStateFromNickname(nickClient)== State.END){
-                    try {
-                        shutdown();
-                    } catch (NoMatchException | NotBoundException | RemoteException e) {
-                        sendMessage(e);
-                    }
-                }
+            try {
+                shutdown();
+            } catch (NoMatchException | NotBoundException | RemoteException e) {
+                sendMessage(e);
             }
         }
     }
@@ -234,32 +219,4 @@ public class ServerSideSocketHandler implements Runnable {
         }
     }
 
-    /*
-    private void startPingTimer() {
-        waitingTime = new Timer();
-        waitingTime.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                //If a ping is not received within the PING_TIMEOUT, the client is inactive
-                System.err.println("Ping timeout: the client " + nickClient + " " + socket.toString() + " is inactive. Closing socket connection...");
-                connected = false;
-                server.printNicknamesToMatch();
-                try {
-                    shutdown();
-                } catch (NoMatchException | NotBoundException | RemoteException e) {
-                    System.err.println("(startPingTimer) Error in closing connection" + e.getMessage());
-                }
-            }
-        }, PING_TIMEOUT);
-    }
-
-
-    private void resetPingTimer() {
-        if (waitingTime != null) {
-            waitingTime.cancel();
-        }
-        System.out.println("reset ping timer...");
-        startPingTimer();
-    }
-    */
 }

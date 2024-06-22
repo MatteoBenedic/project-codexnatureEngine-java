@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am12.Client.UI.Gui;
 
 import it.polimi.ingsw.am12.Client.ClientController.ClientController;
+import it.polimi.ingsw.am12.Client.UI.CLI.CommandsCLI.CLIState;
 import it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents.PropertyChange;
 import it.polimi.ingsw.am12.Client.UI.UserInterface;
 import it.polimi.ingsw.am12.Utils.Coordinate;
@@ -139,6 +140,13 @@ public class GUI implements UserInterface {
     public void setSelectedCoordinates(int x, int y) {
         selectedCoordinates.setX(x);
         selectedCoordinates.setY(y);
+    }
+
+    /**
+     * Stops the client by closing the connection
+     */
+    public void stopGui() {
+        controller.connectionLostHandler();
     }
 
     /**

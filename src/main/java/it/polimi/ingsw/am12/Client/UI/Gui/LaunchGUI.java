@@ -3,7 +3,9 @@ package it.polimi.ingsw.am12.Client.UI.Gui;
 import it.polimi.ingsw.am12.Client.ClientController.ClientController;
 import it.polimi.ingsw.am12.Client.ClientController.ClientControllerRMI;
 import it.polimi.ingsw.am12.Client.ClientController.ClientControllerSocket;
+import it.polimi.ingsw.am12.Network.Messages.CloseMatchConnectionMessage;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -48,6 +50,14 @@ public class LaunchGUI extends Application {
         cn.setClientController(controller);
 
         new GUI(controller, stage);
+
+        ClientController finalController = controller;
+        stage.setOnCloseRequest(e -> {
+            CloseMatchConnectionMessage closeConnectionMessage = new CloseMatchConnectionMessage();
+            finalController.sendMessage(closeConnectionMessage);
+            Platform.exit();
+            System.exit(0);
+        });
 
         stage.setTitle("Codex");
         stage.setScene(scene);

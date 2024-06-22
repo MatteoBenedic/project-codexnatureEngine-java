@@ -1,19 +1,15 @@
 package it.polimi.ingsw.am12.Client.ClientController;
 
-import it.polimi.ingsw.am12.Client.UI.CLI.InputDisabledException;
 import it.polimi.ingsw.am12.ClientStub;
 import it.polimi.ingsw.am12.Message;
-import it.polimi.ingsw.am12.Network.Messages.Updates.NicknameEstablishedUpdate;
 import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
 import it.polimi.ingsw.am12.Client.UI.UserInterface;
 import it.polimi.ingsw.am12.Client.ViewModel.ViewModel;
-import it.polimi.ingsw.am12.VVStub;
-
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Timer;
 import java.util.TimerTask;
+import static java.lang.System.exit;
 
 /**
  * The controller of the client. It manages the communication with the server or the communication layer of the client
@@ -105,6 +101,7 @@ public class ClientController extends UnicastRemoteObject implements ClientStub 
             @Override
             public void run() {
                 connectionLostHandler();
+                exit(1);
             }
         }, PONG_TIMEOUT);
     }

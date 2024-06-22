@@ -13,22 +13,11 @@ import java.rmi.RemoteException;
  * by sockets
  */
 public class CloseMatchConnectionMessage implements Message {
-    private final MatchCloseMode mode;
 
     /**
      * Constructor method for a CloseMatchMessage
-     * @param mode a MatchCloseMode
      */
-    public CloseMatchConnectionMessage(MatchCloseMode mode) {
-        this.mode = mode;
-    }
-
-    /**
-     * Getter method for the match closing mode
-     * @return a MatchCloseMode
-     */
-    public MatchCloseMode getMode() {
-        return mode;
+    public CloseMatchConnectionMessage() {
     }
 
     /**
@@ -39,16 +28,6 @@ public class CloseMatchConnectionMessage implements Message {
      * @param nickname the nickname of the player;
      */
     public void sendRMI(ClientStub client, ServerStub server, VVStub vv, String nickname) throws NoMatchException, RemoteException {
-        if(mode ==MatchCloseMode.QUIT) {
-            try {
-                server.playerDisconnectionHandler(nickname);
-                throw new RuntimeException("Input disabled!");
-            } catch (RemoteException e) {
-                throw new RuntimeException("Input disabled!");
-            }
-        }
-        else {
-            server.closeMatchForPlayer(nickname);
-        }
+        server.playerDisconnectionHandler(nickname);
     }
 }

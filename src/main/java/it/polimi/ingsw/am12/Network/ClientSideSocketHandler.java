@@ -1,18 +1,13 @@
 package it.polimi.ingsw.am12.Network;
 
 import it.polimi.ingsw.am12.Client.ClientController.*;
-import it.polimi.ingsw.am12.Client.UI.CLI.InputDisabledException;
 import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.Timer;
-import java.util.TimerTask;
-
 import static java.lang.System.exit;
-import static java.lang.System.out;
 
 /**
  * This class handles a socket connection on client side
@@ -47,7 +42,7 @@ public class ClientSideSocketHandler implements Runnable{
             output.writeObject(inObj);
         } catch(IOException e){
             System.err.println("I/O error! " + e.getMessage() + ". Disabling command interface...");
-            throw new RuntimeException("Input disabled!");
+            exit(1);
         }
     }
 
@@ -90,8 +85,8 @@ public class ClientSideSocketHandler implements Runnable{
                     //System.out.println("pong received");
                     controller.resetPongTimeoutTimer();
                 }
-            } catch (IOException | ClassNotFoundException e) {
-                closeConnection();
+            } catch (IOException | ClassNotFoundException | ClassCastException e) {
+                System.err.println("Server not connected");
                 break;
             }
 
@@ -115,8 +110,7 @@ public class ClientSideSocketHandler implements Runnable{
             if(pongTimeoutTimer != null)
                 pongTimeoutTimer.cancel();
 
-        } catch (IOException e) {
-            System.err.println("Error in closing connection"+ e.getMessage());
+        } catch (IOException ignored) {
         }
     }
 
@@ -129,7 +123,7 @@ public class ClientSideSocketHandler implements Runnable{
             output.reset();
             output.writeObject("ping");
         } catch (IOException e) {
-            System.err.println("Error in sending ping... " + e.getMessage());
+            System.err.println("Error in sending ping... ");
         }
     }
 }

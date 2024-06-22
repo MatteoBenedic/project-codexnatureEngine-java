@@ -6,7 +6,6 @@ package it.polimi.ingsw.am12.Client.UI.CLI.CommandsCLI;
 public enum CLIState {
     WAITING_NICKNAME,
     WAITING_COMMAND,
-    CLOSING_PHASE,
     WAIT_FOR_UPDATE,
     MATCH_STOPPED;
 }

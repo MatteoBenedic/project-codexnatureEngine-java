@@ -1,8 +1,11 @@
 package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
-import it.polimi.ingsw.am12.Client.UI.CLI.InputDisabledException;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -19,11 +22,19 @@ public class PropertyGameStopped implements PropertyChange{
     public void updateCLI(CLI cli) {
         System.out.println(GAME_STOPPED_MSG);
         cli.disableCommand();
-
     }
 
     @Override
     public void updateGUI(GUI gui) throws IOException {
-        //TODO: Update GUI client that the game has been stopped
+        gui.stopGui();
+        Stage stage = gui.getStage();
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GameStopped.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
+        stage.setScene(scene);
+        stage.show();
     }
 }

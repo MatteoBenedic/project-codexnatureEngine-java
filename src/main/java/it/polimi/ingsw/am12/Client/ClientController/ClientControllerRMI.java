@@ -89,10 +89,8 @@ public class ClientControllerRMI extends ClientController {
         } catch (NoNicknameException | DuplicateMatchException | WrongNumberOfPlayersException |
                  WrongInformationException | DuplicateNicknameException | AlreadyBoundException | EmptyDeckException |
                  NotBoundException | InvalidSearchPositionException | NotYourTurnException |
-                 NoMatchException | InvalidPlacementException | IllegalStateException | InvalidParameterException e) {
+                 NoMatchException | InvalidPlacementException | IllegalStateException | InvalidParameterException | RemoteException e) {
             catchException(e);
-        } catch (RemoteException e) {
-            throw new RuntimeException("Input disabled!");
         }
     }
 
@@ -117,13 +115,9 @@ public class ClientControllerRMI extends ClientController {
         try {
             try {
                 registry.unbind(vvnick);
-            } catch (RemoteException e) {
-                System.err.println(vvnick + " was not bound in registry");
-            } catch (NotBoundException e) {
-                System.err.println("Error: cannot unbind " + vvnick + " from registry");
+            } catch (NotBoundException | RemoteException e) {
+                UnicastRemoteObject.unexportObject(this, true);
             }
-            UnicastRemoteObject.unexportObject(this, true);
-            System.out.println("Connection closed!");
         } catch (RemoteException e) {
             System.err.println("Error in closing connection: " + e.getMessage());
         }

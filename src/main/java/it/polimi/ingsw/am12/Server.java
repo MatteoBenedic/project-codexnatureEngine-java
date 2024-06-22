@@ -250,10 +250,12 @@ public class Server extends UnicastRemoteObject implements ServerStub {
 
             linkClientViews.remove(nickName, v);
             nicknamesToMatch.remove(nickName, match);
+            nicknames.remove(nickName);
 
             if (allPlayerExit == 0) {
                 matches.get(match).closeModel();
                 matches.remove(match);
+                lobbiesToComplete.remove(match);
             }
         } catch (NullPointerException ignored) {
         }
@@ -369,6 +371,19 @@ public class Server extends UnicastRemoteObject implements ServerStub {
             closeMatchForAllPlayers(matchName, nickname);
         } else {
             System.err.println("No match found for player " + nickname);
+
+            try {
+                nicknames.remove(nickname);
+                VirtualView v = linkClientViews.get(nickname);
+                try {
+                    registry.unbind(nickname + "VirtualView");
+                } catch (NotBoundException ignored) {
+                }
+                v.removeListener();
+                linkClientViews.remove(nickname, v);
+            } catch (NullPointerException ignored) {
+            }
+
         }
     }
 
@@ -376,7 +391,9 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * Displays, for each player connected to the server, the corresponding match name
      */
     private void printNicknamesToMatch() {
-        System.out.println("Server{" + "nicknamesToMatch=" + nicknamesToMatch + "}");
+        System.out.println ("Server{");
+        for(String nickname : nicknamesToMatch.keySet())
+            System.out.println(nickname + ": " + nicknamesToMatch.get(nickname));
     }
 
     /**

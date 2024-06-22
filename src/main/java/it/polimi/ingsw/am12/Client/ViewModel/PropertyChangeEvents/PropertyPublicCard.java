@@ -2,7 +2,6 @@ package it.polimi.ingsw.am12.Client.ViewModel.PropertyChangeEvents;
 
 import it.polimi.ingsw.am12.Client.UI.CLI.CLI;
 import it.polimi.ingsw.am12.Client.UI.CLI.CLIDrawBufferTable;
-import it.polimi.ingsw.am12.Client.UI.CLI.InputDisabledException;
 import it.polimi.ingsw.am12.Client.UI.Gui.GUI;
 import it.polimi.ingsw.am12.Network.Messages.Events.DrawCardEvent;
 import it.polimi.ingsw.am12.Utils.Assets;

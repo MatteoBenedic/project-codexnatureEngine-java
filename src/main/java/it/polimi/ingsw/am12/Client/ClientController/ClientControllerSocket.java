@@ -1,12 +1,6 @@
 package it.polimi.ingsw.am12.Client.ClientController;
-
-import it.polimi.ingsw.am12.Client.UI.CLI.InputDisabledException;
 import it.polimi.ingsw.am12.Message;
 import it.polimi.ingsw.am12.Network.ClientSideSocketHandler;
-import it.polimi.ingsw.am12.Network.Messages.Updates.NicknameEstablishedUpdate;
-import it.polimi.ingsw.am12.Network.Messages.Updates.Update;
-
-import java.io.IOException;
 import java.rmi.RemoteException;
 
 /**
