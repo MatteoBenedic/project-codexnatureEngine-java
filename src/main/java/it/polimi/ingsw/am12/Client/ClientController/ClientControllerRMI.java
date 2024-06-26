@@ -10,10 +10,7 @@ import it.polimi.ingsw.am12.VVStub;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.rmi.AlreadyBoundException;
-import java.rmi.ConnectException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -57,7 +54,7 @@ public class ClientControllerRMI extends ClientController {
 
         try {
             server = (ServerStub) registry.lookup("CodexServer");
-        } catch (NotBoundException | ConnectException e) {
+        } catch (NotBoundException | ConnectException | ConnectIOException e) {
            System.err.println("Server not connected");
            exit(1);
         }

@@ -85,7 +85,7 @@ public class ClientSideSocketHandler implements Runnable{
                     //System.out.println("pong received");
                     controller.resetPongTimeoutTimer();
                 }
-            } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            } catch (IOException | ClassNotFoundException | ClassCastException | IllegalStateException e) {
                 System.err.println("Server not connected");
                 break;
             }

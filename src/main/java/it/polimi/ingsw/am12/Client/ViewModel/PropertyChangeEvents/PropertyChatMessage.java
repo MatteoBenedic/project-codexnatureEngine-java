@@ -15,6 +15,7 @@ public class PropertyChatMessage implements PropertyChange {
     private final String sender;
     private final boolean isPublic;
     private final boolean isYourMessage;
+    private final String recipient;
     private final String message;
     private final static int MAX_NUM_MESSAGES = 10;
 
@@ -27,12 +28,14 @@ public class PropertyChatMessage implements PropertyChange {
      * @param isYourMessage a boolean:
      *                 TRUE if the user is also the sender of the message
      *                 FALSE if the message was sent by some other user
+     * @param recipient the nickname of the recipient
      * @param message the content of the message
      */
-    public PropertyChatMessage(String sender, boolean isPublic, boolean isYourMessage, String message) {
+    public PropertyChatMessage(String sender, boolean isPublic, boolean isYourMessage, String recipient, String message) {
         this.sender = sender;
         this.isPublic = isPublic;
         this.isYourMessage = isYourMessage;
+        this.recipient = recipient;
         this.message = message;
     }
 
@@ -42,18 +45,7 @@ public class PropertyChatMessage implements PropertyChange {
      */
     @Override
     public void updateCLI(CLI cli) {
-        String s ="[";
-        if(isYourMessage) {
-            s+="You";
-        }
-        else {
-            s+=sender;
-        }
-
-        if(isPublic) {
-            s+=" to Everyone";
-        }
-        s+="]: " + message;
+        String s = composeMessage();
         System.out.println(s);
     }
 
@@ -68,9 +60,26 @@ public class PropertyChatMessage implements PropertyChange {
         Scene scene = stage.getScene();
         VBox messages = (VBox) scene.lookup("#messages");
 
+        String s = composeMessage();
+
+        if(messages.getChildren().size() == MAX_NUM_MESSAGES) {
+            messages.getChildren().removeFirst();
+        }
+        messages.getChildren().add(new Text(s));
+
+    }
+
+    /**
+     * Compose the string to print the message
+     * @return the string to be printed
+     */
+    private String composeMessage() {
         String s ="[";
         if(isYourMessage) {
             s+="You";
+            if(!isPublic) {
+                s+=" to "+recipient;
+            }
         }
         else {
             s+=sender;
@@ -81,10 +90,6 @@ public class PropertyChatMessage implements PropertyChange {
         }
         s+="]: " + message;
 
-        if(messages.getChildren().size() == MAX_NUM_MESSAGES) {
-            messages.getChildren().removeFirst();
-        }
-        messages.getChildren().add(new Text(s));
-
+        return s;
     }
 }

@@ -131,9 +131,10 @@ public interface ViewModelUpdater {
      * Update the ViewModel when a message in the chat is received
      * @param sender the nickname of the user who sent the message
      * @param publicMess a boolean that specifies if the message is public (TRUE) or private (FALSE)
+     * @param recipient the nickname of the recipient
      * @param chatMessage the content of the message
      */
-    void chatUpdate(String sender, boolean publicMess, String chatMessage);
+    void chatUpdate(String sender, boolean publicMess, String recipient, String chatMessage);
 
     /**
      * Update the ViewModel when the game has ended and the results are available

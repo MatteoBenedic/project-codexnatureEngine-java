@@ -556,11 +556,11 @@ public class GameModel{
                 if (!lobby.contains(addressee))
                     throw new WrongInformationException("There isn't any player with this name to send the message!");
 
-                ChatUpdate u = new ChatUpdate(nickname, publicMess, chatMessage);
+                ChatUpdate u = new ChatUpdate(nickname, publicMess, addressee, chatMessage);
                 List<String> addressees = Arrays.asList(addressee, nickname);
                 notifyPrivateUpdate(u, addressees);
             } else {
-                ChatUpdate u = new ChatUpdate(nickname, publicMess, chatMessage);
+                ChatUpdate u = new ChatUpdate(nickname, publicMess, addressee, chatMessage);
                 notifyUpdate(u);
             }
         }else{
@@ -572,12 +572,12 @@ public class GameModel{
                 if(!match.getPlayerNames().contains(addressee))
                     throw new WrongInformationException("There isn't any player with this name to send the message!");
 
-                ChatUpdate u = new ChatUpdate(nickname, publicMess, chatMessage);
+                ChatUpdate u = new ChatUpdate(nickname, publicMess, addressee, chatMessage);
                 List<String> addressees = Arrays.asList(addressee, nickname);
                 notifyPrivateUpdate(u, addressees);
             }
             else{
-                ChatUpdate u = new ChatUpdate(nickname, publicMess, chatMessage);
+                ChatUpdate u = new ChatUpdate(nickname, publicMess, addressee, chatMessage);
                 notifyUpdate(u);
             }
         }

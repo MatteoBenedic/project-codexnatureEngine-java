@@ -405,15 +405,16 @@ public class ViewModel implements ViewModelUpdater {
      * Only the last 10 messages are memorized
      * @param sender the nickname of the user who sent the message
      * @param publicMess a boolean that specifies if the message is public (TRUE) or private (FALSE)
+     * @param recipient the nickname of the recipient
      * @param chatMessage the content of the message
      */
-    public void chatUpdate(String sender, boolean publicMess, String chatMessage){
-        ClientMessage cm = new ClientMessage(sender, publicMess, chatMessage);
+    public void chatUpdate(String sender, boolean publicMess, String recipient, String chatMessage){
+        ClientMessage cm = new ClientMessage(sender, recipient, publicMess, chatMessage);
 
         if(messages.size() == MAX_NUM_MESS)
             messages.removeFirst();
         messages.add(cm);
-        notifyPropertyChange(new PropertyChatMessage(sender, publicMess, (sender.equals(myNickname)), chatMessage));
+        notifyPropertyChange(new PropertyChatMessage(sender, publicMess, (sender.equals(myNickname)), recipient, chatMessage));
     }
 
     /**
