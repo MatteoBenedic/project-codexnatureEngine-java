@@ -11,7 +11,7 @@ import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
 public class StartMatchEvent extends Event{
 
     /**
-     * Add the users in the lobby as players of the matc
+     * Add the users in the lobby as players of the match
      * @param model the GameModel that interacts with this event
      * @throws WrongNumberOfPlayersException if the number of nicknames in the lobby differs from the
      *                                       number of players of the match. In this case no player is added.

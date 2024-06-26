@@ -1,0 +1,321 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class ElementsObjectiveCard{
+ +reqElements : int[7]
+ int[] getReqElements()
+ int calculatePoints(PlayingGrid grid)
+}
+
+class PatternObjectiveCard{
+    +coordReqPattern : CoordinateSubMatrix[3]
+    +deltaXSecond : int
+    +deltaYSecond : int
+    +deltaXThird : int
+    +deltaYThird : int
+
+    void calculateDeltas()
+    CoordinateSubMatrix getCoordReqPattern(requiredIndex : int)
+    int calculatePoints(PlayingGrid grid)
+}
+
+
+class ObjectiveCard{
+    +objIndex : int
+    points : int
+
+    int getObjIndex()
+    int getPoints()
+    int calculatePoints(PlayingGrid grid)
+    void calculateDeltas()
+
+}
+
+
+ObjectiveCard <|-- ElementsObjectiveCard
+ObjectiveCard <|-- PatternObjectiveCard
+
+
+
+class PlayingGrid{
++plcards : GameCard[81][81]
++numElements : int[7]
++lastPlacedCard : GameCard
+
+void placeStartCard(i : int, j: int, startcard : GameCard)
+int place(i : int, j : int, card : GameCard)
+List<Coordinate> getPlaceablePosition(i : int, j : int)
+GameCard getLastPlacedCard()
+GameCard[81][81] getPlcards()
+int getNumElement(e : Element)
+boolean CheckCardPlaceability(card : GameCard)
+int ComputePoints()
+void setLastPlacedCard(card: GameCard)
+boolean cellIsEmpty(row : int, column : int)
+boolean checkColourMatch(row : int, column : int, patternObjCard : PatternObjectiveCard, coordReqPatternIndex : int)
+boolean cardWasAlreadyUsedForThisObjective(row : int, column : int, patternObjCard : PatternObjectiveCard)
+void markCardAsUsedForThisObjective (row : int, column : int, patternObjCard : PatternObjectiveCard)
+int[7] getNumElements();
+void setNumElements(int[7] numElements)
+}
+
+
+
+
+class Player{
++nickname : String
++points : int
++cardsInHand : List<GameCard>
++objectiveCard : ObjectiveCard
+
+void setColour(colour : PlayerColour)
+PlayerColour getColour()
+ObjectiveCard getObjectiveCard()
+void setObjectiveCard(objectivecard : ObjectiveCard)
+List<GameCard> getCardsInHand()
+void addCardInHand(c : GameCard)
+void removeCardFromHand(c : GameCard)
+String getNickname()
+PlayingGrid getPlayingGrid()
+int placePlayingGrid(i : int, j : int, c: GameCard)
+void placeStartCard(i : int, j : int, c: GameCard)
+List<Coordinate> getPlaceablePositions(i: int, j: int)
+int getPoints()
+int calculateObjPoints(card : ObjectiveCard)
+int calculateObjPoints()
+}
+
+class Match {
+    + numPlayers : int
+    + remainingRounds : int
+    + playerOrder : List<Player>
+    + playerTurn : int
+    + publicObj : ObjectiveCard[2]
+    + startDeck : List<GameCard>
+    + objDeck : List<ObjectiveCard>
+    + objToChoose : Map<String, ObjectiveCard[2]>
+
+    List<Player> getPlayerOrder()
+    int getNumPlayers()
+    List<String> getPlayerNames()
+    public int[4] getPublicCards()
+    CardColour[2] getDeckColours()
+    List<Integer> getCardsInHand(nickname : String)
+    String getPlayerTurn()
+    int getLastPlacedCard(nickname : String)
+    Boolean getLastPlacedCardSide(nickname : String)
+    PlayerColor getPlayerColour(nickname : String)
+    int[2] getObjectivesToChoose(nickname : String)
+    int[2] getPublicObjectives()
+    Integer getPlayerPoints(nickname : String)
+    boolean isTurn(nickname : String)
+    void addPlayer(nickname : String)
+    void randomizePlayerOrder()
+    void createDecks()
+    void assignStartCards()
+    void placeStartCard(nickname : String, selectedSide : Boolean)
+    void setPlayerColour(nickname : String, selectedColour : PlayerColour)
+    ObjectiveCard drawObjective()
+    void distributeCards()
+    void setPlayerObjective(nickname : String, selectedObjective : boolean)
+    List<Coordinate> getPlaceablePositions(xpos : int, ypos : int)
+    int placeCard(index : int, side : boolean, xpos : int, ypos : int)
+    void drawCard(index int)
+    int nextTurn()
+    boolean checkEndgameCondition()
+    Map<String, Integer> calculateEndgamePoints()
+    int orderByPoints(finalPoints : Map<String, Integer>)
+}
+
+Match --> Player
+Match --> DrawTable
+
+class GameModel{
+    +listeners : List<UpdateListener>
+    +lobby : List<String>
+    +availableColours : List<PlayerColour>
+
+
+    void addListener(listener : UpdateListener)
+    int removeListener(listener : UpdateListener)
+    List<UpdateListener> getListeners()
+    List<String> getLobby()
+    void addPlayerToLobby((nickname : String, view VirtualView)
+    void addPlayersToMatch(nicknames : List<String>)
+    void placeStartCard(nickname : String, selectedSide : boolean)
+    void setPlayerColour(nickname : String, selectedColour : PlayerColour)
+    void distributeCards()
+    void setPlayerObjective(nickname : String, selectedObjective : boolean)
+    void getPlaceablePositions(nickname : String, xpos : int, ypos : int)
+    void placeCard(nickname : String, index : int, side : boolean, xpos : int, ypos : int)
+    void drawCard(nickname : String, index : int)
+    void endGame()
+    void manageChat(nickname : String, addressee : String, publicMess : boolean, chatMessage : String)
+    void forceEndGame()
+    State getState()
+}
+
+GameModel --> Match
+GameModel --> State
+
+enum State {
+LOBBY,
+INITIALIZATION,
+STARTCARD,
+COLOUR,
+DISTRIBUTION,
+OBJECTIVE,
+PLACING,
+DRAWING,
+END,
+CLOSED;
+}
+
+Player --> PlayingGrid
+
+enum PlayerColor{
+RED
+YELLOW
+GREEN
+BLUE
+}
+PlayerColor <-- Player
+
+class DrawTable{
+ +gold1 : GameCard
+ +gold2 : GameCard
+ +res1 : GameCard
+ +res2 : GameCard
+ +goldDeck : List<GameCard>
+ +resDeck : List<GameCard>
+
+ GameCard[4] getPublicCards()
+ void initializeDecks()
+ CardColour getColorTopGoldDeck()
+ CardColour getColorTopResDeck()
+ GameCard drawHiddenGold()
+ GameCard drawHiddenResource()
+ GameCard drawFirstGold()
+ GameCard drawSecondGold()
+ GameCard drawFirstResource()
+ GameCard drawSecondResource()
+ GameCard drawCard(index : int)
+}
+
+class GameCard{
++index : int
++front : Side
++back : Side
++validSide : Side
++coordinates : Coordinate
++flagObj : boolean[8]
+
+int getIndex()
+Side getValidSide()
+boolean getWhichSide()
+Coordinate getCoordinates()
+CardColour getColour()
+int getPoints()
+Boolean isThereCorner(i : int)
+Element getResourceCorner(i : int)
+int[7] getRequirements()
+int[7] getResources()
+Condition getCondition()
+boolean getCompleteObjFlag(patternObjIndex : int)
+void setDefaultSide()
+void setValidSide(side : boolean)
+void setCoordinates(x : int, y : int)
+void setCompleteObjFlag(patternObjIndex : int)
+}
+
+enum CardColour {
+GREEN,
+BLUE,
+RED,
+PURPLE
+}
+GameCard --> CardColour
+
+abstract class Side{
++corners : Corner[4]
++points : int
+Corner getCorner(i : int)
+int getPoints()
+List<Element> getRequirements()
+Condition getCondition()
+abstract List<Element> getCenter()
+}
+
+class GoldFront{
++requirements : List<Element>
+List<Element> getRequirements()
+Condition getCondition()
+List<Element> getCenter()
+}
+
+class NotGoldFront{
+List<Element> getCenter()
+}
+
+class StartBack{
++center : List<Element>
+List<Element> getCenter()
+}
+
+class ColouredBack{
++center: Element
+List<Element> getCenter()
+}
+
+
+Side <|-- GoldFront
+Side <|-- NotGoldFront
+Side <|-- StartBack
+Side <|-- ColouredBack
+
+class Corner{
++elem : Element
+Element getElement()
+}
+
+GameCard *- Side
+Side *- Corner
+Corner --> Element
+
+enum Element {
+ANIMAL
+FUNGUS
+PLANT
+INSECT
+MANUSCRIPT
+INKWELL
+QUILL
+}
+
+PatternObjectiveCard --> CoordinateSubMatrix
+
+class CoordinateSubMatrix{
+     +x : int
+     +y : int
+     +colour : CardColour
+
+     int getX()
+     int getY()
+     CardColour getColour()
+}
+
+GoldFront --> Condition
+
+enum Condition{
+CORNER,
+INKWELL,
+MANUSCRIPT,
+QUILL
+
+    +name : Element
+    Element getName()
+}
+
+
+
+@enduml

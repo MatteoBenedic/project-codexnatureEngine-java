@@ -18,8 +18,8 @@ Il progetto consiste nello sviluppo di una versione software del gioco da tavolo
 |    View        |     ✔️        |
 |    TUI         |     ✔️        |
 |    GUI         |     ✔️        |
-| Disconnessione |     🕑        |
-|   Deployment   |     ❌        |
+| Disconnessione |     ✔️        |
+|   Deployment   |     ✔️        |
 
 
 
@@ -42,3 +42,8 @@ Il progetto consiste nello sviluppo di una versione software del gioco da tavolo
 
 
 ## Istruzioni per l'esecuzione
+Server: `java -jar AM12.jar server [PORT_SOCKET] [PORT_RMI] [SERVER_IP_ADDRESS]`<br />
+Client (Socket, CLI): `java -jar AM12.jar client [SERVER_IP_ADDRESS] [PORT_SOCKET] cli socket`<br />
+Client (Socket, GUI): `java -jar AM12.jar client [SERVER_IP_ADDRESS] [PORT_SOCKET] gui socket`<br />
+Client (RMI, CLI): `java -jar AM12.jar client [SERVER_IP_ADDRESS] [PORT_RMI] cli rmi`<br />
+Client (RMI, GUI): `java -jar AM12.jar client [SERVER_IP_ADDRESS] [PORT_RMI] gui rmi`

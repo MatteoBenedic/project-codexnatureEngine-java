@@ -9,8 +9,6 @@ import it.polimi.ingsw.am12.Exceptions.IllegalStateException;
  */
 public class DistributeCardsEvent extends Event{
 
-    //public DistributeCardsEvent() {}
-
     /**
      * Distribute cards to the players, in order to start the match.
      * @param model the GameModel that interacts with this event

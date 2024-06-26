@@ -44,7 +44,6 @@ public class Match {
         this.objToChoose = new HashMap<>();
     }
 
-    //TODO: remove this method
     public List<Player> getPlayerOrder () {
         return playerOrder;
     }

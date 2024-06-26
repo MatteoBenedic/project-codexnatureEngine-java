@@ -37,10 +37,10 @@ public class PlaceCardEvent extends Event{
      * Place the card for the player
      * @param model the GameModel that interacts with this event
      * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
-     * @throws InvalidParameterException if the nickname is null
+     * @throws InvalidParameterException if any of the parameters null or out of bounds
      * @throws WrongInformationException if the player is not part of this match
      * @throws NotYourTurnException  if it's not the turn of the player
-     * @throws InvalidPlacementException  if a start card has already been placed for the player
+     * @throws InvalidPlacementException  if there is already a card in that position, or the requirements are not satisfied
      */
     @Override
     public void executeCommand(GameModel model) throws InvalidParameterException, InvalidPlacementException,

@@ -20,13 +20,6 @@ public abstract class Side {
     }
 
     /**
-     * @return the array of corners of this side
-     */
-    public Corner[] getCorners(){
-        return corners;
-    }
-
-    /**
      * @return the points of the side
      */
     public int getPoints() {
