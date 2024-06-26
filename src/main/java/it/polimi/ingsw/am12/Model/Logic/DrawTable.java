@@ -214,7 +214,7 @@ public class DrawTable {
     /**
      * Draw a card from the drawTable
      * @param index An int that specifies which card has to be drawn:
-     * - index <=0  : public gold 1;
+     * - index = 0  : public gold 1;
      * - index = 1  : public gold 2;
      * - index = 2  : public resource 1;
      * - index = 3  : public resource 2;

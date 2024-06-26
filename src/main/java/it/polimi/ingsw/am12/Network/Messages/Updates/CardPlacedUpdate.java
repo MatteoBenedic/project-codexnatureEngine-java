@@ -23,6 +23,7 @@ public class CardPlacedUpdate extends Update {
      * @param side     the side, True=front; False=back
      * @param points   the points given by the action
      * @param state    the state of the game (DRAWING)
+     * @param coordinate the coordinates where the card is placed
      */
     public CardPlacedUpdate(String nickname, int index, Boolean side, int points, State state, Coordinate coordinate) {
         this.nickname = nickname;

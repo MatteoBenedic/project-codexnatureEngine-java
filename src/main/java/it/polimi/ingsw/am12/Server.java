@@ -134,7 +134,7 @@ public class Server extends UnicastRemoteObject implements ServerStub {
      * @param nickname   A String that identifies the player who wants to create the match
      * @throws RemoteException               if remote communication with the RMI registry failed
      * @throws DuplicateNicknameException    if there's already a player with that nickname
-     * @throws WrongNumberOfPlayersException if numPlayers < 2 or numPlayers > 4
+     * @throws WrongNumberOfPlayersException if numPlayers is less than 2 or more than 4
      * @throws DuplicateMatchException       if there's already a match with that name
      * @throws IllegalStateException         if the method has been invoked at an illegal or inappropriate time.
      * @throws InvalidParameterException     if the nickname is null

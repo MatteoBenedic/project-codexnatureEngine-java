@@ -33,7 +33,7 @@ public class GameModel{
      * Class constructor specifying numPlayers
      * @param numPlayers  An int that represents the number of players that
      *                    is required in order to start the match (min 2, max 4)
-     * @throws WrongNumberOfPlayersException If numPlayers < 2 or numPlayers > 4
+     * @throws WrongNumberOfPlayersException If numPlayers less than 2 or more than 4
      */
     public GameModel(int numPlayers) throws WrongNumberOfPlayersException {
         if(numPlayers >= MIN_NUMBER_OF_PLAYER && numPlayers <=MAX_NUMBER_OF_PLAYER)
@@ -442,7 +442,7 @@ public class GameModel{
      *              - index = 4  : hidden gold;
      *              - index = 5  : hidden resource;
      * @throws IllegalStateException if the method has been invoked at an illegal or inappropriate time.
-     * @throws InvalidParameterException if the nickname is null, or index<0 or index>5
+     * @throws InvalidParameterException if the nickname is null, or index lower than 0 or higher than 5
      * @throws WrongInformationException if the player is not part of this match
      * @throws NotYourTurnException if it's not the turn of the player
      * @throws EmptyDeckException if the selected deck is empty.

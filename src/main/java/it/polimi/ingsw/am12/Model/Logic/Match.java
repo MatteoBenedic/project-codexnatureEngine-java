@@ -31,7 +31,7 @@ public class Match {
      * Class constructor specifying numPlayers
      * @param numPlayers  An int that represents the number of players that
      *                    is required in order to start the match.
-     *                    If numPlayers < 0, creates a Match with 0 players.
+     *                    If numPlayers is negative, creates a Match with 0 players.
      */
     public Match(int numPlayers) {
         this.numPlayers = Math.max(numPlayers, 0);
@@ -409,8 +409,8 @@ public class Match {
     /**
      * Pass the turn to the next player.
      * @return an int:
-     *  if the return value is <=2, it's the number of remaining rounds.
-     *  if the return value is > 2, it means that the match has not reached its final stage yet.
+     *  if the return value is lower or equals 2, it's the number of remaining rounds.
+     *  if the return value is higher than 2, it means that the match has not reached its final stage yet.
      */
     public int nextTurn() {
         if(checkEndGameCondition()) {

@@ -18,8 +18,8 @@ public class Controller implements EventListener {
     /**
      * Class constructor
      * @param numPlayers the number of players of the game associated to this instance of Controller
-     *                   (requires 2 <= numPlayers <= 4)
-     * @throws WrongNumberOfPlayersException if numPlayers < 2 or numPlayers > 4.
+     *                   (requires numPlayers between 2 and 4)
+     * @throws WrongNumberOfPlayersException if numPlayers is less than 2 or more than 4.
      */
     public Controller(int numPlayers) throws WrongNumberOfPlayersException {
         model = new GameModel(numPlayers);

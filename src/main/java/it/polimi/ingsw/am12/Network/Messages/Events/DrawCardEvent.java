@@ -35,7 +35,7 @@ public class DrawCardEvent extends Event{
     /**
      * Draw a card for the player
      * @param model the GameModel that interacts with this event
-     * @throws InvalidParameterException if the nickname is null, or index<0 or index>5
+     * @throws InvalidParameterException if the nickname is null, or index lower than 0 or higher than 5
      * @throws EmptyDeckException if the selected deck is empty.
      * @throws NotYourTurnException if it's not the turn of the player
      * @throws WrongInformationException if the player is not part of this match
