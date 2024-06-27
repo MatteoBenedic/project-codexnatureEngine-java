@@ -1,0 +1,1300 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class AppLauncher {
+  + main(String[]): void
+}
+class Assets {
+  + getFileName(int, boolean): String
+  + getResourceBack(CardColour): String
+  + getGoldBack(CardColour): String
+}
+class CLI {
+  - hand: CLIDrawBufferHand
+  - playingGrids: HashMap<String, CLIDrawBufferGrid>
+  - objectives: CLIObjectivesBuffer
+  - drawtable: CLIDrawBufferTable
+  - intermediateClassification: CLIClassificationBuffer
+  - inizializeUserActions(): void
+  + enableCommand(): void
+  + propertyChange(PropertyChange): void
+  + disableCommand(): void
+  - readUserInput(): void
+  + addPlayer(String): void
+  + printObjectiveCard(int): void
+   drawtable: CLIDrawBufferTable
+   nicknameOnUserActions: String
+   nickname: String
+   playingGrids: HashMap<String, CLIDrawBufferGrid>
+   hand: CLIDrawBufferHand
+   intermediateClassification: CLIClassificationBuffer
+   objectives: CLIObjectivesBuffer
+}
+class CLIClassificationBuffer {
+  + insertPlayer(String): void
+  + setColour(String, String): void
+  + setPoints(String, int): void
+  + printBuffer(): void
+}
+class CLIClassificationObject {
+  - points: int
+  - colour: ColourCLI
+  - nickname: String
+   colour: ColourCLI
+   points: int
+   nickname: String
+}
+interface CLIDrawBuffer << interface >> {
+  + extractCardfromIndex(int, boolean): List<String>
+  + printBuffer(): void
+}
+class CLIDrawBufferGrid {
+  - addLinesInBuffer(Coordinate): void
+  - redefineBuffer(Coordinate): void
+  - shiftBufferRight(): void
+  - updateLengthStrings(): void
+  + insertCardInBuffer(int, boolean, Coordinate): void
+  - drawNewCard(int, boolean, Coordinate): void
+  + printBuffer(): void
+  - shiftBufferDown(): void
+  + switchAlternativeVisualization(): void
+  - drawNewCardinAlternativeBuffer(List<String>, Coordinate): void
+  + extractCardfromIndex(int, boolean): List<String>
+}
+class CLIDrawBufferHand {
+  + extractCardfromIndex(int, boolean): List<String>
+  + insertCardsInBuffer(List<Integer>): void
+  + printBuffer(): void
+  + flipCard(int): void
+  - extractRepresentation(): void
+   buffer: List<List<String>>
+}
+class CLIDrawBufferTable {
+  - replaceSecondGold(List<String>): void
+  - replaceFirstGold(List<String>): void
+  - replaceResourceDeck(List<String>): void
+  + extractCardfromColour(CardColour): List<String>
+  - replaceSecondResource(List<String>): void
+  + insertCardInDeck(int, CardColour): void
+  + extractCardfromIndex(int, boolean): List<String>
+  - replaceGoldDeck(List<String>): void
+  + insertCardInBuffer(int, int): void
+  - replaceFirstResource(List<String>): void
+  + printBuffer(): void
+}
+class CLIObjectivesBuffer {
+  + extractCardfromIndex(int, boolean): List<String>
+  + printBuffer(): void
+   secretObjective: int
+   publicObjectives: int
+}
+enum CLIState << enumeration >> {
+  + values(): CLIState[]
+  + valueOf(String): CLIState
+}
+enum CardColour << enumeration >> {
+  + values(): CardColour[]
+  + valueOf(String): CardColour
+}
+class CardDrawnUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class CardPlacedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class CardsDistributedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class ChatEvent {
+  + executeCommand(GameModel): void
+}
+class ChatUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class CliCard {
+  ~ index: int
+  + getColouredRep(boolean): List<String>
+  + defineColouredRep(): void
+   index: int
+}
+class CliObjCard {
+  ~ description: String
+  ~ index: int
+   index: int
+   description: String
+}
+class ClientCard {
+  - coordinates: Coordinate
+  - side: boolean
+  - index: int
+   coordinates: Coordinate
+   index: int
+   side: boolean
+}
+class ClientController {
+  - pingTimer: Timer
+  - pongTimeoutTimer: Timer
+  # pingServer(): void
+  + sendMessage(Message): void
+  + catchException(Exception): void
+  + startPingPong(): void
+  - schedulePongTimeout(): void
+  + addViewModelListener(UserInterface): void
+  # closeConnection(): void
+  + resetPongTimeoutTimer(): void
+  + invokePongRMI(): void
+  + connectionLostHandler(): void
+  + catchMessage(Update): void
+   pongTimeoutTimer: Timer
+   virtualView: String
+   pingTimer: Timer
+}
+class ClientControllerRMI {
+  + invokePongRMI(): void
+  # closeConnection(): void
+  + sendMessage(Message): void
+  # pingServer(): void
+   virtualView: String
+}
+class ClientControllerSocket {
+  # pingServer(): void
+  # closeConnection(): void
+  + sendMessage(Message): void
+}
+class ClientMessage
+class ClientSideSocketHandler {
+  + send(Object): void
+  + closeConnection(): void
+  + run(): void
+  - waitForUpdate(): void
+  + pingMessageToServer(): void
+}
+interface ClientStub << interface >> {
+  + catchMessage(Update): void
+  + invokePongRMI(): void
+}
+class CloseMatchConnectionMessage {
+  + sendRMI(ClientStub, ServerStub, VVStub, String): void
+}
+enum ColourCLI << enumeration >> {
+  + values(): ColourCLI[]
+  + valueOf(String): ColourCLI
+  + toString(): String
+   colour: String
+}
+class ColourSelectedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class ColouredBack {
+  - center: Element
+   center: List<Element>
+}
+enum CommandInstruction << enumeration >> {
+  - instruction: String
+  - numParams: int
+  + valueOf(String): CommandInstruction
+  + values(): CommandInstruction[]
+   instruction: String
+   numParams: int
+}
+enum Condition << enumeration >> {
+  - name: Element
+  + values(): Condition[]
+  + valueOf(String): Condition
+   name: Element
+}
+class Controller {
+  - model: GameModel
+  + actionPerformed(Event): void
+  + addView(VirtualView): void
+  + closeModel(): void
+   model: GameModel
+}
+class ControllerCreateOrJoinMatch {
+  + onGetLobbiesClick(): void
+  + onCreateMatchClick(): void
+  - resetContent(): void
+  + onJoinMatchClick(): void
+}
+class ControllerGUI {
+  # clientController: ClientController
+  + closeErrorMessage(): void
+   clientController: ClientController
+}
+class ControllerLobby {
+  + onStartMatchClick(): void
+}
+class ControllerMatch
+class ControllerNickname {
+  + onConfirmClick(): void
+}
+class Coordinate {
+  - x: int
+  - y: int
+   x: int
+   y: int
+}
+class CoordinateSubmatrix {
+  ~ colour: CardColour
+  ~ x: int
+  ~ y: int
+   colour: CardColour
+   x: int
+   y: int
+}
+class Corner {
+   element: Element
+}
+class CreateMatchMessage {
+  - matchName: String
+  - numPlayers: int
+  + sendRMI(ClientStub, ServerStub, VVStub, String): void
+   matchName: String
+   numPlayers: int
+}
+class DistributeCardsEvent {
+  + executeCommand(GameModel): void
+}
+class DrawCardEvent {
+  + executeCommand(GameModel): void
+}
+class DrawTable {
+  + drawSecondGold(): GameCard
+  + drawCard(int): GameCard
+  + initializeDecks(): void
+  + drawHiddenGold(): GameCard
+  + drawHiddenResource(): GameCard
+  + drawFirstGold(): GameCard
+  + drawSecondResource(): GameCard
+  + drawFirstResource(): GameCard
+   colorTopGoldDeck: CardColour
+   publicCards: GameCard[]
+   colorTopResDeck: CardColour
+}
+class DuplicateMatchException
+class DuplicateNicknameException
+enum Element << enumeration >> {
+  + values(): Element[]
+  + valueOf(String): Element
+}
+class ElementsObjectiveCard {
+  + calculatePoints(PlayingGrid): int
+  - checkElements(PlayingGrid): int
+}
+class EmptyDeckException
+class EndGameEvent {
+  + executeCommand(GameModel): void
+}
+class Event {
+  + sendRMI(ClientStub, ServerStub, VVStub, String): void
+  + executeCommand(GameModel): void
+}
+interface EventListener << interface >> {
+  + actionPerformed(Event): void
+}
+class GUI {
+  - cardSide: boolean
+  - controller: ClientController
+  - stage: Stage
+  - nickname: String
+  - selectedCoordinates: Coordinate
+  - selectedCardInHand: int
+  + stopGui(): void
+  - thisGUI(): GUI
+  + setSelectedCoordinates(int, int): void
+  + propertyChange(PropertyChange): void
+  + switchCardSide(): void
+   controller: ClientController
+   cardSide: boolean
+   nickname: String
+   selectedCoordinates: Coordinate
+   stage: Stage
+   selectedCardInHand: int
+}
+class GameCard {
+  - colour: CardColour
+  - index: int
+  - validSide: Side
+  - coordinates: Coordinate
+  + getResourceCorner(int): Element
+  - setListElements(List<Element>, int[]): void
+  + setDefaultSide(): void
+  + setCoordinates(int, int): void
+  + isThereCorner(int): Boolean
+  + getCompletedObjFlag(int): boolean
+   validSide: Side
+   requirements: int[]
+   index: int
+   points: int
+   colour: CardColour
+   completedObjFlag: int
+   resources: int[]
+   coordinates: Coordinate
+   condition: Condition
+   whichSide: boolean
+}
+class GameEndedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class GameModel {
+  - listeners: List<UpdateListener>
+  - lobby: List<String>
+  - state: State
+  + placeStartCard(String, boolean): void
+  + addPlayerToLobby(String, VirtualView): void
+  - notifyPrivateUpdate(Update, List<String>): void
+  - notifyUpdate(Update): void
+  + distributeCards(): void
+  + addPlayersToMatch(): void
+  + forceEndGame(): void
+  - nextTurn(): int
+  + placeCard(String, int, boolean, int, int): void
+  + setPlayerColour(String, PlayerColour): void
+  + addListener(UpdateListener): void
+  + removeListener(UpdateListener): int
+  + getPlaceablePositions(String, int, int): void
+  + drawCard(String, int): void
+  + endGame(): void
+  + manageChat(String, String, boolean, String): void
+  + setPlayerObjective(String, boolean): void
+   lobby: List<String>
+   listeners: List<UpdateListener>
+   state: State
+}
+class GameStoppedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class GetPlaceablePositionsEvent {
+  + executeCommand(GameModel): void
+}
+class GoldFront {
+  - condition: Condition
+  - requirements: List<Element>
+   requirements: List<Element>
+   condition: Condition
+   center: List<Element>
+}
+class IllegalRequirementsException
+class IllegalStateException
+class InvalidParameterException
+class InvalidPlacementException
+class InvalidSearchPositionException
+class JSONDeserializerWithClass<T> {
+  + deserialize(JsonElement, Type, JsonDeserializationContext): T
+}
+class JSONParser {
+  + parseResourceCards(): List<GameCard>
+  + parseGoldCards(): List<GameCard>
+  + parseStartCards(): List<GameCard>
+  + parseCLIObjectiveCards(): List<CliObjCard>
+  + parseGameCards(String): List<GameCard>
+  + parseCLICards(): List<CliCard>
+  + parseObjectiveCards(): List<ObjectiveCard>
+}
+class JoinMatchEvent {
+  + executeCommand(GameModel): void
+}
+class JoinMatchMessage {
+  - matchName: String
+  + sendRMI(ClientStub, ServerStub, VVStub, String): void
+   matchName: String
+}
+class LaunchGUI {
+  + start(Stage): void
+}
+class LobbiesNonCompletedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class LobbiesRequestMessage {
+  + sendRMI(ClientStub, ServerStub, VVStub, String): void
+}
+class Match {
+  - numPlayers: int
+  - playerOrder: List<Player>
+  - playerTurn: int
+  + nextTurn(): int
+  + setPlayerColour(String, PlayerColour): void
+  + getCardsInHand(String): List<Integer>
+  + getLastPlacedCardSide(String): Boolean
+  + assignStartCards(): void
+  + getPlayerPoints(String): Integer
+  + placeStartCard(String, Boolean): void
+  + getLastPlacedCard(String): int
+  + checkEndGameCondition(): boolean
+  + orderByPoints(Map<String, Integer>): int
+  + addPlayer(String): void
+  + isTurn(String): boolean
+  + getPlayerColour(String): PlayerColour
+  + getObjectivesToChoose(String): int[]
+  + randomizePlayerOrder(): void
+  + drawCard(int): void
+  + calculateEndgamePoints(): Map<String, Integer>
+  + getPlaceablePositions(int, int): List<Coordinate>
+  + createDecks(): void
+  + placeCard(int, boolean, int, int): int
+  + drawObjective(): ObjectiveCard
+  + setPlayerObjective(String, boolean): void
+  + getSecretObjective(String): Integer
+  + distributeCards(): void
+   publicObjectives: int[]
+   publicCards: int[]
+   playerNames: List<String>
+   playerOrder: List<Player>
+   playerTurn: String
+   numPlayers: int
+   deckColours: CardColour[]
+}
+class MatchStartedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+interface Message << interface >> {
+  + sendRMI(ClientStub, ServerStub, VVStub, String): void
+}
+class NicknameEstablishedUpdate {
+  - nickname: String
+  + executeUpdate(ViewModelUpdater): void
+   nickname: String
+}
+class NicknameMessage {
+  - client: ClientStub
+  - nickname: String
+  + sendRMI(ClientStub, ServerStub, VVStub, String): void
+   client: ClientStub
+   nickname: String
+}
+class NoMatchException
+class NoNicknameException
+class NotGoldFront {
+   center: List<Element>
+}
+class NotYourTurnException
+class ObjectiveCard {
+  - objIndex: int
+  - points: int
+  + calculateDeltas(): void
+  + calculatePoints(PlayingGrid): int
+   objIndex: int
+   points: int
+}
+class ObjectiveSelectedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class PatternObjectiveCard {
+  + getCoordReqPattern(int): CoordinateSubmatrix
+  + calculateDeltas(): void
+  + calculatePoints(PlayingGrid): int
+  - checkPatterns(PlayingGrid): int
+}
+class PlaceCardEvent {
+  + executeCommand(GameModel): void
+}
+class PlaceStartCardEvent {
+  + executeCommand(GameModel): void
+}
+class PlaceablePositionsReturnedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class Player {
+  - points: int
+  - cardsInHand: List<GameCard>
+  - nickname: String
+  - colour: PlayerColour
+  - playingGrid: PlayingGrid
+  - objectiveCard: ObjectiveCard
+  + getPlaceablePositions(int, int): List<Coordinate>
+  + addCardInHand(GameCard): void
+  + placePlayingGrid(int, int, GameCard): int
+  + calculateObjPoints(): int
+  + removeCardFromHand(GameCard): void
+  + placeStartCard(int, int, GameCard): void
+  + calculateObjPoints(ObjectiveCard): int
+   cardsInHand: List<GameCard>
+   colour: PlayerColour
+   points: int
+   playingGrid: PlayingGrid
+   nickname: String
+   objectiveCard: ObjectiveCard
+   objectiveCards: ObjectiveCard
+}
+enum PlayerColour << enumeration >> {
+  - description: String
+  + values(): PlayerColour[]
+  + valueOf(String): PlayerColour
+   description: String
+}
+class PlayersAddedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class PlayingGrid {
+  - plcards: GameCard[][]
+  - numElements: int[]
+  - lastPlacedCard: GameCard
+  - checkBoundaries(int, int): boolean
+  + getNumElements(Element): int
+  + checkColourMatch(int, int, PatternObjectiveCard, int): boolean
+  + CheckCardPlaceability(GameCard): boolean
+  + placeStartCard(int, int, GameCard): void
+  - checkAroundPosition(int, int, int): boolean
+  + getPlaceablePosition(int, int): List<Coordinate>
+  + ComputePoints(): int
+  + cellIsEmpty(int, int): boolean
+  + cardWasAlreadyUsedForThisObjective(int, int, PatternObjectiveCard): boolean
+  - checkPositionCorner(int, int, List<Coordinate>): void
+  + markCardAsUsedForThisObjective(int, int, PatternObjectiveCard): void
+  + place(int, int, GameCard): int
+  - subtractElement(Element): void
+   plcards: GameCard[][]
+   numElements: int[]
+   lastPlacedCard: GameCard
+}
+class PointPosition {
+  + getPosition(int): Coordinate
+}
+class PropertyCardInHand {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+  - setCardInHandOnClick(HBox, ImageView, GUI): void
+}
+class PropertyCardPlaced {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+interface PropertyChange << interface >> {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyChatMessage {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+  - composeMessage(): String
+}
+class PropertyClassification {
+  + updateGUI(GUI): void
+  + updateCLI(CLI): void
+}
+class PropertyDeckColour {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyErrorMessage {
+  + updateGUI(GUI): void
+  + updateCLI(CLI): void
+}
+class PropertyGameStopped {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyLobbiesNonCompleted {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyNicknameSet {
+  + updateGUI(GUI): void
+  + updateCLI(CLI): void
+}
+class PropertyObjectivesToChoose {
+  + updateGUI(GUI): void
+  + updateCLI(CLI): void
+}
+class PropertyPlaceablePositions {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+  - highlightBorder(GridPane, int, int): void
+}
+class PropertyPlayerColour {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyPlayersAdded {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyPlayersInMatch {
+  + updateGUI(GUI): void
+  - createPlayingGridTab(String): Tab
+  + updateCLI(CLI): void
+}
+class PropertyPoints {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyPublicCard {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyPublicObjective {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyRemainingRounds {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertySecretObjective {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyStateChange {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+class PropertyTurnChange {
+  + updateGUI(GUI): void
+  + updateCLI(CLI): void
+}
+class PropertyYourTurn {
+  + updateCLI(CLI): void
+  + updateGUI(GUI): void
+}
+enum RequestInstruction << enumeration >> {
+  - numParams: int
+  - instruction: String
+  + valueOf(String): RequestInstruction
+  + values(): RequestInstruction[]
+   instruction: String
+   numParams: int
+}
+class SelectColourEvent {
+  + executeCommand(GameModel): void
+}
+class SelectObjectiveEvent {
+  + executeCommand(GameModel): void
+}
+class Server {
+  - registry: Registry
+  + getVirtuaView(String): VirtualView
+  + createMatch(String, int, String): void
+  + closeMatchForPlayer(String): void
+  + getIncompleteLobbies(String): void
+  - acceptClientsSocket(): void
+  + start(): void
+  - printNicknamesToMatch(): void
+  + setNickname(String, ClientStub, ServerSideSocketHandler): void
+  - startServerSocket(): void
+  + closeMatchForAllPlayers(String, String): void
+  + playerDisconnectionHandler(String): void
+  + getNicknamesInAMatch(String): List<String>
+  + joinMatch(String, String): void
+  - notifyMatchTermination(String): void
+  + getGameStateFromNickname(String): State
+   registry: Registry
+}
+class ServerSideSocketHandler {
+  + run(): void
+  + shutdown(): void
+  - handleMessage(Object): void
+  + sendMessage(Object): void
+  - closeConnection(): void
+}
+interface ServerStub << interface >> {
+  + createMatch(String, int, String): void
+  + closeMatchForPlayer(String): void
+  + getIncompleteLobbies(String): void
+  + joinMatch(String, String): void
+  + playerDisconnectionHandler(String): void
+  + setNickname(String, ClientStub, ServerSideSocketHandler): void
+}
+class Side {
+  # points: int
+  + getCorner(int): Corner
+   requirements: List<Element>
+   center: List<Element>
+   points: int
+   condition: Condition
+}
+class StartBack {
+  - center: List<Element>
+   center: List<Element>
+}
+class StartCardPlacedUpdate {
+  + executeUpdate(ViewModelUpdater): void
+}
+class StartMatchEvent {
+  + executeCommand(GameModel): void
+}
+enum State << enumeration >> {
+  + values(): State[]
+  + valueOf(String): State
+}
+class Update {
+  + executeUpdate(ViewModelUpdater): void
+  + sendRMI(ClientStub, ServerStub, VVStub, String): void
+}
+interface UpdateListener << interface >> {
+  + sendUpdate(Update): void
+   nickname: String
+}
+interface UserAction << interface >> {
+  + createMessage(String): Message
+   nickname: String
+}
+class UserCreateMatch {
+  - commandParametersSent(int, String): void
+  + createMessage(String): Message
+  - checkValidNumPlayers(int): boolean
+   nickname: String
+}
+class UserDistributeCards {
+  + createMessage(String): Message
+  - distributeCardsEventSent(): void
+   nickname: String
+}
+class UserDrawCard {
+  - nickname: String
+  - isAValidDeckIndex(int): boolean
+  + createMessage(String): Message
+  + commandParametersSent(int): void
+   nickname: String
+}
+class UserEndGame {
+  + gameEndedEventSent(): void
+  + createMessage(String): Message
+   nickname: String
+}
+class UserGetLobbies {
+  + createMessage(String): Message
+  - getLobbiesEventSent(): void
+   nickname: String
+}
+class UserGetPlaceablePositions {
+  - nickname: String
+  - checkCoordinatesWithinPlayingGridLimits(int, int): boolean
+  + createMessage(String): Message
+  + commandParametersSent(int, int): void
+   nickname: String
+}
+interface UserInterface << interface >> {
+  + propertyChange(PropertyChange): void
+   nickname: String
+}
+class UserJoinMatch {
+  - commandParametersSent(String): void
+  + createMessage(String): Message
+   nickname: String
+}
+class UserPlaceCard {
+  - nickname: String
+  + createMessage(String): Message
+  - checkCoordinatesWithinPlayingGridLimits(int, int): boolean
+  + commandParametersSent(int, String, int, int): void
+  - indexIsACardInHand(int): boolean
+   nickname: String
+}
+class UserPlaceStartCard {
+  - nickname: String
+  - commandParametersSent(String): void
+  + createMessage(String): Message
+   nickname: String
+}
+class UserPrivateChat {
+  - nickname: String
+  + createMessage(String): Message
+  - commandParametersSent(String): void
+   nickname: String
+}
+class UserPublicChat {
+  - nickname: String
+  + createMessage(String): Message
+  - commandParametersSent(): void
+   nickname: String
+}
+interface UserRequest << interface >> {
+  + showRequest(CLI): void
+   possibleParameter: int
+   nickname: String
+}
+class UserRequestDrawTable {
+  + showRequest(CLI): void
+   possibleParameter: int
+   nickname: String
+}
+class UserRequestFlipCard {
+  + showRequest(CLI): void
+   possibleParameter: int
+   nickname: String
+}
+class UserRequestHand {
+  ~ nickname: String
+  + showRequest(CLI): void
+   possibleParameter: int
+   nickname: String
+}
+class UserRequestHelp {
+  + showRequest(CLI): void
+   possibleParameter: int
+   nickname: String
+}
+class UserRequestObjectives {
+  + showRequest(CLI): void
+   possibleParameter: int
+   nickname: String
+}
+class UserRequestPlayingGrid {
+  ~ nickname: String
+  + showRequest(CLI): void
+   possibleParameter: int
+   nickname: String
+}
+class UserRequestSwitchVisualization {
+  ~ nickname: String
+  + showRequest(CLI): void
+   possibleParameter: int
+   nickname: String
+}
+class UserSelectColour {
+  - nickname: String
+  + createMessage(String): Message
+  + commandParametersSent(String): void
+   nickname: String
+}
+class UserSelectObjective {
+  - nickname: String
+  + createMessage(String): Message
+  - commandParametersSent(String): void
+   nickname: String
+}
+class UserStartMatch {
+  + createMessage(String): Message
+  - matchStartedEventSent(): void
+   nickname: String
+}
+class UserStopGame {
+  + createMessage(String): Message
+   nickname: String
+}
+interface VVStub << interface >> {
+  + performEvent(Event): void
+  + invokePingRMI(): void
+}
+class ViewModel {
+  - errorMessage: String
+  + cardsDistributedUpdate(Map<String, List<Integer>>, CardColour, CardColour, Map<String, int[]>, int[], String, State): void
+  + colourSelectedUpdate(String, PlayerColour, String, State): void
+  + gameStoppedUpdate(): void
+  + playersAddedUpdate(List<String>, State): void
+  + startCardPlacedUpdate(String, int, boolean, String, State): void
+  + objectiveSelectedUpdate(String, int, String, State): void
+  + gameEndedUpdate(int, LinkedHashMap<String, Integer>, State): void
+  + matchStartedUpdate(List<String>, String, State, Map<String, Integer>, CardColour, CardColour, int[]): void
+  + lobbiesNonCompletedUpdate(Map<String, Integer>): void
+  + cardPlacedUpdate(String, int, Boolean, int, State, Coordinate): void
+  + cardDrawnUpdate(String, int, int, int, CardColour, CardColour, String, int, State): void
+  + placeablePositionReturnedUpdate(String, List<Coordinate>): void
+  + chatUpdate(String, boolean, String, String): void
+  + addListener(UserInterface): void
+  + nicknameEstablishedUpdate(String): void
+  - notifyPropertyChange(PropertyChange): void
+   errorMessage: String
+   nickname: String
+}
+interface ViewModelUpdater << interface >> {
+  + gameStoppedUpdate(): void
+  + gameEndedUpdate(int, LinkedHashMap<String, Integer>, State): void
+  + startCardPlacedUpdate(String, int, boolean, String, State): void
+  + cardsDistributedUpdate(Map<String, List<Integer>>, CardColour, CardColour, Map<String, int[]>, int[], String, State): void
+  + placeablePositionReturnedUpdate(String, List<Coordinate>): void
+  + nicknameEstablishedUpdate(String): void
+  + objectiveSelectedUpdate(String, int, String, State): void
+  + cardPlacedUpdate(String, int, Boolean, int, State, Coordinate): void
+  + chatUpdate(String, boolean, String, String): void
+  + playersAddedUpdate(List<String>, State): void
+  + matchStartedUpdate(List<String>, String, State, Map<String, Integer>, CardColour, CardColour, int[]): void
+  + colourSelectedUpdate(String, PlayerColour, String, State): void
+  + cardDrawnUpdate(String, int, int, int, CardColour, CardColour, String, int, State): void
+  + lobbiesNonCompletedUpdate(Map<String, Integer>): void
+   errorMessage: String
+}
+class VirtualView {
+  - nickname: String
+  # answerPongRMI(): void
+  + sendUpdate(Update): void
+  + resetPingTimer(): void
+  + removeListener(): void
+  # shutdown(): void
+  + addListener(EventListener): void
+  + startPingTimer(): void
+  + performEvent(Event): void
+  + invokePingRMI(): void
+   nickname: String
+}
+class VirtualViewRMI {
+  + sendUpdate(Update): void
+  # shutdown(): void
+  # answerPongRMI(): void
+  + invokePingRMI(): void
+}
+class VirtualViewSocket {
+  # shutdown(): void
+  + sendUpdate(Update): void
+}
+class WrongInformationException
+class WrongNumberOfPlayersException
+
+AppLauncher                       -[#595959,dashed]->  CLI                              : "«create»"
+AppLauncher                       -[#595959,dashed]->  ClientControllerRMI              : "«create»"
+AppLauncher                       -[#595959,dashed]->  ClientControllerSocket           : "«create»"
+AppLauncher                       -[#595959,dashed]->  Server                           : "«create»"
+CLI                              "1" *-[#595959,plain]-> "intermediateClassification\n1" CLIClassificationBuffer          
+CLI                               -[#595959,dashed]->  CLIClassificationBuffer          : "«create»"
+CLI                              "1" *-[#595959,plain]-> "playingGrids\n*" CLIDrawBufferGrid                
+CLI                               -[#595959,dashed]->  CLIDrawBufferGrid                : "«create»"
+CLI                              "1" *-[#595959,plain]-> "hand\n1" CLIDrawBufferHand                
+CLI                               -[#595959,dashed]->  CLIDrawBufferHand                : "«create»"
+CLI                               -[#595959,dashed]->  CLIDrawBufferTable               : "«create»"
+CLI                              "1" *-[#595959,plain]-> "drawtable\n1" CLIDrawBufferTable               
+CLI                               -[#595959,dashed]->  CLIObjectivesBuffer              : "«create»"
+CLI                              "1" *-[#595959,plain]-> "objectives\n1" CLIObjectivesBuffer              
+CLI                              "1" *-[#595959,plain]-> "currentState\n1" CLIState                         
+CLI                              "1" *-[#595959,plain]-> "repCards\n*" CliCard                          
+CLI                              "1" *-[#595959,plain]-> "objCards\n*" CliObjCard                       
+CLI                              "1" *-[#595959,plain]-> "controller\n1" ClientController                 
+CLI                               -[#595959,dashed]->  CloseMatchConnectionMessage      : "«create»"
+CLI                              "1" *-[#595959,plain]-> "useractions\n*" CommandInstruction               
+CLI                               -[#595959,dashed]->  JSONParser                       : "«create»"
+CLI                               -[#595959,dashed]->  NicknameMessage                  : "«create»"
+CLI                              "1" *-[#595959,plain]-> "userrequests\n*" RequestInstruction               
+CLI                              "1" *-[#595959,plain]-> "useractions\n*" UserAction                       
+CLI                               -[#595959,dashed]->  UserCreateMatch                  : "«create»"
+CLI                               -[#595959,dashed]->  UserDistributeCards              : "«create»"
+CLI                               -[#595959,dashed]->  UserDrawCard                     : "«create»"
+CLI                               -[#595959,dashed]->  UserEndGame                      : "«create»"
+CLI                               -[#595959,dashed]->  UserGetLobbies                   : "«create»"
+CLI                               -[#595959,dashed]->  UserGetPlaceablePositions        : "«create»"
+CLI                               -[#008200,dashed]-^  UserInterface                    
+CLI                               -[#595959,dashed]->  UserJoinMatch                    : "«create»"
+CLI                               -[#595959,dashed]->  UserPlaceCard                    : "«create»"
+CLI                               -[#595959,dashed]->  UserPlaceStartCard               : "«create»"
+CLI                               -[#595959,dashed]->  UserPrivateChat                  : "«create»"
+CLI                               -[#595959,dashed]->  UserPublicChat                   : "«create»"
+CLI                              "1" *-[#595959,plain]-> "userrequests\n*" UserRequest                      
+CLI                               -[#595959,dashed]->  UserRequestDrawTable             : "«create»"
+CLI                               -[#595959,dashed]->  UserRequestFlipCard              : "«create»"
+CLI                               -[#595959,dashed]->  UserRequestHand                  : "«create»"
+CLI                               -[#595959,dashed]->  UserRequestHelp                  : "«create»"
+CLI                               -[#595959,dashed]->  UserRequestObjectives            : "«create»"
+CLI                               -[#595959,dashed]->  UserRequestPlayingGrid           : "«create»"
+CLI                               -[#595959,dashed]->  UserRequestSwitchVisualization   : "«create»"
+CLI                               -[#595959,dashed]->  UserSelectColour                 : "«create»"
+CLI                               -[#595959,dashed]->  UserSelectObjective              : "«create»"
+CLI                               -[#595959,dashed]->  UserStartMatch                   : "«create»"
+CLI                               -[#595959,dashed]->  UserStopGame                     : "«create»"
+CLIClassificationBuffer           -[#595959,dashed]->  CLIClassificationObject          : "«create»"
+CLIClassificationBuffer          "1" *-[#595959,plain]-> "players\n*" CLIClassificationObject          
+CLIClassificationObject          "1" *-[#595959,plain]-> "colour\n1" ColourCLI                        
+CLIDrawBufferGrid                 -[#008200,dashed]-^  CLIDrawBuffer                    
+CLIDrawBufferGrid                "1" *-[#595959,plain]-> "repCards\n*" CliCard                          
+CLIDrawBufferGrid                "1" *-[#595959,plain]-> "topleftPosition\n1" Coordinate                       
+CLIDrawBufferHand                 -[#008200,dashed]-^  CLIDrawBuffer                    
+CLIDrawBufferHand                "1" *-[#595959,plain]-> "repCards\n*" CliCard                          
+CLIDrawBufferTable                -[#008200,dashed]-^  CLIDrawBuffer                    
+CLIDrawBufferTable               "1" *-[#595959,plain]-> "repCards\n*" CliCard                          
+CLIObjectivesBuffer               -[#008200,dashed]-^  CLIDrawBuffer                    
+CLIObjectivesBuffer              "1" *-[#595959,plain]-> "objCards\n*" CliObjCard                       
+CardDrawnUpdate                  "1" *-[#595959,plain]-> "newGoldDeckColour\n1" CardColour                       
+CardDrawnUpdate                  "1" *-[#595959,plain]-> "state\n1" State                            
+CardDrawnUpdate                   -[#000082,plain]-^  Update                           
+CardPlacedUpdate                 "1" *-[#595959,plain]-> "coordinates\n1" Coordinate                       
+CardPlacedUpdate                 "1" *-[#595959,plain]-> "state\n1" State                            
+CardPlacedUpdate                  -[#000082,plain]-^  Update                           
+CardsDistributedUpdate           "1" *-[#595959,plain]-> "newGoldDeckColour\n1" CardColour                       
+CardsDistributedUpdate           "1" *-[#595959,plain]-> "state\n1" State                            
+CardsDistributedUpdate            -[#000082,plain]-^  Update                           
+ChatEvent                         -[#000082,plain]-^  Event                            
+ChatUpdate                        -[#000082,plain]-^  Update                           
+CliCard                          "1" *-[#595959,plain]-> "colour\n1" ColourCLI                        
+ClientCard                       "1" *-[#595959,plain]-> "coordinates\n1" Coordinate                       
+ClientController                  -[#008200,dashed]-^  ClientStub                       
+ClientController                  -[#595959,dashed]->  ViewModel                        : "«create»"
+ClientController                 "1" *-[#595959,plain]-> "viewModel\n1" ViewModel                        
+ClientControllerRMI               -[#000082,plain]-^  ClientController                 
+ClientControllerRMI              "1" *-[#595959,plain]-> "server\n1" ServerStub                       
+ClientControllerRMI              "1" *-[#595959,plain]-> "vv\n1" VVStub                           
+ClientControllerSocket            -[#000082,plain]-^  ClientController                 
+ClientControllerSocket           "1" *-[#595959,plain]-> "socketHandler\n1" ClientSideSocketHandler          
+ClientControllerSocket            -[#595959,dashed]->  ClientSideSocketHandler          : "«create»"
+ClientSideSocketHandler          "1" *-[#595959,plain]-> "controller\n1" ClientControllerSocket           
+CloseMatchConnectionMessage       -[#008200,dashed]-^  Message                          
+ColourSelectedUpdate             "1" *-[#595959,plain]-> "colour\n1" PlayerColour                     
+ColourSelectedUpdate             "1" *-[#595959,plain]-> "state\n1" State                            
+ColourSelectedUpdate              -[#000082,plain]-^  Update                           
+ColouredBack                     "1" *-[#595959,plain]-> "center\n1" Element                          
+ColouredBack                      -[#000082,plain]-^  Side                             
+Condition                        "1" *-[#595959,plain]-> "name\n1" Element                          
+Controller                        -[#008200,dashed]-^  EventListener                    
+Controller                        -[#595959,dashed]->  GameModel                        : "«create»"
+Controller                       "1" *-[#595959,plain]-> "model\n1" GameModel                        
+ControllerCreateOrJoinMatch       -[#000082,plain]-^  ControllerGUI                    
+ControllerCreateOrJoinMatch       -[#595959,dashed]->  CreateMatchMessage               : "«create»"
+ControllerCreateOrJoinMatch       -[#595959,dashed]->  JoinMatchMessage                 : "«create»"
+ControllerCreateOrJoinMatch       -[#595959,dashed]->  LobbiesRequestMessage            : "«create»"
+ControllerGUI                    "1" *-[#595959,plain]-> "clientController\n1" ClientController                 
+ControllerLobby                   -[#000082,plain]-^  ControllerGUI                    
+ControllerLobby                   -[#595959,dashed]->  StartMatchEvent                  : "«create»"
+ControllerMatch                   -[#000082,plain]-^  ControllerGUI                    
+ControllerNickname                -[#000082,plain]-^  ControllerGUI                    
+ControllerNickname                -[#595959,dashed]->  NicknameMessage                  : "«create»"
+CoordinateSubmatrix              "1" *-[#595959,plain]-> "colour\n1" CardColour                       
+CoordinateSubmatrix               -[#595959,dashed]->  IllegalRequirementsException     : "«create»"
+Corner                           "1" *-[#595959,plain]-> "elem\n1" Element                          
+CreateMatchMessage                -[#008200,dashed]-^  Message                          
+DistributeCardsEvent              -[#000082,plain]-^  Event                            
+DrawCardEvent                     -[#000082,plain]-^  Event                            
+DrawTable                         -[#595959,dashed]->  EmptyDeckException               : "«create»"
+DrawTable                        "1" *-[#595959,plain]-> "goldDeck\n*" GameCard                         
+DrawTable                         -[#595959,dashed]->  GameCard                         : "«create»"
+DrawTable                         -[#595959,dashed]->  JSONParser                       : "«create»"
+ElementsObjectiveCard             -[#595959,dashed]->  IllegalRequirementsException     : "«create»"
+ElementsObjectiveCard             -[#000082,plain]-^  ObjectiveCard                    
+EndGameEvent                      -[#000082,plain]-^  Event                            
+Event                             -[#008200,dashed]-^  Message                          
+GUI                              "1" *-[#595959,plain]-> "controller\n1" ClientController                 
+GUI                               -[#595959,dashed]->  Coordinate                       : "«create»"
+GUI                              "1" *-[#595959,plain]-> "selectedCoordinates\n1" Coordinate                       
+GUI                               -[#008200,dashed]-^  UserInterface                    
+GameCard                         "1" *-[#595959,plain]-> "colour\n1" CardColour                       
+GameCard                          -[#595959,dashed]->  Coordinate                       : "«create»"
+GameCard                         "1" *-[#595959,plain]-> "coordinates\n1" Coordinate                       
+GameCard                         "1" *-[#595959,plain]-> "front\n1" Side                             
+GameEndedUpdate                  "1" *-[#595959,plain]-> "state\n1" State                            
+GameEndedUpdate                   -[#000082,plain]-^  Update                           
+GameModel                         -[#595959,dashed]->  CardDrawnUpdate                  : "«create»"
+GameModel                         -[#595959,dashed]->  CardPlacedUpdate                 : "«create»"
+GameModel                         -[#595959,dashed]->  CardsDistributedUpdate           : "«create»"
+GameModel                         -[#595959,dashed]->  ChatUpdate                       : "«create»"
+GameModel                         -[#595959,dashed]->  ColourSelectedUpdate             : "«create»"
+GameModel                         -[#595959,dashed]->  Coordinate                       : "«create»"
+GameModel                         -[#595959,dashed]->  DuplicateNicknameException       : "«create»"
+GameModel                         -[#595959,dashed]->  GameEndedUpdate                  : "«create»"
+GameModel                         -[#595959,dashed]->  GameStoppedUpdate                : "«create»"
+GameModel                         -[#595959,dashed]->  IllegalStateException            : "«create»"
+GameModel                         -[#595959,dashed]->  InvalidParameterException        : "«create»"
+GameModel                         -[#595959,dashed]->  InvalidSearchPositionException   : "«create»"
+GameModel                         -[#595959,dashed]->  Match                            : "«create»"
+GameModel                        "1" *-[#595959,plain]-> "match\n1" Match                            
+GameModel                         -[#595959,dashed]->  MatchStartedUpdate               : "«create»"
+GameModel                         -[#595959,dashed]->  NotYourTurnException             : "«create»"
+GameModel                         -[#595959,dashed]->  ObjectiveSelectedUpdate          : "«create»"
+GameModel                         -[#595959,dashed]->  PlaceablePositionsReturnedUpdate : "«create»"
+GameModel                        "1" *-[#595959,plain]-> "availableColours\n*" PlayerColour                     
+GameModel                         -[#595959,dashed]->  PlayersAddedUpdate               : "«create»"
+GameModel                         -[#595959,dashed]->  StartCardPlacedUpdate            : "«create»"
+GameModel                        "1" *-[#595959,plain]-> "state\n1" State                            
+GameModel                        "1" *-[#595959,plain]-> "listeners\n*" UpdateListener                   
+GameModel                         -[#595959,dashed]->  WrongInformationException        : "«create»"
+GameModel                         -[#595959,dashed]->  WrongNumberOfPlayersException    : "«create»"
+GameStoppedUpdate                 -[#000082,plain]-^  Update                           
+GetPlaceablePositionsEvent        -[#000082,plain]-^  Event                            
+GoldFront                        "1" *-[#595959,plain]-> "condition\n1" Condition                        
+GoldFront                        "1" *-[#595959,plain]-> "requirements\n*" Element                          
+GoldFront                         -[#000082,plain]-^  Side                             
+JSONParser                        -[#595959,dashed]->  JSONDeserializerWithClass        : "«create»"
+JoinMatchEvent                    -[#000082,plain]-^  Event                            
+JoinMatchEvent                   "1" *-[#595959,plain]-> "view\n1" VirtualView                      
+JoinMatchMessage                  -[#008200,dashed]-^  Message                          
+LaunchGUI                         -[#595959,dashed]->  ClientControllerRMI              : "«create»"
+LaunchGUI                         -[#595959,dashed]->  ClientControllerSocket           : "«create»"
+LaunchGUI                         -[#595959,dashed]->  CloseMatchConnectionMessage      : "«create»"
+LaunchGUI                         -[#595959,dashed]->  GUI                              : "«create»"
+LobbiesNonCompletedUpdate         -[#000082,plain]-^  Update                           
+LobbiesRequestMessage             -[#008200,dashed]-^  Message                          
+Match                             -[#595959,dashed]->  CardColour                       : "«create»"
+Match                            "1" *-[#595959,plain]-> "drawTable\n1" DrawTable                        
+Match                             -[#595959,dashed]->  DrawTable                        : "«create»"
+Match                             -[#595959,dashed]->  EmptyDeckException               : "«create»"
+Match                            "1" *-[#595959,plain]-> "startDeck\n*" GameCard                         
+Match                             -[#595959,dashed]->  JSONParser                       : "«create»"
+Match                            "1" *-[#595959,plain]-> "publicObj\n*" ObjectiveCard                    
+Match                             -[#595959,dashed]->  ObjectiveCard                    : "«create»"
+Match                            "1" *-[#595959,plain]-> "playerOrder\n*" Player                           
+Match                             -[#595959,dashed]->  Player                           : "«create»"
+Match                             -[#595959,dashed]->  WrongInformationException        : "«create»"
+MatchStartedUpdate               "1" *-[#595959,plain]-> "goldDeckColour\n1" CardColour                       
+MatchStartedUpdate               "1" *-[#595959,plain]-> "state\n1" State                            
+MatchStartedUpdate                -[#000082,plain]-^  Update                           
+NicknameEstablishedUpdate         -[#000082,plain]-^  Update                           
+NicknameMessage                  "1" *-[#595959,plain]-> "client\n1" ClientStub                       
+NicknameMessage                   -[#008200,dashed]-^  Message                          
+NotGoldFront                      -[#000082,plain]-^  Side                             
+ObjectiveSelectedUpdate          "1" *-[#595959,plain]-> "state\n1" State                            
+ObjectiveSelectedUpdate           -[#000082,plain]-^  Update                           
+PatternObjectiveCard             "1" *-[#595959,plain]-> "coordReqPattern\n1" CoordinateSubmatrix              
+PatternObjectiveCard              -[#595959,dashed]->  IllegalRequirementsException     : "«create»"
+PatternObjectiveCard              -[#000082,plain]-^  ObjectiveCard                    
+PlaceCardEvent                    -[#000082,plain]-^  Event                            
+PlaceStartCardEvent               -[#000082,plain]-^  Event                            
+PlaceablePositionsReturnedUpdate "1" *-[#595959,plain]-> "availablePositions\n*" Coordinate                       
+PlaceablePositionsReturnedUpdate  -[#000082,plain]-^  Update                           
+Player                           "1" *-[#595959,plain]-> "cardsInHand\n*" GameCard                         
+Player                           "1" *-[#595959,plain]-> "objectiveCard\n1" ObjectiveCard                    
+Player                           "1" *-[#595959,plain]-> "colour\n1" PlayerColour                     
+Player                            -[#595959,dashed]->  PlayingGrid                      : "«create»"
+Player                           "1" *-[#595959,plain]-> "playingGrid\n1" PlayingGrid                      
+PlayersAddedUpdate               "1" *-[#595959,plain]-> "state\n1" State                            
+PlayersAddedUpdate                -[#000082,plain]-^  Update                           
+PlayingGrid                       -[#595959,dashed]->  Coordinate                       : "«create»"
+PlayingGrid                      "1" *-[#595959,plain]-> "plcards\n*" GameCard                         
+PlayingGrid                       -[#595959,dashed]->  GameCard                         : "«create»"
+PlayingGrid                       -[#595959,dashed]->  IllegalRequirementsException     : "«create»"
+PlayingGrid                       -[#595959,dashed]->  InvalidPlacementException        : "«create»"
+PlayingGrid                       -[#595959,dashed]->  InvalidSearchPositionException   : "«create»"
+PointPosition                     -[#595959,dashed]->  Coordinate                       : "«create»"
+PointPosition                    "1" *-[#595959,plain]-> "position\n*" Coordinate                       
+PropertyCardInHand                -[#595959,dashed]->  Assets                           : "«create»"
+PropertyCardInHand                -[#008200,dashed]-^  PropertyChange                   
+PropertyCardPlaced                -[#595959,dashed]->  Assets                           : "«create»"
+PropertyCardPlaced               "1" *-[#595959,plain]-> "position\n1" Coordinate                       
+PropertyCardPlaced                -[#595959,dashed]->  GetPlaceablePositionsEvent       : "«create»"
+PropertyCardPlaced                -[#008200,dashed]-^  PropertyChange                   
+PropertyChatMessage               -[#008200,dashed]-^  PropertyChange                   
+PropertyClassification            -[#008200,dashed]-^  PropertyChange                   
+PropertyDeckColour                -[#595959,dashed]->  Assets                           : "«create»"
+PropertyDeckColour               "1" *-[#595959,plain]-> "colour\n1" CardColour                       
+PropertyDeckColour                -[#595959,dashed]->  DrawCardEvent                    : "«create»"
+PropertyDeckColour                -[#008200,dashed]-^  PropertyChange                   
+PropertyErrorMessage              -[#008200,dashed]-^  PropertyChange                   
+PropertyGameStopped               -[#008200,dashed]-^  PropertyChange                   
+PropertyLobbiesNonCompleted       -[#008200,dashed]-^  PropertyChange                   
+PropertyNicknameSet               -[#008200,dashed]-^  PropertyChange                   
+PropertyObjectivesToChoose        -[#595959,dashed]->  Assets                           : "«create»"
+PropertyObjectivesToChoose        -[#008200,dashed]-^  PropertyChange                   
+PropertyObjectivesToChoose        -[#595959,dashed]->  SelectObjectiveEvent             : "«create»"
+PropertyPlaceablePositions       "1" *-[#595959,plain]-> "availablePositions\n*" Coordinate                       
+PropertyPlaceablePositions        -[#008200,dashed]-^  PropertyChange                   
+PropertyPlayerColour             "1" *-[#595959,plain]-> "playerColour\n1" PlayerColour                     
+PropertyPlayerColour              -[#595959,dashed]->  PointPosition                    : "«create»"
+PropertyPlayerColour              -[#008200,dashed]-^  PropertyChange                   
+PropertyPlayersAdded              -[#008200,dashed]-^  PropertyChange                   
+PropertyPlayersInMatch            -[#595959,dashed]->  ChatEvent                        : "«create»"
+PropertyPlayersInMatch            -[#008200,dashed]-^  PropertyChange                   
+PropertyPoints                   "1" *-[#595959,plain]-> "playerColour\n1" PlayerColour                     
+PropertyPoints                    -[#595959,dashed]->  PointPosition                    : "«create»"
+PropertyPoints                    -[#008200,dashed]-^  PropertyChange                   
+PropertyPublicCard                -[#595959,dashed]->  Assets                           : "«create»"
+PropertyPublicCard                -[#595959,dashed]->  DrawCardEvent                    : "«create»"
+PropertyPublicCard                -[#008200,dashed]-^  PropertyChange                   
+PropertyPublicObjective           -[#595959,dashed]->  Assets                           : "«create»"
+PropertyPublicObjective           -[#008200,dashed]-^  PropertyChange                   
+PropertyRemainingRounds           -[#008200,dashed]-^  PropertyChange                   
+PropertySecretObjective           -[#595959,dashed]->  Assets                           : "«create»"
+PropertySecretObjective           -[#008200,dashed]-^  PropertyChange                   
+PropertyStateChange               -[#595959,dashed]->  DistributeCardsEvent             : "«create»"
+PropertyStateChange               -[#595959,dashed]->  EndGameEvent                     : "«create»"
+PropertyStateChange               -[#008200,dashed]-^  PropertyChange                   
+PropertyStateChange               -[#595959,dashed]->  SelectColourEvent                : "«create»"
+PropertyStateChange              "1" *-[#595959,plain]-> "newState\n1" State                            
+PropertyTurnChange                -[#008200,dashed]-^  PropertyChange                   
+PropertyTurnChange               "1" *-[#595959,plain]-> "newState\n1" State                            
+PropertyYourTurn                  -[#595959,dashed]->  PlaceCardEvent                   : "«create»"
+PropertyYourTurn                  -[#595959,dashed]->  PlaceStartCardEvent              : "«create»"
+PropertyYourTurn                  -[#008200,dashed]-^  PropertyChange                   
+PropertyYourTurn                 "1" *-[#595959,plain]-> "newState\n1" State                            
+SelectColourEvent                 -[#000082,plain]-^  Event                            
+SelectColourEvent                "1" *-[#595959,plain]-> "selectedColour\n1" PlayerColour                     
+SelectObjectiveEvent              -[#000082,plain]-^  Event                            
+Server                            -[#595959,dashed]->  Controller                       : "«create»"
+Server                           "1" *-[#595959,plain]-> "matches\n*" Controller                       
+Server                            -[#595959,dashed]->  DuplicateMatchException          : "«create»"
+Server                            -[#595959,dashed]->  DuplicateNicknameException       : "«create»"
+Server                            -[#595959,dashed]->  JoinMatchEvent                   : "«create»"
+Server                            -[#595959,dashed]->  LobbiesNonCompletedUpdate        : "«create»"
+Server                            -[#595959,dashed]->  NicknameEstablishedUpdate        : "«create»"
+Server                            -[#595959,dashed]->  NoMatchException                 : "«create»"
+Server                            -[#595959,dashed]->  NoNicknameException              : "«create»"
+Server                            -[#595959,dashed]->  ServerSideSocketHandler          : "«create»"
+Server                            -[#008200,dashed]-^  ServerStub                       
+Server                           "1" *-[#595959,plain]-> "linkClientViews\n*" VirtualView                      
+Server                            -[#595959,dashed]->  VirtualViewRMI                   : "«create»"
+Server                            -[#595959,dashed]->  VirtualViewSocket                : "«create»"
+Server                            -[#595959,dashed]->  WrongNumberOfPlayersException    : "«create»"
+ServerSideSocketHandler           -[#595959,dashed]->  IllegalStateException            : "«create»"
+ServerSideSocketHandler           -[#595959,dashed]->  NoNicknameException              : "«create»"
+ServerSideSocketHandler          "1" *-[#595959,plain]-> "server\n1" Server                           
+ServerSideSocketHandler          "1" *-[#595959,plain]-> "view\n1" VirtualView                      
+Side                             "1" *-[#595959,plain]-> "corners\n*" Corner                           
+StartBack                        "1" *-[#595959,plain]-> "center\n*" Element                          
+StartBack                         -[#000082,plain]-^  Side                             
+StartCardPlacedUpdate            "1" *-[#595959,plain]-> "state\n1" State                            
+StartCardPlacedUpdate             -[#000082,plain]-^  Update                           
+StartMatchEvent                   -[#000082,plain]-^  Event                            
+Update                            -[#008200,dashed]-^  Message                          
+UserCreateMatch                   -[#595959,dashed]->  CreateMatchMessage               : "«create»"
+UserCreateMatch                   -[#008200,dashed]-^  UserAction                       
+UserDistributeCards               -[#595959,dashed]->  DistributeCardsEvent             : "«create»"
+UserDistributeCards               -[#008200,dashed]-^  UserAction                       
+UserDrawCard                      -[#595959,dashed]->  DrawCardEvent                    : "«create»"
+UserDrawCard                      -[#008200,dashed]-^  UserAction                       
+UserEndGame                       -[#595959,dashed]->  EndGameEvent                     : "«create»"
+UserEndGame                       -[#008200,dashed]-^  UserAction                       
+UserGetLobbies                    -[#595959,dashed]->  LobbiesRequestMessage            : "«create»"
+UserGetLobbies                    -[#008200,dashed]-^  UserAction                       
+UserGetPlaceablePositions         -[#595959,dashed]->  GetPlaceablePositionsEvent       : "«create»"
+UserGetPlaceablePositions         -[#008200,dashed]-^  UserAction                       
+UserJoinMatch                     -[#595959,dashed]->  JoinMatchMessage                 : "«create»"
+UserJoinMatch                     -[#008200,dashed]-^  UserAction                       
+UserPlaceCard                     -[#595959,dashed]->  PlaceCardEvent                   : "«create»"
+UserPlaceCard                     -[#008200,dashed]-^  UserAction                       
+UserPlaceStartCard                -[#595959,dashed]->  PlaceStartCardEvent              : "«create»"
+UserPlaceStartCard                -[#008200,dashed]-^  UserAction                       
+UserPrivateChat                   -[#595959,dashed]->  ChatEvent                        : "«create»"
+UserPrivateChat                   -[#008200,dashed]-^  UserAction                       
+UserPublicChat                    -[#595959,dashed]->  ChatEvent                        : "«create»"
+UserPublicChat                    -[#008200,dashed]-^  UserAction                       
+UserRequestDrawTable              -[#008200,dashed]-^  UserRequest                      
+UserRequestFlipCard               -[#008200,dashed]-^  UserRequest                      
+UserRequestHand                   -[#008200,dashed]-^  UserRequest                      
+UserRequestHelp                   -[#008200,dashed]-^  UserRequest                      
+UserRequestObjectives             -[#008200,dashed]-^  UserRequest                      
+UserRequestPlayingGrid            -[#008200,dashed]-^  UserRequest                      
+UserRequestSwitchVisualization    -[#008200,dashed]-^  UserRequest                      
+UserSelectColour                  -[#595959,dashed]->  SelectColourEvent                : "«create»"
+UserSelectColour                  -[#008200,dashed]-^  UserAction                       
+UserSelectObjective               -[#595959,dashed]->  SelectObjectiveEvent             : "«create»"
+UserSelectObjective               -[#008200,dashed]-^  UserAction                       
+UserStartMatch                    -[#595959,dashed]->  StartMatchEvent                  : "«create»"
+UserStartMatch                    -[#008200,dashed]-^  UserAction                       
+UserStopGame                      -[#595959,dashed]->  GameStoppedUpdate                : "«create»"
+UserStopGame                      -[#008200,dashed]-^  UserAction                       
+ViewModel                        "1" *-[#595959,plain]-> "goldDeckColour\n1" CardColour                       
+ViewModel                         -[#595959,dashed]->  ClientCard                       : "«create»"
+ViewModel                         -[#595959,dashed]->  ClientMessage                    : "«create»"
+ViewModel                        "1" *-[#595959,plain]-> "messages\n*" ClientMessage                    
+ViewModel                        "1" *-[#595959,plain]-> "availablePositions\n*" Coordinate                       
+ViewModel                         -[#595959,dashed]->  Coordinate                       : "«create»"
+ViewModel                        "1" *-[#595959,plain]-> "colours\n*" PlayerColour                     
+ViewModel                         -[#595959,dashed]->  PropertyCardInHand               : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyCardPlaced               : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyChatMessage              : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyClassification           : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyDeckColour               : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyErrorMessage             : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyGameStopped              : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyLobbiesNonCompleted      : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyNicknameSet              : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyObjectivesToChoose       : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyPlaceablePositions       : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyPlayerColour             : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyPlayersAdded             : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyPlayersInMatch           : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyPoints                   : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyPublicCard               : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyPublicObjective          : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyRemainingRounds          : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertySecretObjective          : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyStateChange              : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyTurnChange               : "«create»"
+ViewModel                         -[#595959,dashed]->  PropertyYourTurn                 : "«create»"
+ViewModel                        "1" *-[#595959,plain]-> "state\n1" State                            
+ViewModel                        "1" *-[#595959,plain]-> "ui\n1" UserInterface                    
+ViewModel                         -[#008200,dashed]-^  ViewModelUpdater                 
+VirtualView                      "1" *-[#595959,plain]-> "listener\n1" EventListener                    
+VirtualView                       -[#008200,dashed]-^  UpdateListener                   
+VirtualView                       -[#008200,dashed]-^  VVStub                           
+VirtualViewRMI                   "1" *-[#595959,plain]-> "client\n1" ClientStub                       
+VirtualViewRMI                   "1" *-[#595959,plain]-> "server\n1" Server                           
+VirtualViewRMI                    -[#000082,plain]-^  VirtualView                      
+VirtualViewSocket                "1" *-[#595959,plain]-> "socketHandler\n1" ServerSideSocketHandler          
+VirtualViewSocket                 -[#000082,plain]-^  VirtualView                      
+@enduml
