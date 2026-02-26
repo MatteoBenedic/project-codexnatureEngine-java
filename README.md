@@ -1,49 +1,58 @@
-# Progetto di ingegneria del software A.A. 2023-2024 - gruppo AM12
-## Componenti del gruppo
-- Angaroni Giulio
-- Benedic Matteo
-- Brunati Ilaria
-- Caruso Emanuele
+# Card Placement Game Engine (Java)
 
-## Specifica
-Il progetto consiste nello sviluppo di una versione software del gioco da tavolo Codex Naturalis.
+A networked digital implementation of a strategic card-placement board game, 
+developed as a Software Engineering university project (A.Y. 2023–2024).
 
-## Funzionalità base
-| Feature        | Status        |
-| -------------  | ------------- |
-|     UML        |     ✔️        |
-|    Model       |     ✔️        |
-|  Controller    |     ✔️        |
-|  Networking    |     ✔️        |
-|    View        |     ✔️        |
-|    TUI         |     ✔️        |
-|    GUI         |     ✔️        |
-| Disconnessione |     ✔️        |
-|   Deployment   |     ✔️        |
+This public version replaces all proprietary assets with placeholders.
 
+---
 
+## 🚀 Project Overview
 
-## Funzionalità avanzate
-| Feature              | Status         |
-| -------------------- | -------------  |
-|   Multiple games     |     ✔️        |
-|    Chat              |     ✔️        |
-|Connection resilience |     ❌        |
+The project consists of a distributed multiplayer card game built in Java, 
+featuring a complete game engine, client-server architecture, and both CLI and GUI interfaces.
 
-## Tabella voto
-| Requisiti                                         | Voto massimo   | Realizzazione   |
-| ------------------------------------------------- | -------------  | ----------------|
-|Regole semplificate + TUI + RMI o Socket 	        |     18	       |    ✔️          |
-|Regole complete + TUI + RMI o Socket               |     20	       |    ✔️          |
-|Regole complete + TUI + GUI + RMI o Socket + 1FA	  |     24	       |    ✔️          |
-|Regole complete + TUI + GUI + RMI + Socket + 1FA   |	    27	       |    ✔️          |
-|Regole complete + TUI + GUI + RMI + Socket + 2FA   |     30	       |    ✔️          |
-|Regole complete + TUI + GUI + RMI + Socket + 3FA   |     30L	       |    ❌          |
+The focus of the project was:
 
+- Object-Oriented Design
+- MVC architecture
+- Network communication (RMI and Socket)
+- Concurrency handling
+- Modular and scalable structure
 
-## Istruzioni per l'esecuzione
-Server: `java -jar AM12.jar server [PORT_SOCKET] [PORT_RMI] [SERVER_IP_ADDRESS]`<br />
-Client (Socket, CLI): `java -jar AM12.jar client [SERVER_IP_ADDRESS] [PORT_SOCKET] cli socket`<br />
-Client (Socket, GUI): `java -jar AM12.jar client [SERVER_IP_ADDRESS] [PORT_SOCKET] gui socket`<br />
-Client (RMI, CLI): `java -jar AM12.jar client [SERVER_IP_ADDRESS] [PORT_RMI] cli rmi`<br />
-Client (RMI, GUI): `java -jar AM12.jar client [SERVER_IP_ADDRESS] [PORT_RMI] gui rmi`
+---
+
+## 🏗 Architecture
+
+The system follows a layered architecture:
+
+- **Model** – Core game logic and rule enforcement  
+- **Controller** – Turn management and game flow coordination  
+- **View** – CLI (TUI) and GUI implementations  
+- **Networking Layer** – Support for both Socket and RMI communication  
+
+The server supports multiple simultaneous games and concurrent clients.
+
+---
+
+## ✨ Features
+
+### Core Features
+- Full rule implementation
+- Multiplayer support
+- Turn-based game engine
+- CLI interface
+- GUI interface
+- Socket communication
+- RMI communication
+
+### Advanced Features
+- Multiple concurrent matches
+- Integrated chat system
+- Disconnection handling
+
+---
+
+## 🖥 How to Run
+
+### Server
