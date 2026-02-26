@@ -1,4 +1,4 @@
-# Card Placement Game Engine (Java)
+# Card Placement Game (Java)
 
 A networked digital implementation of a strategic card-placement board game, "Codex Naturalis" by CranioCreations, 
 developed as a Software Engineering university project (A.Y. 2023–2024).
@@ -55,5 +55,6 @@ The server supports multiple simultaneous games and concurrent clients.
 
 ## How to Run
 This is a Maven project, it should be suitable to the creation of an executable jar using the Maven tools
+
 
 
